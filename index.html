@@ -1971,25 +1971,22 @@
 
       const hero = document.getElementById('hero');
 
-      hero.addEventListener('mousemove', e => {
-        const rect = canvas.getBoundingClientRect();
-        onPointerMove(e.clientX - rect.left, e.clientY - rect.top);
-        if (Date.now() % 8 < 4) { colorI++; }
-      }, { passive: true });
+      function burstAt(x, y) {
+        const color = PALETTE[colorI++ % PALETTE.length];
+        splat(x, y, (Math.random()-0.5)*1200, (Math.random()-0.5)*1200, color);
+        splat(x, y, (Math.random()-0.5)*800,  (Math.random()-0.5)*800,  PALETTE[colorI++ % PALETTE.length]);
+      }
 
-      hero.addEventListener('touchmove', e => {
+      hero.addEventListener('click', e => {
         const rect = canvas.getBoundingClientRect();
-        const t = e.touches[0];
-        onPointerMove(t.clientX - rect.left, t.clientY - rect.top);
-        colorI++;
-      }, { passive: true });
+        burstAt(e.clientX - rect.left, e.clientY - rect.top);
+      });
 
       hero.addEventListener('touchstart', e => {
         const rect = canvas.getBoundingClientRect();
-        const t = e.touches[0];
-        const x = t.clientX - rect.left;
-        const y = t.clientY - rect.top;
-        splat(x, y, (Math.random()-0.5)*800, (Math.random()-0.5)*800, PALETTE[colorI++ % PALETTE.length]);
+        Array.from(e.touches).forEach(t => {
+          burstAt(t.clientX - rect.left, t.clientY - rect.top);
+        });
       }, { passive: true });
 
       /* ── Scroll interaction: burst splats when scrolling over the hero ── */
