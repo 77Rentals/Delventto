@@ -1984,18 +1984,18 @@
 
       hero.addEventListener('touchstart', e => {
         lastX = -1; lastY = -1;
-        const rect = canvas.getBoundingClientRect();
+        const rect = hero.getBoundingClientRect();
         const t = e.touches[0];
         lastX = t.clientX - rect.left;
         lastY = t.clientY - rect.top;
       }, { passive: true });
 
       hero.addEventListener('touchmove', e => {
-        const rect = canvas.getBoundingClientRect();
-        Array.from(e.touches).forEach(t => {
-          onPointerMove(t.clientX - rect.left, t.clientY - rect.top);
-        });
-      }, { passive: true });
+        e.preventDefault();
+        const rect = hero.getBoundingClientRect();
+        const t = e.touches[0];
+        onPointerMove(t.clientX - rect.left, t.clientY - rect.top);
+      }, { passive: false });
 
       /* ── Scroll interaction: burst splats when scrolling over the hero ── */
       let lastScrollY = window.scrollY;
