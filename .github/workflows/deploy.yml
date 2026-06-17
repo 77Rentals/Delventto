@@ -10,16 +10,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Deploy via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /home/rentals77/delventto.cloud/
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            **/.claude/**
-            **/*.zip
+          port: 22
+          local_path: ./*
+          remote_path: /home/rentals77/delventto.cloud/
+          sftp_only: true
+          delete_remote_files: false
