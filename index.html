@@ -1412,7 +1412,6 @@
   <!-- WhatsApp Float -->
 
   <!-- ═══════════════════ SCRIPTS ═══════════════════ -->
-  <script src="webgl-fluid.js"></script>
   <script>
     /* ═══════════════════════════════════════════════════
        NAV SCROLL BEHAVIOR
@@ -1477,7 +1476,6 @@
 
     // Apply on load
     applyLang(currentLang);
-
 
     /* ═══════════════════════════════════════════════════
        WEBGL FLUID SIMULATION
@@ -1971,21 +1969,13 @@
         lastX = x; lastY = y;
       }
 
-      const heroEl = document.getElementById('hero');
-
-      heroEl.addEventListener('mousemove', e => {
+      canvas.addEventListener('mousemove', e => {
         const rect = canvas.getBoundingClientRect();
         onPointerMove(e.clientX - rect.left, e.clientY - rect.top);
         if (Date.now() % 8 < 4) { colorI++; }
       }, { passive: true });
 
-      heroEl.addEventListener('touchstart', e => {
-        const rect = canvas.getBoundingClientRect();
-        lastX = e.touches[0].clientX - rect.left;
-        lastY = e.touches[0].clientY - rect.top;
-      }, { passive: true });
-
-      heroEl.addEventListener('touchmove', e => {
+      canvas.addEventListener('touchmove', e => {
         e.preventDefault();
         const rect = canvas.getBoundingClientRect();
         const t = e.touches[0];
