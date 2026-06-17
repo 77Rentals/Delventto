@@ -1515,8 +1515,8 @@
         PRESSURE:        0.8,
         PRESSURE_ITERATIONS: 20,
         CURL:            30,
-        SPLAT_RADIUS:    0.22,
-        SPLAT_FORCE:     6000,
+        SPLAT_RADIUS:    0.12,
+        SPLAT_FORCE:     2000,
         SHADING:         false,
         COLOR_UPDATE_SPEED: 10,
       };
@@ -1963,8 +1963,8 @@
 
       function onPointerMove(x, y) {
         if (lastX < 0) { lastX = x; lastY = y; return; }
-        const dx = (x - lastX) * 80;
-        const dy = (y - lastY) * 80;
+        const dx = (x - lastX) * 18;
+        const dy = (y - lastY) * 18;
         if (Math.abs(dx) + Math.abs(dy) < 0.5) return;
         splat(x, y, dx, -dy, PALETTE[colorI % PALETTE.length]);
         if (Math.random() < 0.15) colorI++;
