@@ -1520,11 +1520,21 @@
       SUNRAYS: false,
       SPLAT_COLOR: fluidPalette[0],
     };
-    WebGLFluid(document.getElementById('fluid-canvas'), fluidConfig);
+    const fluidCanvas = document.getElementById('fluid-canvas');
+    WebGLFluid(fluidCanvas, fluidConfig);
     setInterval(() => {
       fluidColorIdx = (fluidColorIdx + 1) % fluidPalette.length;
       fluidConfig.SPLAT_COLOR = fluidPalette[fluidColorIdx];
     }, 3000);
+
+    /* Forward hero mousemove to canvas so mouse works through overlaid elements */
+    document.getElementById('hero').addEventListener('mousemove', e => {
+      const rect = fluidCanvas.getBoundingClientRect();
+      const evt = new MouseEvent('mousemove', { bubbles: false, cancelable: false });
+      Object.defineProperty(evt, 'offsetX', { value: e.clientX - rect.left });
+      Object.defineProperty(evt, 'offsetY', { value: e.clientY - rect.top });
+      fluidCanvas.dispatchEvent(evt);
+    }, { passive: true });
   </script>
 </body>
 </html>
