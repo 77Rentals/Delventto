@@ -1510,13 +1510,13 @@
       const config = {
         SIM_RESOLUTION:  128,
         DYE_RESOLUTION:  512,
-        DENSITY_DISSIPATION: 3.2,
-        VELOCITY_DISSIPATION: 1.8,
+        DENSITY_DISSIPATION: 8.0,
+        VELOCITY_DISSIPATION: 4.0,
         PRESSURE:        0.8,
         PRESSURE_ITERATIONS: 20,
-        CURL:            22,
-        SPLAT_RADIUS:    0.18,
-        SPLAT_FORCE:     3500,
+        CURL:            10,
+        SPLAT_RADIUS:    0.08,
+        SPLAT_FORCE:     1200,
         SHADING:         false,
         COLOR_UPDATE_SPEED: 6,
       };
@@ -1963,8 +1963,8 @@
 
       function onPointerMove(x, y) {
         if (lastX < 0) { lastX = x; lastY = y; return; }
-        const dx = (x - lastX) * 8;
-        const dy = (y - lastY) * 8;
+        const dx = (x - lastX) * 4;
+        const dy = (y - lastY) * 4;
         if (Math.abs(dx) + Math.abs(dy) < 0.5) return;
         splat(x, y, dx, -dy, PALETTE[colorI % PALETTE.length]);
         if (Math.random() < 0.15) colorI++;
