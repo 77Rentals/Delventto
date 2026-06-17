@@ -1,0 +1,2031 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delventto Pozos Colorados</title>
+  <meta name="description" content="Experience Delventto in Pozos Colorados, Santa Marta. A premium mixed-use address on Colombia's Caribbean coast.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --cream:      #FDFAF5;
+      --sand:       #E8DCC8;
+      --sand-mid:   #D4C5A9;
+      --turquoise:  #4AADA8;
+      --turq-light: #7FCAC6;
+      --deep-teal:  #1E6B6B;
+      --gold:       #C9A45A;
+      --gold-light: #DEB97A;
+      --text:       #1C1C1C;
+      --text-mid:   #4A4A4A;
+      --text-light: #7A7A7A;
+      --white:      #FFFFFF;
+      --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── SCROLLBAR ─────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--sand); }
+    ::-webkit-scrollbar-thumb { background: var(--turquoise); border-radius: 3px; }
+
+    /* ── TYPOGRAPHY ────────────────────────────────── */
+    h1, h2, h3, h4 { font-family: 'Cormorant Garamond', serif; font-weight: 400; line-height: 1.15; }
+    h1 { font-size: clamp(2.8rem, 7vw, 5.5rem); }
+    h2 { font-size: clamp(2rem, 4.5vw, 3.2rem); }
+    h3 { font-size: clamp(1.4rem, 2.5vw, 1.9rem); }
+    p  { line-height: 1.75; color: var(--text-mid); }
+    em { font-style: italic; }
+    a  { text-decoration: none; color: inherit; }
+
+    /* ── UTILITIES ─────────────────────────────────── */
+    .section-label {
+      display: inline-block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--turquoise);
+      margin-bottom: 1rem;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--turquoise);
+      color: var(--white);
+      padding: 0.9rem 2.2rem;
+      border-radius: 2px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      transition: background 0.3s var(--ease), transform 0.2s var(--ease), box-shadow 0.3s var(--ease);
+    }
+    .btn-primary:hover {
+      background: var(--deep-teal);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(74, 173, 168, 0.3);
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1.5px solid rgba(255,255,255,0.6);
+      color: var(--white);
+      padding: 0.9rem 2.2rem;
+      border-radius: 2px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      transition: background 0.3s var(--ease), border-color 0.3s var(--ease), transform 0.2s var(--ease);
+    }
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: var(--white);
+      transform: translateY(-2px);
+    }
+    .btn-gold {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--gold);
+      color: var(--white);
+      padding: 0.9rem 2.2rem;
+      border-radius: 2px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      transition: background 0.3s var(--ease), transform 0.2s var(--ease), box-shadow 0.3s var(--ease);
+    }
+    .btn-gold:hover {
+      background: #b8923f;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(201, 164, 90, 0.35);
+    }
+    .btn-teal-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1.5px solid var(--turquoise);
+      color: var(--turquoise);
+      padding: 0.9rem 2.2rem;
+      border-radius: 2px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      transition: background 0.3s var(--ease), color 0.3s var(--ease), transform 0.2s var(--ease);
+    }
+    .btn-teal-outline:hover {
+      background: var(--turquoise);
+      color: var(--white);
+      transform: translateY(-2px);
+    }
+
+    /* ── SCROLL FADE IN ────────────────────────────── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fade-in-delay-1 { transition-delay: 0.1s; }
+    .fade-in-delay-2 { transition-delay: 0.2s; }
+    .fade-in-delay-3 { transition-delay: 0.3s; }
+    .fade-in-delay-4 { transition-delay: 0.4s; }
+    .fade-in-delay-5 { transition-delay: 0.5s; }
+    .fade-in-delay-6 { transition-delay: 0.6s; }
+
+    /* ══════════════════════════════════════════════════
+       NAV
+    ══════════════════════════════════════════════════ */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.4rem 0;
+      transition: background 0.4s var(--ease), backdrop-filter 0.4s var(--ease), padding 0.3s var(--ease), box-shadow 0.4s var(--ease);
+    }
+    #nav.scrolled {
+      background: rgba(253, 250, 245, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 1rem 0;
+      box-shadow: 0 1px 24px rgba(0,0,0,0.06);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 500;
+      color: var(--white);
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      transition: color 0.4s;
+    }
+    #nav.scrolled .nav-logo { color: var(--text); }
+    .nav-logo span {
+      display: block;
+      font-size: 0.68rem;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--turq-light);
+      margin-top: 0.1rem;
+    }
+    #nav.scrolled .nav-logo span { color: var(--turquoise); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.83rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    #nav.scrolled .nav-links a { color: var(--text-mid); }
+    #nav.scrolled .nav-links a:hover { color: var(--turquoise); }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .nav-sponsor {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      transition: color 0.4s;
+    }
+    .nav-sponsor strong {
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+    #nav.scrolled .nav-sponsor { color: var(--text-light); }
+    #nav.scrolled .nav-sponsor strong { color: var(--gold); }
+
+    /* Hamburger */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      transition: background 0.4s, transform 0.3s;
+    }
+    #nav.scrolled .nav-hamburger span { background: var(--text); }
+
+    /* Mobile menu */
+    .nav-mobile {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(30, 107, 107, 0.97);
+      z-index: 99;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      color: var(--white);
+      letter-spacing: 0.02em;
+    }
+    .nav-mobile-close {
+      position: absolute;
+      top: 1rem; right: 1.2rem;
+      width: 52px; height: 52px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+      color: var(--white);
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      border: 1.5px solid rgba(255,255,255,0.25);
+      border-radius: 50%;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      z-index: 110;
+    }
+    .nav-mobile-close:active {
+      background: rgba(255,255,255,0.22);
+    }
+
+    /* ══════════════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════════════ */
+    #hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 620px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #fluid-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    /* Fallback gradient behind the canvas */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(155deg, #0d4f4f 0%, #1e6b6b 30%, #2d9a94 55%, #4aada8 75%, #c9a45a 100%);
+      z-index: -1;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(15,50,50,0.35) 0%, rgba(15,50,50,0.20) 50%, rgba(15,50,50,0.55) 100%);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: var(--white);
+      padding: 7rem 1.5rem 5rem;
+      max-width: 860px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-location {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--turq-light);
+      margin-bottom: 1.4rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s var(--ease) forwards;
+    }
+    .hero-location::before,
+    .hero-location::after {
+      content: '';
+      width: 28px;
+      height: 1px;
+      background: var(--turq-light);
+      opacity: 0.7;
+    }
+
+    .hero-content h1 {
+      color: var(--white);
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.5s var(--ease) forwards;
+    }
+    .hero-content h1 em {
+      color: var(--gold-light);
+    }
+
+    .hero-sub {
+      font-size: 1.08rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 2.4rem;
+      line-height: 1.6;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.7s var(--ease) forwards;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.9s var(--ease) forwards;
+    }
+
+    /* Floating stat cards */
+    .hero-stats {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 2.2rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 1.2s var(--ease) forwards;
+    }
+    .hero-stat-card {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 4px;
+      padding: 1rem 1.2rem;
+      text-align: center;
+      min-width: 105px;
+    }
+    .hero-stat-card .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: var(--white);
+      display: block;
+    }
+    .hero-stat-card .stat-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* Scroll indicator */
+    .hero-scroll {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      opacity: 0;
+      animation: fadeUp 0.9s 1.5s var(--ease) forwards;
+    }
+    .hero-scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    /* Wave divider */
+    .wave-divider {
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      line-height: 0;
+    }
+    .wave-divider svg {
+      display: block;
+      width: 100%;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.5; transform: scaleY(1); }
+      50%       { opacity: 1;   transform: scaleY(1.15); }
+    }
+
+    /* ══════════════════════════════════════════════════
+       BUILDING OVERVIEW
+    ══════════════════════════════════════════════════ */
+    #building {
+      padding: 7rem 0 6rem;
+      background: var(--cream);
+    }
+    .building-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .building-image {
+      position: relative;
+      aspect-ratio: 4/5;
+      border-radius: 4px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #2d9a94 0%, #1e6b6b 40%, #c9a45a 100%);
+    }
+    .building-image img {
+      filter: contrast(1.05) brightness(1.02);
+    }
+    .building-image-accent {
+      position: absolute;
+      bottom: -1.5rem;
+      right: -1.5rem;
+      width: 55%;
+      aspect-ratio: 4/3;
+      border-radius: 4px;
+      background: linear-gradient(135deg, #4AADA8 0%, #E8DCC8 100%);
+      z-index: -1;
+    }
+    .building-text { }
+    .building-text h2 { margin-bottom: 1.2rem; }
+    .building-text p {
+      margin-bottom: 1.4rem;
+      font-size: 1.01rem;
+    }
+    .building-pillars {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 2.4rem;
+    }
+    .pillar {
+      border-top: 2px solid var(--sand);
+      padding-top: 1rem;
+    }
+    .pillar-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .pillar h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 500;
+      margin-bottom: 0.3rem;
+      color: var(--text);
+    }
+    .pillar p {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    /* ══════════════════════════════════════════════════
+       AMENITIES
+    ══════════════════════════════════════════════════ */
+    #amenities {
+      padding: 6rem 0;
+      background: var(--sand);
+      position: relative;
+      overflow: hidden;
+    }
+    #amenities::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 800px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(74,173,168,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .amenities-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .amenities-header h2 { margin-bottom: 0.8rem; }
+    .amenities-header p { max-width: 520px; margin: 0 auto; }
+
+    .amenities-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.2rem;
+    }
+    .amenity-card {
+      background: rgba(253, 250, 245, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.6);
+      border-radius: 4px;
+      padding: 1.8rem 1.4rem;
+      transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), background 0.3s var(--ease), border-color 0.3s var(--ease);
+      cursor: default;
+    }
+    .amenity-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 36px rgba(74,173,168,0.14);
+      background: var(--white);
+      border-color: var(--turq-light);
+    }
+    .amenity-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .amenity-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.4rem;
+      color: var(--text);
+    }
+    .amenity-card p {
+      font-size: 0.83rem;
+      color: var(--text-light);
+      line-height: 1.55;
+    }
+    .amenity-card .amenity-badge {
+      display: inline-block;
+      margin-top: 0.8rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--turquoise);
+      font-weight: 600;
+    }
+
+    /* ══════════════════════════════════════════════════
+       GALLERY
+    ══════════════════════════════════════════════════ */
+    #gallery {
+      padding: 6rem 0;
+      background: var(--cream);
+      overflow: hidden;
+    }
+    .gallery-header {
+      padding: 0 2rem;
+      max-width: 1200px;
+      margin: 0 auto 2.5rem;
+    }
+    .gallery-track {
+      display: flex;
+      gap: 1.2rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 0.5rem 2rem 1.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--sand-mid) transparent;
+      -webkit-overflow-scrolling: touch;
+    }
+    .gallery-track::-webkit-scrollbar { height: 4px; }
+    .gallery-track::-webkit-scrollbar-thumb { background: var(--sand-mid); border-radius: 2px; }
+    .gallery-item {
+      flex: 0 0 360px;
+      scroll-snap-align: start;
+      aspect-ratio: 4/3;
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+    .gallery-item-bg {
+      position: absolute;
+      inset: 0;
+      transition: transform 0.5s var(--ease);
+    }
+    .gallery-item:hover .gallery-item-bg { transform: scale(1.04); }
+    .gallery-item:nth-child(1) .gallery-item-bg { background: linear-gradient(135deg, #0d4f4f, #2d9a94); }
+    .gallery-item:nth-child(2) .gallery-item-bg { background: linear-gradient(135deg, #c9a45a, #e8dcc8); }
+    .gallery-item:nth-child(3) .gallery-item-bg { background: linear-gradient(135deg, #1e6b6b, #4aada8, #7fcac6); }
+    .gallery-item:nth-child(4) .gallery-item-bg { background: linear-gradient(135deg, #4a4a4a, #7a7a7a); }
+    .gallery-item:nth-child(5) .gallery-item-bg { background: linear-gradient(135deg, #2d9a94, #c9a45a); }
+    .gallery-item:nth-child(6) .gallery-item-bg { background: linear-gradient(135deg, #1c1c1c, #1e6b6b); }
+    .gallery-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 2rem 1.2rem 1rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.55), transparent);
+      color: var(--white);
+    }
+    .gallery-caption span {
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+    }
+    .gallery-caption h4 {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--white);
+    }
+    .gallery-placeholder-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+
+    /* ══════════════════════════════════════════════════
+       LOCATION
+    ══════════════════════════════════════════════════ */
+    #location {
+      padding: 6rem 0;
+      background: var(--deep-teal);
+      position: relative;
+      overflow: hidden;
+      color: var(--white);
+    }
+    #location::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(74,173,168,0.15) 0%, transparent 65%);
+    }
+    .location-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .location-text .section-label { color: var(--turq-light); }
+    .location-text h2 { color: var(--white); margin-bottom: 1rem; }
+    .location-text p { color: rgba(255,255,255,0.72); margin-bottom: 1.8rem; }
+    .location-points {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .location-point {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.9rem 1.2rem;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 4px;
+    }
+    .location-point-icon {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .location-point-text { }
+    .location-point-text strong {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 0.15rem;
+    }
+    .location-point-text span {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.5);
+    }
+    .location-map {
+      position: relative;
+      aspect-ratio: 1/1;
+      border-radius: 4px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0d4f4f 0%, #1e6b6b 50%, #2d9a94 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Decorative map dots */
+    .map-decoration {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .map-pin {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -60%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+    .map-pin-dot {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 0 6px rgba(201,164,90,0.25), 0 0 0 12px rgba(201,164,90,0.12);
+      animation: pinPulse 2.5s ease-in-out infinite;
+    }
+    .map-pin-line {
+      width: 2px;
+      height: 30px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+    .map-pin-label {
+      background: var(--gold);
+      color: var(--white);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      padding: 0.3rem 0.8rem;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+    .map-grid-lines {
+      position: absolute;
+      inset: 0;
+      opacity: 0.08;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    @keyframes pinPulse {
+      0%, 100% { box-shadow: 0 0 0 6px rgba(201,164,90,0.25), 0 0 0 12px rgba(201,164,90,0.12); }
+      50%       { box-shadow: 0 0 0 10px rgba(201,164,90,0.2),  0 0 0 20px rgba(201,164,90,0.06); }
+    }
+
+    /* ══════════════════════════════════════════════════
+       STAY HERE CTA
+    ══════════════════════════════════════════════════ */
+    #stay {
+      padding: 7rem 0;
+      background: linear-gradient(135deg, var(--turquoise) 0%, var(--deep-teal) 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #stay::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(255,255,255,0.06) 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, rgba(201,164,90,0.1)   0%, transparent 50%);
+    }
+    .stay-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    #stay .section-label { color: rgba(255,255,255,0.65); }
+    #stay h2 {
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+    #stay p {
+      color: rgba(255,255,255,0.75);
+      font-size: 1.05rem;
+      margin-bottom: 2.2rem;
+    }
+    .stay-ctas {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--white);
+      color: var(--deep-teal);
+      padding: 0.9rem 2.2rem;
+      border-radius: 2px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      transition: transform 0.2s var(--ease), box-shadow 0.3s var(--ease);
+    }
+    .btn-white:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.15);
+    }
+    .stay-sponsor-note {
+      margin-top: 2rem;
+      font-size: 0.76rem;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.04em;
+    }
+    .stay-sponsor-note a {
+      color: rgba(255,255,255,0.65);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    /* ══════════════════════════════════════════════════
+       OWNER GUIDE TEASER
+    ══════════════════════════════════════════════════ */
+    #owners {
+      padding: 5rem 0;
+      background: var(--cream);
+    }
+    .owners-card {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 6px;
+      padding: 3rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: center;
+    }
+    .owners-card-text h3 {
+      font-size: 1.65rem;
+      margin-bottom: 0.6rem;
+      color: var(--text);
+    }
+    .owners-card-text p {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.65;
+      max-width: 440px;
+    }
+
+    /* ══════════════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════════════ */
+    footer {
+      background: #0d2b2b;
+      padding: 3.5rem 0 2rem;
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 2rem;
+    }
+    .footer-brand .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+    }
+    .footer-brand .footer-logo span { color: var(--turquoise); }
+    .footer-brand p {
+      font-size: 0.83rem;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.65;
+      max-width: 280px;
+    }
+    .footer-col h5 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 1.2rem;
+    }
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .footer-col ul a {
+      font-size: 0.87rem;
+      color: rgba(255,255,255,0.55);
+      transition: color 0.25s;
+    }
+    .footer-col ul a:hover { color: var(--turquoise); }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-copy {
+      font-size: 0.76rem;
+      color: rgba(255,255,255,0.25);
+    }
+    .footer-sponsor {
+      font-size: 0.76rem;
+      color: rgba(255,255,255,0.35);
+    }
+    .footer-sponsor a { color: var(--turquoise); transition: color 0.25s; }
+    .footer-sponsor a:hover { color: var(--turq-light); }
+    .footer-socials {
+      display: flex;
+      gap: 1rem;
+    }
+    .footer-social-icon {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.85rem;
+      transition: border-color 0.25s, color 0.25s;
+      cursor: pointer;
+    }
+    .footer-social-icon:hover {
+      border-color: var(--turquoise);
+      color: var(--turquoise);
+    }
+
+    /* ══════════════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════════════ */
+    .lang-toggle {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      background: rgba(255,255,255,0.15);
+      border: 1.5px solid rgba(255,255,255,0.4);
+      color: var(--white);
+      padding: 0.3rem 0.7rem;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.25s, border-color 0.25s, color 0.25s;
+    }
+    .lang-toggle:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    #nav.scrolled .lang-toggle {
+      background: rgba(74,173,168,0.1);
+      border-color: var(--turquoise);
+      color: var(--turquoise);
+    }
+    #nav.scrolled .lang-toggle:hover {
+      background: rgba(74,173,168,0.2);
+    }
+
+    @media (max-width: 1024px) {
+      .amenities-grid { grid-template-columns: repeat(2, 1fr); }
+      .building-pillars { grid-template-columns: 1fr 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-logo span { display: none; }
+      .nav-links, .nav-sponsor { display: none; }
+      .hero-stat-card { padding: 0.7rem 1rem; }
+      .hero-stats { gap: 0.6rem; }
+      .nav-hamburger { display: flex; }
+      .building-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .location-grid { grid-template-columns: 1fr; }
+      .location-map { aspect-ratio: 4/3; }
+      .amenities-grid { grid-template-columns: repeat(2, 1fr); }
+      .owners-card { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+      .building-pillars { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .amenities-grid { grid-template-columns: 1fr; }
+      .hero-ctas { flex-direction: column; align-items: center; }
+      .stay-ctas { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══════════════════ NAV ═══════════════════ -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">Delventto<br><span>Pozos Colorados</span></a>
+      <ul class="nav-links">
+        <li><a href="#building" data-es="Edificio" data-en="Building">Edificio</a></li>
+        <li><a href="#amenities" data-es="Amenidades" data-en="Amenities">Amenidades</a></li>
+        <li><a href="#location" data-es="Ubicación" data-en="Location">Ubicación</a></li>
+        <li><a href="#stay" data-es="Hospédate" data-en="Stay Here">Hospédate</a></li>
+      </ul>
+      <div class="nav-right">
+        <button id="langToggle" class="lang-toggle">EN</button>
+        <span class="nav-sponsor">Sponsored by <strong>77Rentals</strong></span>
+        <div class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <nav class="nav-mobile" id="navMobile">
+    <button class="nav-mobile-close" id="navClose" aria-label="Close menu">✕</button>
+    <a href="#building" class="nav-mobile-link" data-es="Edificio" data-en="Building">Edificio</a>
+    <a href="#amenities" class="nav-mobile-link" data-es="Amenidades" data-en="Amenities">Amenidades</a>
+    <a href="#location" class="nav-mobile-link" data-es="Ubicación" data-en="Location">Ubicación</a>
+    <a href="#stay" class="nav-mobile-link" data-es="Hospédate" data-en="Stay Here">Hospédate</a>
+    <a href="#owners" class="nav-mobile-link" data-es="Propietarios" data-en="Owners">Propietarios</a>
+  </nav>
+
+  <!-- ═══════════════════ HERO ═══════════════════ -->
+  <section id="hero">
+    <canvas id="fluid-canvas"></canvas>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <p class="hero-location" data-es="Santa Marta · Colombia" data-en="Santa Marta · Colombia">Santa Marta · Colombia</p>
+      <h1 data-es="Donde Santa Marta<br>Se Vuelve <em>Extraordinaria</em>" data-en="Where Santa Marta<br><em>Stays Extraordinary</em>">Donde Santa Marta<br>Se Vuelve <em>Extraordinaria</em></h1>
+      <p class="hero-sub" data-es="Una dirección premium de uso mixto en Pozos Colorados, Santa Marta" data-en="A premium mixed-use address in Pozos Colorados, Santa Marta">Una dirección premium de uso mixto en Pozos Colorados, Santa Marta</p>
+      <div class="hero-ctas">
+        <a href="#building" class="btn-primary" data-es="Descubre Delventto" data-en="Discover Delventto">Descubre Delventto</a>
+        <a href="https://www.airbnb.com.co/" target="_blank" rel="noopener" class="btn-outline" data-es="Descubre Unidades en Airbnb ↗" data-en="Discover Units on Airbnb ↗">Descubre Unidades en Airbnb ↗</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat-card">
+          <span class="stat-num">5★</span>
+          <span class="stat-label" data-es="Calificación" data-en="Guest Rating">Calificación</span>
+        </div>
+        <div class="hero-stat-card">
+          <span class="stat-num">8+</span>
+          <span class="stat-label" data-es="Amenidades" data-en="Amenities">Amenidades</span>
+        </div>
+        <div class="hero-stat-card">
+          <span class="stat-num">100m</span>
+          <span class="stat-label" data-es="A la Playa" data-en="To the Beach">A la Playa</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span data-es="Desplaza" data-en="Scroll">Desplaza</span>
+    </div>
+
+    <div class="wave-divider">
+      <svg viewBox="0 0 1440 72" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0,36 C240,72 480,0 720,36 C960,72 1200,0 1440,36 L1440,72 L0,72 Z" fill="#FDFAF5"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ BUILDING ═══════════════════ -->
+  <section id="building">
+    <div class="container">
+      <div class="building-grid">
+        <div class="fade-in">
+          <div class="building-image">
+            <img src="Images/Delventto1.jpg" alt="Delventto Building" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+            <div class="building-image-accent"></div>
+          </div>
+        </div>
+        <div class="building-text fade-in fade-in-delay-2">
+          <span class="section-label" data-es="El Edificio" data-en="The Building">El Edificio</span>
+          <h2 data-es="Un Nuevo Estándar<br>para Estadías en Santa Marta" data-en="A New Standard<br>for Santa Marta Stays">Un Nuevo Estándar<br>para Estadías en Santa Marta</h2>
+          <p data-es="Delventto es donde la arquitectura contemporánea se une al alma caribeña. Ubicado en Pozos Colorados, uno de los barrios más vibrantes de Santa Marta, este edificio de uso mixto fue diseñado para elevar cada aspecto de la estadía, ya sea que estés aquí por un fin de semana o que lo llames hogar." data-en="Delventto is where contemporary architecture meets Caribbean soul. Located in Pozos Colorados, one of Santa Marta's most vibrant neighborhoods, this mixed-use building was designed to elevate every aspect of the stay, whether you're here for a weekend or calling it home.">Delventto es donde la arquitectura contemporánea se une al alma caribeña. Ubicado en Pozos Colorados, uno de los barrios más vibrantes de Santa Marta, este edificio de uso mixto fue diseñado para elevar cada aspecto de la estadía, ya sea que estés aquí por un fin de semana o que lo llames hogar.</p>
+          <p data-es="Cada unidad combina un diseño cuidadoso con acabados de primera clase. La luz natural inunda los espacios a través de amplias ventanas, y cada detalle desde los materiales hasta la distribución ha sido seleccionado para crear espacios que se sienten tanto lujosos como genuinamente habitables." data-en="Each unit combines thoughtful design with first-class finishes. Natural light pours through expansive windows, and every detail from the materials to the layout has been selected to create spaces that feel both luxurious and genuinely livable.">Cada unidad combina un diseño cuidadoso con acabados de primera clase. La luz natural inunda los espacios a través de amplias ventanas, y cada detalle desde los materiales hasta la distribución ha sido seleccionado para crear espacios que se sienten tanto lujosos como genuinamente habitables.</p>
+          <div class="building-pillars">
+            <div class="pillar">
+              <span class="pillar-icon">🌴</span>
+              <h4 data-es="Ubicación Privilegiada" data-en="Prime Location">Ubicación Privilegiada</h4>
+              <p data-es="A pasos de las mejores playas, restaurantes y cultura de Santa Marta" data-en="Steps from Santa Marta's best beaches, dining, and culture">A pasos de las mejores playas, restaurantes y cultura de Santa Marta</p>
+            </div>
+            <div class="pillar">
+              <span class="pillar-icon">✦</span>
+              <h4 data-es="Diseño Moderno" data-en="Modern Design">Diseño Moderno</h4>
+              <p data-es="Acabados contemporáneos con calidez caribeña en cada detalle" data-en="Contemporary finishes with Caribbean warmth throughout">Acabados contemporáneos con calidez caribeña en cada detalle</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ AMENITIES ═══════════════════ -->
+  <section id="amenities">
+    <div class="container">
+      <div class="amenities-header fade-in">
+        <span class="section-label" data-es="Amenidades" data-en="Amenities">Amenidades</span>
+        <h2 data-es="Visita Delventto<br>y sus Amenidades" data-en="Visit Delventto<br>and Its Amenities">Visita Delventto<br>y sus Amenidades</h2>
+        <p data-es="Todo lo que necesitas para una estadía cómoda, cuidadosamente integrado en una sola dirección en Pozos Colorados." data-en="Everything you need for a comfortable stay, thoughtfully built into one address in Pozos Colorados.">Todo lo que necesitas para una estadía cómoda, cuidadosamente integrado en una sola dirección en Pozos Colorados.</p>
+      </div>
+      <div class="amenities-grid">
+        <div class="amenity-card fade-in fade-in-delay-1">
+          <span class="amenity-icon">🏊</span>
+          <h3 data-es="4 Piscinas" data-en="4 Swimming Pools">4 Piscinas</h3>
+          <p data-es="Piscina principal, piscina infantil, piscina infinita en azotea y piscina cubierta en azotea." data-en="Main pool, kids pool, infinity rooftop pool, and indoor rooftop pool.">Piscina principal, piscina infantil, piscina infinita en azotea y piscina cubierta en azotea.</p>
+          <span class="amenity-badge" data-es="4 Opciones · Azotea Incluida" data-en="4 Options · Rooftop Included">4 Opciones · Azotea Incluida</span>
+        </div>
+        <div class="amenity-card fade-in fade-in-delay-2">
+          <span class="amenity-icon">🏋️</span>
+          <h3 data-es="Gimnasio" data-en="Fitness Center">Gimnasio</h3>
+          <p data-es="Gimnasio completamente equipado con máquinas modernas, pesas libres y luz natural." data-en="Fully equipped gym with modern machines, free weights, and natural light.">Gimnasio completamente equipado con máquinas modernas, pesas libres y luz natural.</p>
+          <span class="amenity-badge" data-es="Completamente Equipado" data-en="Fully Equipped">Completamente Equipado</span>
+        </div>
+        <div class="amenity-card fade-in fade-in-delay-3">
+          <span class="amenity-icon">🌅</span>
+          <h3 data-es="Terraza en Azotea" data-en="Rooftop Terrace">Terraza en Azotea</h3>
+          <p data-es="Un espacio social al aire libre con vistas al mar Caribe y zona de descanso." data-en="An open-air social space with Caribbean sea views and lounge seating.">Un espacio social al aire libre con vistas al mar Caribe y zona de descanso.</p>
+          <span class="amenity-badge" data-es="Vistas al Mar" data-en="Sea Views">Vistas al Mar</span>
+        </div>
+        <div class="amenity-card fade-in fade-in-delay-4">
+          <span class="amenity-icon">🔒</span>
+          <h3 data-es="Seguridad 24/7" data-en="24/7 Security">Seguridad 24/7</h3>
+          <p data-es="Seguridad permanente y acceso controlado para una total tranquilidad." data-en="Round-the-clock security and controlled access for complete peace of mind.">Seguridad permanente y acceso controlado para una total tranquilidad.</p>
+          <span class="amenity-badge" data-es="Siempre Activa" data-en="Always On">Siempre Activa</span>
+        </div>
+        <div class="amenity-card fade-in fade-in-delay-1">
+          <span class="amenity-icon">⚡</span>
+          <h3 data-es="WiFi de Alta Velocidad" data-en="High-Speed WiFi">WiFi de Alta Velocidad</h3>
+          <p data-es="Fibra óptica en cada unidad y área común. Mantente conectado desde cualquier lugar." data-en="Gigabit fiber in every unit and common area. Stay connected from anywhere.">Fibra óptica en cada unidad y área común. Mantente conectado desde cualquier lugar.</p>
+          <span class="amenity-badge" data-es="Fibra Óptica" data-en="Fiber Optic">Fibra Óptica</span>
+        </div>
+        <div class="amenity-card fade-in fade-in-delay-2">
+          <span class="amenity-icon">🚗</span>
+          <h3 data-es="Parqueadero Gratuito" data-en="Free Parking">Parqueadero Gratuito</h3>
+          <p data-es="Parqueadero seguro y gratuito disponible para huéspedes y residentes." data-en="Secure and free parking available for guests and residents.">Parqueadero seguro y gratuito disponible para huéspedes y residentes.</p>
+          <span class="amenity-badge" data-es="Gratuito · Seguro" data-en="Free · Secure">Gratuito · Seguro</span>
+        </div>
+        <div class="amenity-card fade-in fade-in-delay-3">
+          <span class="amenity-icon">💼</span>
+          <h3 data-es="Lounge de Coworking" data-en="Co-working Lounge">Lounge de Coworking</h3>
+          <p data-es="Un espacio de trabajo dedicado con áreas de reunión y mobiliario ergonómico para trabajo concentrado." data-en="A dedicated workspace with meeting areas and ergonomic seating for focused work.">Un espacio de trabajo dedicado con áreas de reunión y mobiliario ergonómico para trabajo concentrado.</p>
+          <span class="amenity-badge" data-es="Sala de Reuniones" data-en="Private Meeting Room">Sala de Reuniones</span>
+        </div>
+        <div class="amenity-card fade-in fade-in-delay-4">
+          <span class="amenity-icon">🎾</span>
+          <h3 data-es="Cancha de Squash" data-en="Squash Court">Cancha de Squash</h3>
+          <p data-es="Cancha de squash profesional disponible para residentes y huéspedes del edificio." data-en="Professional squash court available for residents and guests of the building.">Cancha de squash profesional disponible para residentes y huéspedes del edificio.</p>
+          <span class="amenity-badge" data-es="Cancha Profesional" data-en="Professional Court">Cancha Profesional</span>
+        </div>
+        <div class="amenity-card fade-in fade-in-delay-1">
+          <span class="amenity-icon">🔥</span>
+          <h3 data-es="Zona BBQ" data-en="BBQ Zone">Zona BBQ</h3>
+          <p data-es="Zona de barbacoa al aire libre, ideal para compartir con familia y amigos en el ambiente caribeño." data-en="Outdoor BBQ area, perfect for gathering with family and friends in the Caribbean setting.">Zona de barbacoa al aire libre, ideal para compartir con familia y amigos en el ambiente caribeño.</p>
+          <span class="amenity-badge" data-es="Aire Libre · Social" data-en="Outdoor · Social">Aire Libre · Social</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ GALLERY ═══════════════════ -->
+  <section id="gallery">
+    <div class="gallery-header fade-in">
+      <span class="section-label" data-es="Galería" data-en="Gallery">Galería</span>
+      <h2 data-es="La Vida en Delventto" data-en="Life at Delventto">La Vida en Delventto</h2>
+    </div>
+    <div class="gallery-track">
+      <div class="gallery-item">
+        <div class="gallery-item-bg"></div>
+        <div class="gallery-placeholder-text">Pool · Add Photo</div>
+        <div class="gallery-caption">
+          <span data-es="Amenidad" data-en="Amenity">Amenidad</span>
+          <h4 data-es="Piscina en Azotea" data-en="Rooftop Pool">Piscina en Azotea</h4>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-bg"></div>
+        <div class="gallery-placeholder-text">Lobby · Add Photo</div>
+        <div class="gallery-caption">
+          <span data-es="Áreas Comunes" data-en="Common Areas">Áreas Comunes</span>
+          <h4 data-es="Lobby Principal" data-en="Grand Lobby">Lobby Principal</h4>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-bg"></div>
+        <div class="gallery-placeholder-text">View · Add Photo</div>
+        <div class="gallery-caption">
+          <span data-es="Vistas" data-en="Views">Vistas</span>
+          <h4 data-es="Mar Caribe" data-en="Caribbean Sea">Mar Caribe</h4>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-bg"></div>
+        <div class="gallery-placeholder-text">Interior · Add Photo</div>
+        <div class="gallery-caption">
+          <span data-es="Interiores" data-en="Interiors">Interiores</span>
+          <h4 data-es="Sala de Estar" data-en="Living Space">Sala de Estar</h4>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-bg"></div>
+        <div class="gallery-placeholder-text">Terrace · Add Photo</div>
+        <div class="gallery-caption">
+          <span data-es="Exterior" data-en="Outdoor">Exterior</span>
+          <h4 data-es="Terraza al Atardecer" data-en="Sunset Terrace">Terraza al Atardecer</h4>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-bg"></div>
+        <div class="gallery-placeholder-text">Facade · Add Photo</div>
+        <div class="gallery-caption">
+          <span data-es="Arquitectura" data-en="Architecture">Arquitectura</span>
+          <h4 data-es="El Edificio" data-en="The Building">El Edificio</h4>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ LOCATION ═══════════════════ -->
+  <section id="location">
+    <div class="container">
+      <div class="location-grid">
+        <div class="location-text fade-in">
+          <span class="section-label" data-es="Ubicación" data-en="Location">Ubicación</span>
+          <h2 data-es="En el Corazón<br>de Santa Marta" data-en="In the Heart<br>of Santa Marta">En el Corazón<br>de Santa Marta</h2>
+          <p data-es="Santa Marta es la ciudad más antigua de Colombia y la joya caribeña del país, donde las playas doradas, la Sierra Nevada y la vida urbana se encuentran. Delventto te pone en el centro de todo." data-en="Santa Marta is Colombia's oldest city and its Caribbean crown jewel, where golden beaches, the Sierra Nevada mountains, and vibrant city life converge. Delventto puts you at the center of it all.">Santa Marta es la ciudad más antigua de Colombia y la joya caribeña del país, donde las playas doradas, la Sierra Nevada y la vida urbana se encuentran. Delventto te pone en el centro de todo.</p>
+          <div class="location-points">
+            <div class="location-point">
+              <span class="location-point-icon">🏖️</span>
+              <div class="location-point-text">
+                <strong data-es="Acceso a la Playa" data-en="Beach Access">Acceso a la Playa</strong>
+                <span data-es="3 min a pie hasta Playa Cabo Tortuga" data-en="3 min walk to Cabo Tortuga Beach">3 min a pie hasta Playa Cabo Tortuga</span>
+              </div>
+            </div>
+            <div class="location-point">
+              <span class="location-point-icon">🏛️</span>
+              <div class="location-point-text">
+                <strong data-es="Centro Histórico" data-en="Historic Center">Centro Histórico</strong>
+                <span data-es="10 min al casco colonial" data-en="10 min to the colonial Old Town">10 min al casco colonial</span>
+              </div>
+            </div>
+            <div class="location-point">
+              <span class="location-point-icon">✈️</span>
+              <div class="location-point-text">
+                <strong data-es="Aeropuerto Simón Bolívar" data-en="Simón Bolívar Airport">Aeropuerto Simón Bolívar</strong>
+                <span data-es="15 min en carro desde el edificio" data-en="15 min drive from the building">15 min en carro desde el edificio</span>
+              </div>
+            </div>
+            <div class="location-point">
+              <span class="location-point-icon">🌿</span>
+              <div class="location-point-text">
+                <strong data-es="Parque Tayrona" data-en="Tayrona National Park">Parque Tayrona</strong>
+                <span data-es="45 min al parque más icónico de Colombia" data-en="45 min to Colombia's most iconic park">45 min al parque más icónico de Colombia</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fade-in fade-in-delay-2">
+          <div class="location-map" style="overflow:hidden;border-radius:12px;">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3914.1671667442847!2d-74.2335392!3d11.1752557!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8ef459007afdae0d%3A0xba7e6bab91a44a8a!2sEdificio%20Delventto!5e0!3m2!1ses-419!2sco!4v1781658148518!5m2!1ses-419!2sco" width="100%" height="100%" style="border:0;display:block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ STAY CTA ═══════════════════ -->
+  <section id="stay">
+    <div class="stay-inner">
+      <span class="section-label fade-in" data-es="Quédate en Delventto" data-en="Stay at Delventto">Quédate en Delventto</span>
+      <h2 class="fade-in fade-in-delay-1" data-es="Encuentra tu Estadía<br><em>en Delventto</em>" data-en="Find Your Stay<br><em>at Delventto</em>">Encuentra tu Estadía<br><em>en Delventto</em></h2>
+      <p class="fade-in fade-in-delay-2" data-es='Muchos anfitriones en Delventto se pueden encontrar en Airbnb. Busca "Delventto" para descubrir unidades disponibles gestionadas por diferentes proveedores de servicios, incluyendo nuestro patrocinador <strong style="color:rgba(255,255,255,0.9)">77Rentals</strong>.' data-en='Many hosts at Delventto can be found on Airbnb. Search "Delventto" to discover available units managed by different service providers, including our sponsor <strong style="color:rgba(255,255,255,0.9)">77Rentals</strong>.'>Muchos anfitriones en Delventto se pueden encontrar en Airbnb. Busca "Delventto" para descubrir unidades disponibles gestionadas por diferentes proveedores de servicios, incluyendo nuestro patrocinador <strong style="color:rgba(255,255,255,0.9)">77Rentals</strong>.</p>
+      <div class="stay-ctas fade-in fade-in-delay-3">
+        <a href="https://www.airbnb.com.co/" target="_blank" rel="noopener" class="btn-white" data-es="Buscar Delventto en Airbnb ↗" data-en="Search Delventto on Airbnb ↗">Buscar Delventto en Airbnb ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ OWNERS ═══════════════════ -->
+  <section id="owners">
+    <div class="container">
+      <div class="owners-card fade-in">
+        <div class="owners-card-text">
+          <span class="section-label" data-es="Para Propietarios" data-en="For Property Owners">Para Propietarios</span>
+          <h3 data-es="¿Tienes una Unidad en Delventto?" data-en="Own a Unit at Delventto?">¿Tienes una Unidad en Delventto?</h3>
+          <p data-es="Hemos creado una Guía de Bienvenida premium exclusivamente para propietarios de Delventto. Todo lo que necesitas para recibir a tus huéspedes como un profesional, diseñada específicamente para este edificio. Contáctanos para más información." data-en="We've created a premium Welcome Guide exclusively for Delventto property owners. Everything you need to host your guests like a pro, crafted for this building specifically. Inquire to learn more.">Hemos creado una Guía de Bienvenida premium exclusivamente para propietarios de Delventto. Todo lo que necesitas para recibir a tus huéspedes como un profesional, diseñada específicamente para este edificio. Contáctanos para más información.</p>
+        </div>
+        <a href="mailto:team@77rentals.com?subject=Delventto Welcome Guide" class="btn-teal-outline" style="flex-shrink:0;" data-es="Obtener la Guía →" data-en="Get the Guide →">Obtener la Guía →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <p class="footer-logo">Delventto<span> · Pozos Colorados</span></p>
+          <p data-es="Una dirección premium de uso mixto en Pozos Colorados, Santa Marta, en la costa caribeña de Colombia." data-en="A premier mixed-use address in Pozos Colorados, Santa Marta, on Colombia's Caribbean coast.">Una dirección premium de uso mixto en Pozos Colorados, Santa Marta, en la costa caribeña de Colombia.</p>
+        </div>
+        <div class="footer-col">
+          <h5 data-es="Explorar" data-en="Explore">Explorar</h5>
+          <ul>
+            <li><a href="#building" data-es="El Edificio" data-en="The Building">El Edificio</a></li>
+            <li><a href="#amenities" data-es="Amenidades" data-en="Amenities">Amenidades</a></li>
+            <li><a href="#gallery" data-es="Galería" data-en="Gallery">Galería</a></li>
+            <li><a href="#location" data-es="Ubicación" data-en="Location">Ubicación</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5 data-es="Contacto" data-en="Connect">Contacto</h5>
+          <ul>
+            <li><a href="https://www.airbnb.com.co/" target="_blank" rel="noopener" data-es="Reservar en Airbnb" data-en="Book on Airbnb">Reservar en Airbnb</a></li>
+            <li><a href="#owners" data-es="Consultas de Propietarios" data-en="Owner Inquiries">Consultas de Propietarios</a></li>
+            <li><a href="mailto:team@77rentals.com" data-es="Contáctanos" data-en="Contact Us">Contáctanos</a></li>
+            <li><a href="#" style="opacity:0.4;pointer-events:none;" data-es="Listar tu Unidad (Próximamente)" data-en="List Your Unit (Soon)">Listar tu Unidad (Próximamente)</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy" data-es="© 2025 Delventto Pozos Colorados · Todos los derechos reservados" data-en="© 2025 Delventto Pozos Colorados · All rights reserved">© 2025 Delventto Pozos Colorados · Todos los derechos reservados</p>
+        <p class="footer-sponsor" data-es='Patrocinado con orgullo por <a href="#">77Rentals</a>' data-en='Proudly sponsored by <a href="#">77Rentals</a>'>Patrocinado con orgullo por <a href="#">77Rentals</a></p>
+        <div class="footer-socials">
+          <div class="footer-social-icon" title="Instagram">IG</div>
+          <div class="footer-social-icon" title="Facebook">FB</div>
+          <div class="footer-social-icon" title="WhatsApp">WA</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp Float -->
+
+  <!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+  <script>
+    /* ═══════════════════════════════════════════════════
+       NAV SCROLL BEHAVIOR
+    ═══════════════════════════════════════════════════ */
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    /* Mobile menu */
+    const hamburger = document.getElementById('navHamburger');
+    const mobileMenu = document.getElementById('navMobile');
+    const closeBtn = document.getElementById('navClose');
+    hamburger.addEventListener('click', () => mobileMenu.classList.add('open'));
+    closeBtn.addEventListener('click',  () => mobileMenu.classList.remove('open'));
+    document.querySelectorAll('.nav-mobile-link').forEach(link => {
+      link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+    });
+
+    /* ═══════════════════════════════════════════════════
+       SCROLL ANIMATIONS
+    ═══════════════════════════════════════════════════ */
+    const fadeEls = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    fadeEls.forEach(el => observer.observe(el));
+
+    /* ═══════════════════════════════════════════════════
+       LANGUAGE TOGGLE (ES default)
+    ═══════════════════════════════════════════════════ */
+    const LANG_KEY = 'delventto-lang';
+    let currentLang = localStorage.getItem(LANG_KEY) || 'es';
+
+    function applyLang(lang) {
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-es]').forEach(el => {
+        const text = el.getAttribute('data-' + lang);
+        if (text !== null) {
+          // Use innerHTML for elements that may contain HTML tags
+          if (text.includes('<') || el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'H3' || el.tagName === 'BUTTON' || el.tagName === 'A') {
+            el.innerHTML = text;
+          } else {
+            el.textContent = text;
+          }
+        }
+      });
+      const btn = document.getElementById('langToggle');
+      if (btn) btn.textContent = lang === 'es' ? 'EN' : 'ES';
+      localStorage.setItem(LANG_KEY, lang);
+      currentLang = lang;
+    }
+
+    document.getElementById('langToggle').addEventListener('click', () => {
+      applyLang(currentLang === 'es' ? 'en' : 'es');
+    });
+
+    // Apply on load
+    applyLang(currentLang);
+
+    /* ═══════════════════════════════════════════════════
+       WEBGL FLUID SIMULATION
+       Adapted from Pavel Dobryakov's WebGL Fluid Simulation
+       MIT License - https://github.com/PavelDoGreat/WebGL-Fluid-Simulation
+    ═══════════════════════════════════════════════════ */
+    (function () {
+      const canvas = document.getElementById('fluid-canvas');
+
+      /* ── GL Setup ── */
+      const params = { alpha: true, depth: false, stencil: false, antialias: false, preserveDrawingBuffer: false };
+      let gl = canvas.getContext('webgl2', params);
+      const isWebGL2 = !!gl;
+      if (!gl) gl = canvas.getContext('webgl', params) || canvas.getContext('experimental-webgl', params);
+      if (!gl) return; // WebGL not supported, graceful fallback (hero CSS gradient shows)
+
+      /* ── Extensions ── */
+      let halfFloat, supportLinearFiltering;
+      if (isWebGL2) {
+        gl.getExtension('EXT_color_buffer_float');
+        supportLinearFiltering = gl.getExtension('OES_texture_float_linear');
+      } else {
+        halfFloat = gl.getExtension('OES_texture_half_float');
+        supportLinearFiltering = gl.getExtension('OES_texture_half_float_linear');
+      }
+
+      const HALF_FLOAT = isWebGL2 ? gl.HALF_FLOAT : (halfFloat ? halfFloat.HALF_FLOAT_OES : gl.UNSIGNED_BYTE);
+      const RGBA       = isWebGL2 ? gl.RGBA16F      : gl.RGBA;
+      const filterType = supportLinearFiltering ? gl.LINEAR : gl.NEAREST;
+
+      /* ── Config ── */
+      const config = {
+        SIM_RESOLUTION:  128,
+        DYE_RESOLUTION:  512,
+        DENSITY_DISSIPATION: 0.98,
+        VELOCITY_DISSIPATION: 0.99,
+        PRESSURE:        0.8,
+        PRESSURE_ITERATIONS: 20,
+        CURL:            30,
+        SPLAT_RADIUS:    0.22,
+        SPLAT_FORCE:     6000,
+        SHADING:         false,
+        COLOR_UPDATE_SPEED: 10,
+      };
+
+      /* ── Palette: Caribbean turquoise, gold, teal ── */
+      const PALETTE = [
+        [0.29, 0.68, 0.66],  // turquoise #4AADA8
+        [0.79, 0.64, 0.35],  // gold #C9A45A
+        [0.12, 0.42, 0.42],  // deep teal #1E6B6B
+        [0.50, 0.79, 0.78],  // turq-light #7FCAC6
+        [0.87, 0.73, 0.47],  // gold-light #DEB97A
+      ];
+      let paletteIndex = 0;
+
+      /* ── Shader sources ── */
+      const baseVertexShaderSrc = `
+        precision highp float;
+        attribute vec2 aPosition;
+        varying vec2 vUv;
+        varying vec2 vL;
+        varying vec2 vR;
+        varying vec2 vT;
+        varying vec2 vB;
+        uniform vec2 texelSize;
+        void main () {
+          vUv = aPosition * 0.5 + 0.5;
+          vL = vUv - vec2(texelSize.x, 0.0);
+          vR = vUv + vec2(texelSize.x, 0.0);
+          vT = vUv + vec2(0.0, texelSize.y);
+          vB = vUv - vec2(0.0, texelSize.y);
+          gl_Position = vec4(aPosition, 0.0, 1.0);
+        }
+      `;
+
+      const copyShaderSrc = `
+        precision mediump float;
+        uniform sampler2D uTexture;
+        varying vec2 vUv;
+        void main () {
+          gl_FragColor = texture2D(uTexture, vUv);
+        }
+      `;
+
+      const clearShaderSrc = `
+        precision mediump float;
+        uniform sampler2D uTexture;
+        uniform float value;
+        varying vec2 vUv;
+        void main () {
+          gl_FragColor = value * texture2D(uTexture, vUv);
+        }
+      `;
+
+      const displayShaderSrc = `
+        precision highp float;
+        uniform sampler2D uTexture;
+        varying vec2 vUv;
+        void main () {
+          vec3 c = texture2D(uTexture, vUv).rgb;
+          float a = max(c.r, max(c.g, c.b));
+          gl_FragColor = vec4(c, a * 0.92);
+        }
+      `;
+
+      const splatShaderSrc = `
+        precision highp float;
+        uniform sampler2D uTarget;
+        uniform float aspectRatio;
+        uniform vec3 color;
+        uniform vec2 point;
+        uniform float radius;
+        varying vec2 vUv;
+        void main () {
+          vec2 p = vUv - point.xy;
+          p.x *= aspectRatio;
+          vec3 splat = exp(-dot(p, p) / radius) * color;
+          vec3 base = texture2D(uTarget, vUv).xyz;
+          gl_FragColor = vec4(base + splat, 1.0);
+        }
+      `;
+
+      const advectionShaderSrc = `
+        precision highp float;
+        uniform sampler2D uVelocity;
+        uniform sampler2D uSource;
+        uniform vec2 texelSize;
+        uniform vec2 dyeTexelSize;
+        uniform float dt;
+        uniform float dissipation;
+        varying vec2 vUv;
+        vec4 bilerp (sampler2D sam, vec2 uv, vec2 tSize) {
+          vec2 st = uv / tSize - 0.5;
+          vec2 iuv = floor(st);
+          vec2 fuv = fract(st);
+          vec4 a = texture2D(sam, (iuv + vec2(0.5, 0.5)) * tSize);
+          vec4 b = texture2D(sam, (iuv + vec2(1.5, 0.5)) * tSize);
+          vec4 c = texture2D(sam, (iuv + vec2(0.5, 1.5)) * tSize);
+          vec4 d = texture2D(sam, (iuv + vec2(1.5, 1.5)) * tSize);
+          return mix(mix(a, b, fuv.x), mix(c, d, fuv.x), fuv.y);
+        }
+        void main () {
+          vec2 coord = vUv - dt * bilerp(uVelocity, vUv, texelSize).xy * texelSize;
+          gl_FragColor = dissipation * bilerp(uSource, coord, dyeTexelSize);
+          gl_FragColor.a = 1.0;
+        }
+      `;
+
+      const divergenceShaderSrc = `
+        precision mediump float;
+        uniform sampler2D uVelocity;
+        varying vec2 vL; varying vec2 vR; varying vec2 vT; varying vec2 vB;
+        void main () {
+          float L = texture2D(uVelocity, vL).x;
+          float R = texture2D(uVelocity, vR).x;
+          float T = texture2D(uVelocity, vT).y;
+          float B = texture2D(uVelocity, vB).y;
+          vec2 C = texture2D(uVelocity, (vL + vR) * 0.5).xy;
+          if (vL.x < 0.0) { L = -C.x; }
+          if (vR.x > 1.0) { R = -C.x; }
+          if (vT.y > 1.0) { T = -C.y; }
+          if (vB.y < 0.0) { B = -C.y; }
+          float div = 0.5 * (R - L + T - B);
+          gl_FragColor = vec4(div, 0.0, 0.0, 1.0);
+        }
+      `;
+
+      const curlShaderSrc = `
+        precision mediump float;
+        uniform sampler2D uVelocity;
+        varying vec2 vL; varying vec2 vR; varying vec2 vT; varying vec2 vB;
+        void main () {
+          float L = texture2D(uVelocity, vL).y;
+          float R = texture2D(uVelocity, vR).y;
+          float T = texture2D(uVelocity, vT).x;
+          float B = texture2D(uVelocity, vB).x;
+          float vorticity = R - L - T + B;
+          gl_FragColor = vec4(0.5 * vorticity, 0.0, 0.0, 1.0);
+        }
+      `;
+
+      const vorticityShaderSrc = `
+        precision highp float;
+        uniform sampler2D uVelocity;
+        uniform sampler2D uCurl;
+        uniform float curl;
+        uniform float dt;
+        varying vec2 vUv; varying vec2 vL; varying vec2 vR; varying vec2 vT; varying vec2 vB;
+        void main () {
+          float L = texture2D(uCurl, vL).x;
+          float R = texture2D(uCurl, vR).x;
+          float T = texture2D(uCurl, vT).x;
+          float B = texture2D(uCurl, vB).x;
+          float C = texture2D(uCurl, vUv).x;
+          vec2 force = 0.5 * vec2(abs(T) - abs(B), abs(R) - abs(L));
+          force /= length(force) + 0.0001;
+          force *= curl * C;
+          force.y *= -1.0;
+          vec2 vel = texture2D(uVelocity, vUv).xy;
+          gl_FragColor = vec4(vel + force * dt, 0.0, 1.0);
+        }
+      `;
+
+      const pressureShaderSrc = `
+        precision mediump float;
+        uniform sampler2D uPressure;
+        uniform sampler2D uDivergence;
+        varying vec2 vL; varying vec2 vR; varying vec2 vT; varying vec2 vB; varying vec2 vUv;
+        void main () {
+          float L = texture2D(uPressure, vL).x;
+          float R = texture2D(uPressure, vR).x;
+          float T = texture2D(uPressure, vT).x;
+          float B = texture2D(uPressure, vB).x;
+          float C = texture2D(uPressure, vUv).x;
+          float divergence = texture2D(uDivergence, vUv).x;
+          float pressure = (L + R + B + T - divergence) * 0.25;
+          gl_FragColor = vec4(pressure, 0.0, 0.0, 1.0);
+        }
+      `;
+
+      const gradientSubtractShaderSrc = `
+        precision mediump float;
+        uniform sampler2D uPressure;
+        uniform sampler2D uVelocity;
+        varying vec2 vUv; varying vec2 vL; varying vec2 vR; varying vec2 vT; varying vec2 vB;
+        void main () {
+          float L = texture2D(uPressure, vL).x;
+          float R = texture2D(uPressure, vR).x;
+          float T = texture2D(uPressure, vT).x;
+          float B = texture2D(uPressure, vB).x;
+          vec2 velocity = texture2D(uVelocity, vUv).xy;
+          velocity.xy -= vec2(R - L, T - B);
+          gl_FragColor = vec4(velocity, 0.0, 1.0);
+        }
+      `;
+
+      /* ── Shader Compilation ── */
+      function compileShader(type, source) {
+        const shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        return shader;
+      }
+
+      function createProgram(vsSource, fsSource) {
+        const vs = compileShader(gl.VERTEX_SHADER,   vsSource);
+        const fs = compileShader(gl.FRAGMENT_SHADER, fsSource);
+        const program = gl.createProgram();
+        gl.attachShader(program, vs);
+        gl.attachShader(program, fs);
+        gl.linkProgram(program);
+        const uniforms = {};
+        const n = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+        for (let i = 0; i < n; i++) {
+          const info = gl.getActiveUniform(program, i);
+          uniforms[info.name] = gl.getUniformLocation(program, info.name);
+        }
+        return { program, uniforms };
+      }
+
+      /* ── Programs ── */
+      const copyProg        = createProgram(baseVertexShaderSrc, copyShaderSrc);
+      const clearProg       = createProgram(baseVertexShaderSrc, clearShaderSrc);
+      const splatProg       = createProgram(baseVertexShaderSrc, splatShaderSrc);
+      const advectionProg   = createProgram(baseVertexShaderSrc, advectionShaderSrc);
+      const divergenceProg  = createProgram(baseVertexShaderSrc, divergenceShaderSrc);
+      const curlProg        = createProgram(baseVertexShaderSrc, curlShaderSrc);
+      const vorticityProg   = createProgram(baseVertexShaderSrc, vorticityShaderSrc);
+      const pressureProg    = createProgram(baseVertexShaderSrc, pressureShaderSrc);
+      const gradSubProg     = createProgram(baseVertexShaderSrc, gradientSubtractShaderSrc);
+      const displayProg     = createProgram(baseVertexShaderSrc, displayShaderSrc);
+
+      /* ── Fullscreen quad ── */
+      const vertexBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, -1,1, 1,1, 1,-1]), gl.STATIC_DRAW);
+      const indexBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array([0,1,2, 0,2,3]), gl.STATIC_DRAW);
+
+      function bindQuad(prog) {
+        gl.useProgram(prog.program);
+        const loc = gl.getAttribLocation(prog.program, 'aPosition');
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+        gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+        gl.enableVertexAttribArray(loc);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+      }
+
+      /* ── FBO Helpers ── */
+      function createFBO(w, h, internalFormat, format, type, filter) {
+        gl.activeTexture(gl.TEXTURE0);
+        const texture = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filter);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filter);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texImage2D(gl.TEXTURE_2D, 0, internalFormat, w, h, 0, format, type, null);
+        const fbo = gl.createFramebuffer();
+        gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+        gl.viewport(0, 0, w, h);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        return { texture, fbo, width: w, height: h,
+          texelSizeX: 1 / w, texelSizeY: 1 / h };
+      }
+
+      function createDoubleFBO(w, h, internalFormat, format, type, filter) {
+        let fbo1 = createFBO(w, h, internalFormat, format, type, filter);
+        let fbo2 = createFBO(w, h, internalFormat, format, type, filter);
+        return {
+          width: w, height: h,
+          texelSizeX: fbo1.texelSizeX, texelSizeY: fbo1.texelSizeY,
+          get read()  { return fbo1; },
+          get write() { return fbo2; },
+          swap() { [fbo1, fbo2] = [fbo2, fbo1]; }
+        };
+      }
+
+      /* ── FBO bind helper ── */
+      function blit(destination) {
+        if (destination) {
+          gl.bindFramebuffer(gl.FRAMEBUFFER, destination.fbo);
+          gl.viewport(0, 0, destination.width, destination.height);
+        } else {
+          gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+          gl.viewport(0, 0, canvas.width, canvas.height);
+        }
+        gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
+      }
+
+      /* ── Texture bind helper ── */
+      let _texId = 0;
+      function bindTexture(fbo, unit) {
+        gl.activeTexture(gl.TEXTURE0 + unit);
+        gl.bindTexture(gl.TEXTURE_2D, fbo.texture);
+        return unit;
+      }
+
+      /* ── Sizing ── */
+      function getResolution(res) {
+        let w = res, h = res;
+        const aspect = canvas.width / canvas.height;
+        if (aspect > 1) { w = Math.round(res * aspect); } else { h = Math.round(res / aspect); }
+        return { width: w, height: h };
+      }
+
+      let velocity, dye, divergence, curl, pressure;
+
+      function initFBOs() {
+        const simRes = getResolution(config.SIM_RESOLUTION);
+        const dyeRes = getResolution(config.DYE_RESOLUTION);
+        const rgFormat = isWebGL2 ? gl.RG16F : gl.RGBA;
+        velocity  = createDoubleFBO(simRes.width, simRes.height, rgFormat,  isWebGL2 ? gl.RG : gl.RGBA, HALF_FLOAT, filterType);
+        dye       = createDoubleFBO(dyeRes.width, dyeRes.height, RGBA,      gl.RGBA, HALF_FLOAT, filterType);
+        divergence= createFBO(simRes.width, simRes.height, isWebGL2 ? gl.R16F : gl.RGBA, isWebGL2 ? gl.RED : gl.RGBA, HALF_FLOAT, gl.NEAREST);
+        curl      = createFBO(simRes.width, simRes.height, isWebGL2 ? gl.R16F : gl.RGBA, isWebGL2 ? gl.RED : gl.RGBA, HALF_FLOAT, gl.NEAREST);
+        pressure  = createDoubleFBO(simRes.width, simRes.height, isWebGL2 ? gl.R16F : gl.RGBA, isWebGL2 ? gl.RED : gl.RGBA, HALF_FLOAT, gl.NEAREST);
+      }
+
+      /* ── Resize ── */
+      function resize() {
+        const w = canvas.clientWidth;
+        const h = canvas.clientHeight;
+        if (canvas.width !== w || canvas.height !== h) {
+          canvas.width  = w;
+          canvas.height = h;
+          initFBOs();
+        }
+      }
+
+      /* ── Splat ── */
+      function splat(x, y, dx, dy, color) {
+        bindQuad(splatProg);
+        gl.uniform1i(splatProg.uniforms.uTarget, bindTexture(velocity.read, 0));
+        gl.uniform1f(splatProg.uniforms.aspectRatio, canvas.width / canvas.height);
+        gl.uniform2f(splatProg.uniforms.point, x / canvas.width, 1 - y / canvas.height);
+        gl.uniform3f(splatProg.uniforms.color, dx, -dy, 0);
+        gl.uniform1f(splatProg.uniforms.radius, config.SPLAT_RADIUS / 100);
+        blit(velocity.write);
+        velocity.swap();
+
+        gl.uniform1i(splatProg.uniforms.uTarget, bindTexture(dye.read, 0));
+        gl.uniform3f(splatProg.uniforms.color, color[0], color[1], color[2]);
+        gl.uniform1f(splatProg.uniforms.radius, config.SPLAT_RADIUS / 100);
+        blit(dye.write);
+        dye.swap();
+      }
+
+      /* ── Random splat ── */
+      function randomSplat() {
+        const color = PALETTE[paletteIndex % PALETTE.length];
+        paletteIndex++;
+        const x  = Math.random() * canvas.width;
+        const y  = Math.random() * canvas.height;
+        const dx = (Math.random() - 0.5) * config.SPLAT_FORCE;
+        const dy = (Math.random() - 0.5) * config.SPLAT_FORCE;
+        splat(x, y, dx, dy, color);
+      }
+
+      /* ── Step ── */
+      function step(dt) {
+        gl.disable(gl.BLEND);
+
+        /* Curl */
+        bindQuad(curlProg);
+        gl.uniform2f(curlProg.uniforms.texelSize, velocity.texelSizeX, velocity.texelSizeY);
+        gl.uniform1i(curlProg.uniforms.uVelocity, bindTexture(velocity.read, 0));
+        blit(curl);
+
+        /* Vorticity */
+        bindQuad(vorticityProg);
+        gl.uniform2f(vorticityProg.uniforms.texelSize, velocity.texelSizeX, velocity.texelSizeY);
+        gl.uniform1i(vorticityProg.uniforms.uVelocity, bindTexture(velocity.read, 0));
+        gl.uniform1i(vorticityProg.uniforms.uCurl,     bindTexture(curl, 1));
+        gl.uniform1f(vorticityProg.uniforms.curl, config.CURL);
+        gl.uniform1f(vorticityProg.uniforms.dt, dt);
+        blit(velocity.write);
+        velocity.swap();
+
+        /* Divergence */
+        bindQuad(divergenceProg);
+        gl.uniform2f(divergenceProg.uniforms.texelSize, velocity.texelSizeX, velocity.texelSizeY);
+        gl.uniform1i(divergenceProg.uniforms.uVelocity, bindTexture(velocity.read, 0));
+        blit(divergence);
+
+        /* Clear pressure */
+        bindQuad(clearProg);
+        gl.uniform1i(clearProg.uniforms.uTexture, bindTexture(pressure.read, 0));
+        gl.uniform1f(clearProg.uniforms.value, config.PRESSURE);
+        blit(pressure.write);
+        pressure.swap();
+
+        /* Pressure solve */
+        bindQuad(pressureProg);
+        gl.uniform2f(pressureProg.uniforms.texelSize, velocity.texelSizeX, velocity.texelSizeY);
+        gl.uniform1i(pressureProg.uniforms.uDivergence, bindTexture(divergence, 0));
+        for (let i = 0; i < config.PRESSURE_ITERATIONS; i++) {
+          gl.uniform1i(pressureProg.uniforms.uPressure, bindTexture(pressure.read, 1));
+          blit(pressure.write);
+          pressure.swap();
+        }
+
+        /* Gradient subtract */
+        bindQuad(gradSubProg);
+        gl.uniform2f(gradSubProg.uniforms.texelSize, velocity.texelSizeX, velocity.texelSizeY);
+        gl.uniform1i(gradSubProg.uniforms.uPressure, bindTexture(pressure.read, 0));
+        gl.uniform1i(gradSubProg.uniforms.uVelocity, bindTexture(velocity.read, 1));
+        blit(velocity.write);
+        velocity.swap();
+
+        /* Advect velocity */
+        bindQuad(advectionProg);
+        gl.uniform2f(advectionProg.uniforms.texelSize,    velocity.texelSizeX, velocity.texelSizeY);
+        gl.uniform2f(advectionProg.uniforms.dyeTexelSize, velocity.texelSizeX, velocity.texelSizeY);
+        gl.uniform1i(advectionProg.uniforms.uVelocity, bindTexture(velocity.read, 0));
+        gl.uniform1i(advectionProg.uniforms.uSource,   bindTexture(velocity.read, 0));
+        gl.uniform1f(advectionProg.uniforms.dt, dt);
+        gl.uniform1f(advectionProg.uniforms.dissipation, config.VELOCITY_DISSIPATION);
+        blit(velocity.write);
+        velocity.swap();
+
+        /* Advect dye */
+        gl.uniform2f(advectionProg.uniforms.dyeTexelSize, dye.texelSizeX, dye.texelSizeY);
+        gl.uniform1i(advectionProg.uniforms.uVelocity, bindTexture(velocity.read, 0));
+        gl.uniform1i(advectionProg.uniforms.uSource,   bindTexture(dye.read, 1));
+        gl.uniform1f(advectionProg.uniforms.dissipation, config.DENSITY_DISSIPATION);
+        blit(dye.write);
+        dye.swap();
+      }
+
+      /* ── Render ── */
+      function render() {
+        gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+        gl.enable(gl.BLEND);
+        bindQuad(displayProg);
+        gl.uniform1i(displayProg.uniforms.uTexture, bindTexture(dye.read, 0));
+        blit(null);
+      }
+
+      /* ── Mouse / Touch ── */
+      let lastX = 0, lastY = 0, pressing = false;
+      let colorI = 0;
+
+      function onPointerMove(x, y) {
+        const dx = (x - lastX) * config.SPLAT_FORCE;
+        const dy = (y - lastY) * config.SPLAT_FORCE;
+        const color = PALETTE[colorI % PALETTE.length];
+        if (Math.abs(dx) + Math.abs(dy) > 0.1) splat(x, y, dx, dy, color);
+        lastX = x; lastY = y;
+      }
+
+      canvas.addEventListener('mousemove', e => {
+        const rect = canvas.getBoundingClientRect();
+        onPointerMove(e.clientX - rect.left, e.clientY - rect.top);
+        if (Date.now() % 8 < 4) { colorI++; }
+      }, { passive: true });
+
+      canvas.addEventListener('touchmove', e => {
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        const t = e.touches[0];
+        onPointerMove(t.clientX - rect.left, t.clientY - rect.top);
+        colorI++;
+      }, { passive: false });
+
+      /* ── Scroll interaction: burst splats when scrolling over the hero ── */
+      let lastScrollY = window.scrollY;
+      window.addEventListener('scroll', () => {
+        const hero = document.getElementById('hero');
+        const heroBottom = hero.getBoundingClientRect().bottom + window.scrollY;
+        if (window.scrollY < heroBottom) {
+          const delta = window.scrollY - lastScrollY;
+          const cx = canvas.width * 0.5 + (Math.random() - 0.5) * canvas.width * 0.4;
+          const cy = canvas.height * 0.5 + (Math.random() - 0.5) * canvas.height * 0.4;
+          splat(cx, cy, (Math.random() - 0.5) * 2000, delta * 80, PALETTE[colorI++ % PALETTE.length]);
+        }
+        lastScrollY = window.scrollY;
+      }, { passive: true });
+
+      /* ── Init & Loop ── */
+      resize();
+      window.addEventListener('resize', resize, { passive: true });
+
+      /* Seed initial splats */
+      for (let i = 0; i < 6; i++) randomSplat();
+
+      let lastTime = Date.now();
+      let splatTimer = 0;
+
+      function loop() {
+        const now   = Date.now();
+        const dt    = Math.min((now - lastTime) / 1000, 0.016);
+        lastTime    = now;
+        splatTimer += dt;
+
+        /* Auto splat every ~3.5s to keep it alive */
+        if (splatTimer > 3.5) {
+          randomSplat();
+          splatTimer = 0;
+        }
+
+        resize();
+        step(dt);
+        render();
+        requestAnimationFrame(loop);
+      }
+
+      requestAnimationFrame(loop);
+    })();
+  </script>
+</body>
+</html>
