@@ -1958,34 +1958,40 @@
       }
 
       /* ── Mouse / Touch ── */
-      let lastX = 0, lastY = 0, pressing = false;
+      let lastX = -1, lastY = -1;
       let colorI = 0;
 
       function onPointerMove(x, y) {
-        const dx = (x - lastX) * config.SPLAT_FORCE;
-        const dy = (y - lastY) * config.SPLAT_FORCE;
-        const color = PALETTE[colorI % PALETTE.length];
-        if (Math.abs(dx) + Math.abs(dy) > 0.1) splat(x, y, dx, dy, color);
+        if (lastX < 0) { lastX = x; lastY = y; return; }
+        const dx = (x - lastX) * 80;
+        const dy = (y - lastY) * 80;
+        if (Math.abs(dx) + Math.abs(dy) < 0.5) return;
+        splat(x, y, dx, -dy, PALETTE[colorI % PALETTE.length]);
+        if (Math.random() < 0.15) colorI++;
         lastX = x; lastY = y;
       }
 
       const hero = document.getElementById('hero');
 
-      function burstAt(x, y) {
-        const color = PALETTE[colorI++ % PALETTE.length];
-        splat(x, y, (Math.random()-0.5)*1200, (Math.random()-0.5)*1200, color);
-        splat(x, y, (Math.random()-0.5)*800,  (Math.random()-0.5)*800,  PALETTE[colorI++ % PALETTE.length]);
-      }
-
-      hero.addEventListener('click', e => {
+      hero.addEventListener('mousemove', e => {
         const rect = canvas.getBoundingClientRect();
-        burstAt(e.clientX - rect.left, e.clientY - rect.top);
-      });
+        onPointerMove(e.clientX - rect.left, e.clientY - rect.top);
+      }, { passive: true });
+
+      hero.addEventListener('mouseleave', () => { lastX = -1; lastY = -1; });
 
       hero.addEventListener('touchstart', e => {
+        lastX = -1; lastY = -1;
+        const rect = canvas.getBoundingClientRect();
+        const t = e.touches[0];
+        lastX = t.clientX - rect.left;
+        lastY = t.clientY - rect.top;
+      }, { passive: true });
+
+      hero.addEventListener('touchmove', e => {
         const rect = canvas.getBoundingClientRect();
         Array.from(e.touches).forEach(t => {
-          burstAt(t.clientX - rect.left, t.clientY - rect.top);
+          onPointerMove(t.clientX - rect.left, t.clientY - rect.top);
         });
       }, { passive: true });
 
