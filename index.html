@@ -1510,15 +1510,15 @@
       const config = {
         SIM_RESOLUTION:  128,
         DYE_RESOLUTION:  512,
-        DENSITY_DISSIPATION: 0.98,
-        VELOCITY_DISSIPATION: 0.99,
+        DENSITY_DISSIPATION: 3.2,
+        VELOCITY_DISSIPATION: 1.8,
         PRESSURE:        0.8,
         PRESSURE_ITERATIONS: 20,
-        CURL:            30,
-        SPLAT_RADIUS:    0.12,
-        SPLAT_FORCE:     2000,
+        CURL:            22,
+        SPLAT_RADIUS:    0.18,
+        SPLAT_FORCE:     3500,
         SHADING:         false,
-        COLOR_UPDATE_SPEED: 10,
+        COLOR_UPDATE_SPEED: 6,
       };
 
       /* ── Palette: Caribbean turquoise, gold, teal ── */
@@ -1963,8 +1963,8 @@
 
       function onPointerMove(x, y) {
         if (lastX < 0) { lastX = x; lastY = y; return; }
-        const dx = (x - lastX) * 18;
-        const dy = (y - lastY) * 18;
+        const dx = (x - lastX) * 8;
+        const dy = (y - lastY) * 8;
         if (Math.abs(dx) + Math.abs(dy) < 0.5) return;
         splat(x, y, dx, -dy, PALETTE[colorI % PALETTE.length]);
         if (Math.random() < 0.15) colorI++;
