@@ -321,14 +321,16 @@
       mix-blend-mode: screen;
       opacity: 0.9;
     }
-    .hero-content {
+    .hero-overlay,
+    .hero-content,
+    .hero-scroll {
       pointer-events: none;
     }
     .hero-content a,
     .hero-content button,
-    .hero-ctas,
     .hero-ctas a,
-    .hero-ctas button {
+    .hero-ctas button,
+    .hero-stats {
       pointer-events: auto;
     }
 
@@ -1491,7 +1493,15 @@
     applyLang(currentLang);
 
     /* WebGL Fluid Simulation */
-    WebGLFluid(document.getElementById('fluid-canvas'), {
+    const fluidPalette = [
+      { r: 0.29, g: 0.68, b: 0.66 },  // turquoise
+      { r: 0.79, g: 0.64, b: 0.35 },  // gold
+      { r: 0.12, g: 0.42, b: 0.42 },  // deep teal
+      { r: 0.87, g: 0.73, b: 0.48 },  // gold light
+      { r: 0.50, g: 0.79, b: 0.78 },  // turq light
+    ];
+    let fluidColorIdx = 0;
+    const fluidConfig = {
       TRIGGER: 'hover',
       IMMEDIATE: true,
       AUTO: true,
@@ -1504,11 +1514,17 @@
       SPLAT_COUNT: 4,
       TRANSPARENT: true,
       SHADING: false,
-      COLORFUL: true,
+      COLORFUL: false,
       COLOR_UPDATE_SPEED: 6,
       BLOOM: false,
       SUNRAYS: false,
-    });
+      SPLAT_COLOR: fluidPalette[0],
+    };
+    WebGLFluid(document.getElementById('fluid-canvas'), fluidConfig);
+    setInterval(() => {
+      fluidColorIdx = (fluidColorIdx + 1) % fluidPalette.length;
+      fluidConfig.SPLAT_COLOR = fluidPalette[fluidColorIdx];
+    }, 3000);
   </script>
 </body>
 </html>
