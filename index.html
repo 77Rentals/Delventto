@@ -3,8 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Delventto Pozos Colorados</title>
-  <meta name="description" content="Experience Delventto in Pozos Colorados, Santa Marta. A premium mixed-use address on Colombia's Caribbean coast.">
+  <title>Delventto Pozos Colorados | Apartamentos en Santa Marta</title>
+  <meta name="description" content="Edificio premium en Pozos Colorados, Santa Marta. Piscinas, gimnasio, terraza rooftop y más. Encuentra tu estadía en Airbnb.">
+  <link rel="canonical" href="https://delventto.cloud/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://delventto.cloud/">
+  <meta property="og:title" content="Delventto Pozos Colorados | Santa Marta">
+  <meta property="og:description" content="Edificio premium en Pozos Colorados, Santa Marta. Piscinas, gimnasio, terraza rooftop y más.">
+  <meta property="og:image" content="https://delventto.cloud/Images/Delventto1.jpg">
+  <meta property="og:locale" content="es_CO">
+  <meta property="og:locale:alternate" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Delventto Pozos Colorados | Santa Marta">
+  <meta name="twitter:description" content="Edificio premium en Pozos Colorados, Santa Marta.">
+  <meta name="twitter:image" content="https://delventto.cloud/Images/Delventto1.jpg">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
@@ -1535,6 +1552,40 @@
       Object.defineProperty(evt, 'offsetY', { value: e.clientY - rect.top });
       fluidCanvas.dispatchEvent(evt);
     }, { passive: true });
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ApartmentComplex",
+    "name": "Delventto",
+    "description": "Edificio premium de uso mixto en Pozos Colorados, Santa Marta, Colombia.",
+    "url": "https://delventto.cloud",
+    "image": "https://delventto.cloud/Images/Delventto1.jpg",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Pozos Colorados",
+      "addressLocality": "Santa Marta",
+      "addressCountry": "CO"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 11.1752557,
+      "longitude": -74.2335392
+    },
+    "amenityFeature": [
+      {"@type": "LocationFeatureSpecification", "name": "Piscina"},
+      {"@type": "LocationFeatureSpecification", "name": "Gimnasio"},
+      {"@type": "LocationFeatureSpecification", "name": "Terraza Rooftop"},
+      {"@type": "LocationFeatureSpecification", "name": "WiFi"},
+      {"@type": "LocationFeatureSpecification", "name": "Parqueadero"}
+    ],
+    "sponsor": {
+      "@type": "Organization",
+      "name": "77Rentals",
+      "url": "https://77rentals.com"
+    }
+  }
   </script>
 </body>
 </html>
