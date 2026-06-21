@@ -954,6 +954,58 @@
     }
 
     /* ══════════════════════════════════════════════════
+       FAQ
+    ══════════════════════════════════════════════════ */
+    #faq {
+      background: var(--bg);
+      padding: 3rem 0 2.5rem;
+      border-top: 1px solid var(--sand-mid);
+    }
+    #faq .section-label { font-size: 0.7rem; }
+    #faq h2 { font-size: 1.4rem; margin-bottom: 1.5rem; }
+    .faq-list { max-width: 720px; }
+    .faq-item {
+      border-bottom: 1px solid var(--sand-mid);
+    }
+    .faq-q {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 0.9rem 0;
+      text-align: left;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .faq-q::after {
+      content: '+';
+      font-size: 1.1rem;
+      color: var(--turquoise);
+      flex-shrink: 0;
+      transition: transform 0.25s;
+    }
+    .faq-item.open .faq-q::after { transform: rotate(45deg); }
+    .faq-a {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      line-height: 1.6;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      padding: 0;
+    }
+    .faq-item.open .faq-a {
+      max-height: 200px;
+      padding-bottom: 0.9rem;
+    }
+
+    /* ══════════════════════════════════════════════════
        FOOTER
     ══════════════════════════════════════════════════ */
     footer {
@@ -1442,6 +1494,44 @@
     </div>
   </section>
 
+  <!-- ═══════════════════ FAQ ═══════════════════ -->
+  <section id="faq">
+    <div class="container">
+      <span class="section-label" data-es="Preguntas Frecuentes" data-en="FAQ">Preguntas Frecuentes</span>
+      <h2 data-es="Todo lo que necesitas saber" data-en="Everything you need to know">Todo lo que necesitas saber</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-q" data-es="¿Dónde está ubicado Delventto?" data-en="Where is Delventto located?">¿Dónde está ubicado Delventto?</button>
+          <div class="faq-a" data-es="En Pozos Colorados, Santa Marta, Colombia — a 5 minutos caminando de la playa Cabo Tortuga y a 15 minutos en carro del aeropuerto internacional." data-en="In Pozos Colorados, Santa Marta, Colombia — a 5-minute walk from Cabo Tortuga beach and 15 minutes by car from the international airport.">En Pozos Colorados, Santa Marta, Colombia — a 5 minutos caminando de la playa Cabo Tortuga y a 15 minutos en carro del aeropuerto internacional.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" data-es="¿Qué amenidades tiene Delventto?" data-en="What amenities does Delventto have?">¿Qué amenidades tiene Delventto?</button>
+          <div class="faq-a" data-es="Piscina infinita en azotea, jacuzzi, sauna, gimnasio completamente equipado, zona BBQ, rooftop, piscina en primer piso, piscina para niños, piscina climatizada, campo de squash, coworking y sala de descanso." data-en="Rooftop infinity pool, jacuzzi, sauna, fully equipped gym, BBQ zone, rooftop terrace, ground-floor pool, kids pool, heated pool, squash court, coworking space, and lounge area.">Piscina infinita en azotea, jacuzzi, sauna, gimnasio completamente equipado, zona BBQ, rooftop, piscina en primer piso, piscina para niños, piscina climatizada, campo de squash, coworking y sala de descanso.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" data-es="¿Cómo puedo reservar una estadía en Delventto?" data-en="How can I book a stay at Delventto?">¿Cómo puedo reservar una estadía en Delventto?</button>
+          <div class="faq-a" data-es="Puedes reservar a través de Airbnb, Booking.com, Despegar o Expedia. Todos los apartamentos son gestionados por 77Rentals." data-en="You can book through Airbnb, Booking.com, Despegar, or Expedia. All apartments are managed by 77Rentals.">Puedes reservar a través de Airbnb, Booking.com, Despegar o Expedia. Todos los apartamentos son gestionados por 77Rentals.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" data-es="¿Delventto tiene parqueadero?" data-en="Does Delventto have parking?">¿Delventto tiene parqueadero?</button>
+          <div class="faq-a" data-es="Sí, Delventto cuenta con parqueadero gratuito y seguro para los huéspedes." data-en="Yes, Delventto has free and secure parking for guests.">Sí, Delventto cuenta con parqueadero gratuito y seguro para los huéspedes.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" data-es="¿Está Delventto cerca del mar?" data-en="Is Delventto near the sea?">¿Está Delventto cerca del mar?</button>
+          <div class="faq-a" data-es="Sí, Pozos Colorados está ubicado directamente sobre la costa caribeña de Santa Marta, con acceso a playa a pocos minutos caminando." data-en="Yes, Pozos Colorados sits directly on Santa Marta's Caribbean coast, with beach access just minutes away on foot.">Sí, Pozos Colorados está ubicado directamente sobre la costa caribeña de Santa Marta, con acceso a playa a pocos minutos caminando.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" data-es="¿Qué hace especial a Delventto?" data-en="What makes Delventto special?">¿Qué hace especial a Delventto?</button>
+          <div class="faq-a" data-es="La combinación de piscina infinita en azotea con vista al mar y las montañas, más la atención personalizada de todos los hosts. No es solo un lugar donde quedarse — es una experiencia." data-en="The combination of a rooftop infinity pool with views of the sea and mountains, plus the personalized attention of every host. It's not just a place to stay — it's an experience.">La combinación de piscina infinita en azotea con vista al mar y las montañas, más la atención personalizada de todos los hosts. No es solo un lugar donde quedarse — es una experiencia.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" data-es="¿Hay cobro de manillas?" data-en="Is there a wristband fee?">¿Hay cobro de manillas?</button>
+          <div class="faq-a" data-es="Sí, hay un cobro de $25,000 COP por persona para acceso a las amenidades del edificio." data-en="Yes, there is a fee of $25,000 COP per person for access to the building's amenities.">Sí, hay un cobro de $25,000 COP por persona para acceso a las amenidades del edificio.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══════════════════ FOOTER ═══════════════════ -->
   <footer>
     <div class="footer-inner">
@@ -1593,6 +1683,32 @@
       Object.defineProperty(evt, 'offsetY', { value: e.clientY - rect.top });
       fluidCanvas.dispatchEvent(evt);
     }, { passive: true });
+
+    /* FAQ accordion */
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"¿Dónde está ubicado Delventto?","acceptedAnswer":{"@type":"Answer","text":"En Pozos Colorados, Santa Marta, Colombia — a 5 minutos caminando de la playa Cabo Tortuga y a 15 minutos en carro del aeropuerto internacional."}},
+      {"@type":"Question","name":"¿Qué amenidades tiene Delventto?","acceptedAnswer":{"@type":"Answer","text":"Piscina infinita en azotea, jacuzzi, sauna, gimnasio completamente equipado, zona BBQ, rooftop, piscina en primer piso, piscina para niños, piscina climatizada, campo de squash, coworking y sala de descanso."}},
+      {"@type":"Question","name":"¿Cómo puedo reservar una estadía en Delventto?","acceptedAnswer":{"@type":"Answer","text":"Puedes reservar a través de Airbnb, Booking.com, Despegar o Expedia. Todos los apartamentos son gestionados por 77Rentals."}},
+      {"@type":"Question","name":"¿Delventto tiene parqueadero?","acceptedAnswer":{"@type":"Answer","text":"Sí, Delventto cuenta con parqueadero gratuito y seguro para los huéspedes."}},
+      {"@type":"Question","name":"¿Está Delventto cerca del mar?","acceptedAnswer":{"@type":"Answer","text":"Sí, Pozos Colorados está ubicado directamente sobre la costa caribeña de Santa Marta, con acceso a playa a pocos minutos caminando."}},
+      {"@type":"Question","name":"¿Qué hace especial a Delventto?","acceptedAnswer":{"@type":"Answer","text":"La combinación de piscina infinita en azotea con vista al mar y las montañas, más la atención personalizada de todos los hosts."}},
+      {"@type":"Question","name":"¿Hay cobro de manillas?","acceptedAnswer":{"@type":"Answer","text":"Sí, hay un cobro de $25,000 COP por persona para acceso a las amenidades del edificio."}}
+    ]
+  }
   </script>
 
   <script type="application/ld+json">
