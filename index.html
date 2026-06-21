@@ -1653,7 +1653,7 @@
       TRIGGER: 'hover',
       IMMEDIATE: true,
       AUTO: true,
-      INTERVAL: 3000,
+      INTERVAL: 5000,
       DENSITY_DISSIPATION: 3.2,
       VELOCITY_DISSIPATION: 1.8,
       CURL: 22,
@@ -1673,7 +1673,21 @@
     setInterval(() => {
       fluidColorIdx = (fluidColorIdx + 1) % fluidPalette.length;
       fluidConfig.SPLAT_COLOR = fluidPalette[fluidColorIdx];
-    }, 3000);
+    }, 5000);
+
+    /* Pause fluid when hero scrolls out of view */
+    const heroObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        fluidConfig.AUTO = e.isIntersecting;
+        fluidConfig.PAUSED = !e.isIntersecting;
+      });
+    }, { threshold: 0.1 });
+    heroObserver.observe(document.getElementById('hero'));
+
+    /* Pause fluid when tab is hidden */
+    document.addEventListener('visibilitychange', () => {
+      fluidConfig.PAUSED = document.hidden;
+    });
 
     /* Forward hero mousemove to canvas so mouse works through overlaid elements */
     document.getElementById('hero').addEventListener('mousemove', e => {
