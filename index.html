@@ -1669,25 +1669,36 @@
       SPLAT_COLOR: fluidPalette[0],
     };
     const fluidCanvas = document.getElementById('fluid-canvas');
-    WebGLFluid(fluidCanvas, fluidConfig);
-    setInterval(() => {
-      fluidColorIdx = (fluidColorIdx + 1) % fluidPalette.length;
-      fluidConfig.SPLAT_COLOR = fluidPalette[fluidColorIdx];
-    }, 5000);
+    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-    /* Pause fluid when hero scrolls out of view */
-    const heroObserver = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        fluidConfig.AUTO = e.isIntersecting;
-        fluidConfig.PAUSED = !e.isIntersecting;
+    if (isTouch) {
+      /* Mobile: full quality */
+      WebGLFluid(fluidCanvas, fluidConfig);
+      setInterval(() => {
+        fluidColorIdx = (fluidColorIdx + 1) % fluidPalette.length;
+        fluidConfig.SPLAT_COLOR = fluidPalette[fluidColorIdx];
+      }, 5000);
+    } else {
+      /* Desktop: low resolution to avoid GPU crash */
+      WebGLFluid(fluidCanvas, Object.assign({}, fluidConfig, {
+        SIM_RESOLUTION: 64,
+        DYE_RESOLUTION: 256,
+        SPLAT_COUNT: 2,
+      }));
+      setInterval(() => {
+        fluidColorIdx = (fluidColorIdx + 1) % fluidPalette.length;
+        fluidConfig.SPLAT_COLOR = fluidPalette[fluidColorIdx];
+      }, 5000);
+
+      /* On desktop: pause render loop when hero not visible */
+      const heroObserver = new IntersectionObserver(entries => {
+        entries.forEach(e => { fluidConfig.PAUSED = !e.isIntersecting; });
+      }, { threshold: 0.1 });
+      heroObserver.observe(document.getElementById('hero'));
+      document.addEventListener('visibilitychange', () => {
+        fluidConfig.PAUSED = document.hidden;
       });
-    }, { threshold: 0.1 });
-    heroObserver.observe(document.getElementById('hero'));
-
-    /* Pause fluid when tab is hidden */
-    document.addEventListener('visibilitychange', () => {
-      fluidConfig.PAUSED = document.hidden;
-    });
+    }
 
     /* Forward hero mousemove to canvas so mouse works through overlaid elements */
     document.getElementById('hero').addEventListener('mousemove', e => {
