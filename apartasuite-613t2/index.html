@@ -587,7 +587,15 @@ footer a{color:var(--gold);text-decoration:none;}
       <p style="margin:8px 0 0;font-size:.85rem;line-height:1.7;color:#4A4A4A;" data-es="La zona de piscinas cuenta con baños, duchas y espacios adecuados para secarse y cambiarse antes de regresar al apartamento. Agradecemos su colaboración." data-en="The pool area has bathrooms, showers, and spaces to dry off and change before returning to your apartment. Thank you for your cooperation.">La zona de piscinas cuenta con baños, duchas y espacios adecuados para secarse y cambiarse antes de regresar al apartamento. Agradecemos su colaboración.</p>
     </div>
   </div>
-  <div class="gal-grid" id="gal-grid-amen"></div>
+  <div style="margin-top:32px;">
+    <p style="font-weight:600;margin:0 0 12px;" data-es="Recorrido por las amenidades" data-en="Amenities walkthrough">Recorrido por las amenidades</p>
+    <div class="video-wrap">
+      <video controls playsinline preload="metadata">
+        <source src="amenities-tour.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+  <div class="gal-grid" id="gal-grid-amen" style="margin-top:28px;"></div>
 </section>
 
 <!-- MAP -->
@@ -852,6 +860,8 @@ const amenPhotos=[
   {src:'amen_common-floor1.jpg',  es:'Zona común primer piso',      en:'Common Area — Ground Floor'},
   {src:'amen_interior-view.jpg',  es:'Vista interior',              en:'Interior View'},
   {src:'amen_beach.jpg',          es:'Playa',                       en:'Beach'},
+  {src:'amen_beach2.jpg',         es:'Atardecer en la playa',       en:'Beach Sunset'},
+  {src:'amen_beach3.jpg',         es:'Atardecer — bote',            en:'Sunset — Boat'},
 ];
 /* ── Lightbox ── */
 function openLB(src){
