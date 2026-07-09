@@ -458,6 +458,7 @@ footer a{color:var(--gold);text-decoration:none;}
   <button class="lb-close" onclick="closeLB()">✕</button>
   <img id="lb-img" src="" alt="">
   <div class="lb-stack" id="lb-stack"></div>
+  <video id="lb-video" controls playsinline onclick="event.stopPropagation()" style="display:none;max-width:92vw;max-height:82vh;border-radius:12px;"></video>
 </div>
 
 <!-- HERO -->
@@ -467,9 +468,9 @@ footer a{color:var(--gold);text-decoration:none;}
   <h1><span data-es="Bienvenido a" data-en="Welcome to">Bienvenido a</span> Apartasuite <em>613T2</em><span id="hero-name"></span></h1>
   <p class="hero-sub" data-es="Escápate a Santa Marta y disfruta este súper apartasuite a tan solo 200 metros de la playa, en el sector de Cabo Tortuga - Pozos Colorados." data-en="Escape to Santa Marta and enjoy this fantastic apartsuite just 200 meters from the beach, in the Cabo Tortuga - Pozos Colorados area.">Escápate a Santa Marta y disfruta este súper apartasuite a tan solo 200 metros de la playa, en el sector de Cabo Tortuga - Pozos Colorados.</p>
   <div class="hero-badges">
-    <span class="badge" data-es="A 200m de la playa 🌊" data-en="200m from the beach 🌊">A 200m de la playa 🌊</span>
+    <span class="badge" data-es="A 200m de la playa 🌊" data-en="200m from the beach 🌊" onclick="openLB('beach.mp4')" style="cursor:pointer;">A 200m de la playa 🌊</span>
     <span class="badge" data-es="WiFi rápido + escritorio" data-en="Fast WiFi + desk">WiFi rápido + escritorio</span>
-    <span class="badge" data-es="Edificio Delventto · Apto 613T2" data-en="Delventto Building · Apt 613T2">Edificio Delventto · Apto 613T2</span>
+    <span class="badge" data-es="Edificio Delventto · Apto 613T2" data-en="Delventto Building · Apt 613T2" onclick="openLB('img_building.jpg')" style="cursor:pointer;">Edificio Delventto · Apto 613T2</span>
   </div>
   <div class="scroll-hint" data-es="Desliza para explorar" data-en="Scroll to explore">Desliza para explorar</div>
 </header>
@@ -870,20 +871,25 @@ const amenPhotos=[
 function openLB(src){
   const img=document.getElementById('lb-img');
   const stack=document.getElementById('lb-stack');
-  if(Array.isArray(src)){
+  const vid=document.getElementById('lb-video');
+  vid.pause(); vid.style.display='none'; vid.src='';
+  if(typeof src==='string' && src.match(/\.(mp4|webm|mov)$/i)){
+    img.style.display='none'; stack.style.display='none'; stack.innerHTML='';
+    vid.src=src; vid.style.display='block';
+  } else if(Array.isArray(src)){
     img.style.display='none';
     stack.innerHTML=src.map(s=>`<img src="${s}" alt="">`).join('');
     stack.style.display='flex';
   } else {
-    stack.style.display='none';
-    stack.innerHTML='';
-    img.style.display='block';
-    img.src=src;
+    stack.style.display='none'; stack.innerHTML='';
+    img.style.display='block'; img.src=src;
   }
   document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow='hidden';
 }
 function closeLB(){
+  const vid=document.getElementById('lb-video');
+  vid.pause(); vid.src='';
   document.getElementById('lightbox').classList.remove('open');
   document.body.style.overflow='';
 }
