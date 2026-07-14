@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Amarel Suite · Welcome Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="webgl-fluid.js"></script>
+<style>
+:root{
+  --purple:#2E93A6;
+  --purple-deep:#146277;
+  --purple-dark:#0B3E4D;
+  --gold:#D68A2C;
+  --gold-soft:#E8A94F;
+  --cream:#FEFAF2;
+  --ink:#1C1C1C;
+  --sea:#146277;
+  --coral:#C2703A;
+  --white:#FFFFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  line-height:1.6;
+  overflow-x:hidden;
+}
+h1,h2,h3,.display{font-family:'Cormorant Garamond',serif;}
+
+/* ───── Passcode gate ───── */
+.site{display:none;}
+.gate{
+  min-height:100svh;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:24px;
+  background:linear-gradient(165deg,#0B3E4D 0%,#146277 30%,#1F8FA3 55%,#3EB4C2 75%,#D68A2C 100%);
+  color:var(--cream);
+  position:relative;overflow:hidden;
+}
+.gate-fluid{position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:screen;opacity:.85;}
+.bf-enter{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.bf-fly{position:absolute;bottom:-10vh;opacity:0;animation:flyUp linear forwards;}
+.bf-fly svg{width:100%;height:100%;}
+@keyframes flyUp{
+  0%{transform:translate(0,0) rotate(-2deg);opacity:0;}
+  8%{opacity:.85;}
+  50%{transform:translate(60px,-55vh) rotate(3deg);}
+  92%{opacity:.85;}
+  100%{transform:translate(-50px,-115vh) rotate(-2deg);opacity:0;}
+}
+.gate-card{max-width:380px;width:100%;position:relative;z-index:1;}
+.gate-eyebrow{letter-spacing:.35em;font-size:.72rem;font-weight:600;color:var(--gold-soft);text-transform:uppercase;margin-bottom:10px;}
+.gate-title{font-size:clamp(2.4rem,8vw,3.4rem);font-weight:600;margin-bottom:14px;}
+.gate-title em{font-style:italic;color:var(--gold-soft);}
+.gate-sub{font-weight:300;font-size:.95rem;color:rgba(253,250,245,.92);margin-bottom:26px;}
+.gate-input{
+  width:100%;padding:14px 18px;border-radius:999px;border:1px solid rgba(222,185,122,.5);
+  background:rgba(13,79,79,.3);color:var(--cream);font-family:'Outfit';font-size:1rem;
+  text-align:center;letter-spacing:.2em;outline:none;margin-bottom:14px;
+}
+.gate-input::placeholder{color:rgba(253,250,245,.5);}
+.gate-input:focus{border-color:var(--gold);}
+.gate-btn{
+  width:100%;padding:14px 18px;border-radius:999px;border:none;cursor:pointer;
+  background:var(--gold);color:var(--purple-dark);font-family:'Outfit';font-weight:700;
+  font-size:.95rem;letter-spacing:.08em;transition:background .2s;
+}
+.gate-btn:hover{background:var(--gold-soft);}
+.gate-error{margin-top:14px;font-size:.85rem;color:#E8A94F;opacity:0;transition:opacity .2s;}
+.gate-error.show{opacity:1;}
+
+/* ───── Top bar ───── */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 24px;
+  background:rgba(13,79,79,.85);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.brand{display:flex;align-items:center;gap:10px;color:var(--gold-soft);}
+.brand svg{width:30px;height:30px;}
+.brand-name{font-weight:600;letter-spacing:.14em;font-size:.8rem;color:var(--cream);}
+.brand-name span{color:var(--gold);}
+.lang-toggle{
+  display:flex;border:1px solid rgba(222,185,122,.5);border-radius:999px;overflow:hidden;
+}
+.lang-toggle button{
+  background:transparent;border:none;color:var(--cream);
+  padding:7px 16px;font-family:'Outfit';font-size:.78rem;font-weight:600;
+  letter-spacing:.08em;cursor:pointer;transition:all .25s;
+}
+.lang-toggle button.active{background:var(--gold);color:var(--purple-dark);}
+
+/* ───── Hero ───── */
+.hero{
+  min-height:100svh;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;position:relative;
+  background:linear-gradient(165deg,#0B3E4D 0%,#146277 30%,#1F8FA3 55%,#3EB4C2 75%,#D68A2C 100%);
+  color:var(--cream);
+  padding:110px 24px 80px;
+  overflow:hidden;
+}
+.hero::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:140px;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 140' preserveAspectRatio='none'%3E%3Cpath d='M0,80 C240,140 480,20 720,60 C960,100 1200,40 1440,90 L1440,140 L0,140 Z' fill='%23FEFAF2'/%3E%3C/svg%3E") no-repeat bottom/cover;
+}
+.hero-eyebrow{
+  letter-spacing:.35em;font-size:.72rem;font-weight:600;color:var(--gold-soft);
+  text-transform:uppercase;margin-bottom:18px;
+}
+.hero h1{
+  font-size:clamp(3.2rem,9vw,6.5rem);
+  font-weight:600;line-height:1.02;letter-spacing:.01em;
+}
+.hero h1 em{font-style:italic;color:var(--gold-soft);}
+.hero-sub{
+  max-width:560px;margin:22px auto 0;font-weight:300;
+  font-size:clamp(1rem,2.4vw,1.15rem);color:rgba(253,250,245,.92);
+}
+.hero-badges{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;justify-content:center;position:relative;z-index:10;}
+.badge{
+  border:1px solid rgba(222,185,122,.45);border-radius:999px;
+  padding:8px 18px;font-size:.78rem;letter-spacing:.06em;color:var(--gold-soft);
+  background:rgba(13,79,79,.3);
+}
+.badge[onclick]{
+  cursor:pointer;
+  border-color:rgba(222,185,122,.8);
+  background:rgba(13,79,79,.5);
+  transition:background .2s,transform .15s,box-shadow .2s;
+  box-shadow:0 0 0 1px rgba(222,185,122,.3);
+}
+.badge[onclick]::after{content:" ↗";font-size:.7rem;opacity:.8;}
+.badge[onclick]:hover,.badge[onclick]:active{
+  background:rgba(222,185,122,.2);
+  transform:scale(1.04);
+  box-shadow:0 0 0 2px rgba(222,185,122,.5);
+}
+.butterflies{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.bf{position:absolute;opacity:.6;animation:float 14s ease-in-out infinite;}
+.bf svg{width:100%;height:100%;}
+@keyframes float{
+  0%,100%{transform:translate(0,0) rotate(-1deg);}
+  25%{transform:translate(46px,-10px) rotate(2deg);}
+  50%{transform:translate(-58px,-22px) rotate(-2deg);}
+  75%{transform:translate(34px,-8px) rotate(1deg);}
+}
+@media (prefers-reduced-motion:reduce){.bf{animation:none;} *{scroll-behavior:auto!important;}}
+.scroll-hint{
+  position:absolute;bottom:26px;left:50%;transform:translateX(-50%);
+  font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(253,250,245,.7);
+  z-index:2;
+}
+
+/* ───── Sections ───── */
+section{padding:80px 24px;max-width:1080px;margin:0 auto;}
+.sec-eyebrow{
+  letter-spacing:.3em;font-size:.7rem;font-weight:600;color:var(--purple);
+  text-transform:uppercase;display:block;margin-bottom:10px;
+}
+.sec-title{font-size:clamp(2rem,5vw,3rem);font-weight:600;line-height:1.1;margin-bottom:14px;}
+.sec-title em{font-style:italic;color:var(--purple);}
+.sec-lead{max-width:640px;font-weight:300;color:#4A4A4A;margin-bottom:40px;}
+
+/* Countdown */
+.count-wrap{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;
+}
+.count-card{
+  background:var(--white);border-radius:22px;padding:30px 26px;
+  border:1px solid #E8DCC8;
+  box-shadow:0 18px 40px -28px rgba(13,79,79,.35);
+}
+.count-card h3{font-size:1.5rem;color:var(--purple-deep);margin-bottom:4px;}
+.count-time{font-family:'Outfit';font-size:2.1rem;font-weight:700;color:var(--ink);}
+.count-note{font-size:.85rem;color:#7A7A7A;margin-top:8px;}
+.count-card.gold{background:linear-gradient(140deg,var(--purple-deep),var(--purple));color:var(--cream);border:none;}
+.count-card.gold h3{color:var(--gold-soft);}
+.count-card.gold .count-time{color:var(--white);}
+.count-card.gold .count-note{color:rgba(253,250,245,.8);}
+.steps{margin-top:36px;display:grid;gap:14px;}
+.step{
+  display:flex;gap:16px;background:var(--white);border-radius:16px;padding:18px 20px;
+  border:1px solid #E8DCC8;align-items:flex-start;
+}
+.step-num{
+  flex:0 0 34px;height:34px;border-radius:50%;
+  background:var(--gold);color:var(--purple-dark);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:.9rem;
+}
+.step strong{display:block;color:var(--purple-deep);}
+.step p{font-size:.92rem;color:#4A4A4A;}
+
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:18px;}
+.legend span{display:flex;align-items:center;gap:8px;font-size:.82rem;color:#4A4A4A;}
+.dot{width:12px;height:12px;border-radius:4px;display:inline-block;}
+
+/* Page-wide floating sea-life (fixed, behind content) */
+.bf-page{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.bf-page .bf{opacity:.3;}
+section,header,footer,.topbar{position:relative;z-index:1;}
+
+/* Gallery */
+.gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
+.amen-list{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
+.amen-chip{
+  border:1px solid var(--purple);border-radius:999px;padding:9px 20px;
+  font-family:'Outfit';font-weight:600;font-size:.82rem;color:var(--purple);
+  background:transparent;
+}
+.amen-fee{
+  display:flex;gap:14px;align-items:flex-start;
+  border:1px solid var(--purple);border-radius:16px;
+  padding:18px 20px;margin:24px 0 28px;background:rgba(106,38,128,.06);
+}
+.amen-fee .amen-fee-icon{font-size:1.6rem;line-height:1;}
+.amen-fee p{margin:0;font-size:.92rem;line-height:1.5;}
+.amen-hours{border:1px solid #E8DCC8;border-radius:16px;overflow:hidden;margin-bottom:24px;}
+.amen-hour-row{display:flex;align-items:center;gap:12px;padding:12px 18px;font-size:.88rem;}
+.amen-hour-row:not(:last-child){border-bottom:1px solid #E8DCC8;}
+.amen-hour-row span:first-child{font-size:1.2rem;flex-shrink:0;}
+.amen-hour-row span:nth-child(2){flex:1;font-weight:600;color:var(--purple-deep);}
+.amen-hour-row span:last-child{color:var(--gold);font-weight:700;white-space:nowrap;}
+.gal-item{
+  border-radius:18px;overflow:hidden;cursor:zoom-in;position:relative;
+  aspect-ratio:4/3;background:#e8dcc8;
+}
+.gal-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s;}
+.gal-item:hover img{transform:scale(1.04);}
+.gal-item-label{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(transparent,rgba(13,79,79,.75));
+  color:var(--cream);font-size:.82rem;font-weight:600;padding:22px 14px 10px;
+  opacity:0;transition:opacity .25s;
+}
+.gal-item:hover .gal-item-label{opacity:1;}
+.gal-ph{
+  aspect-ratio:4/3;border-radius:18px;
+  background:linear-gradient(140deg,#f3ecdf,#e8dcc8);
+  border:2px dashed #9ad0cc;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  color:var(--purple);font-size:.82rem;font-weight:500;text-align:center;padding:14px;
+}
+.gal-ph svg{width:34px;height:34px;opacity:.7;}
+.gal-drive{
+  margin-top:22px;display:flex;align-items:center;justify-content:center;
+}
+.gal-drive a{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--purple);color:var(--cream);
+  padding:13px 28px;border-radius:999px;text-decoration:none;
+  font-weight:600;font-size:.88rem;letter-spacing:.04em;
+  transition:background .2s,transform .2s;
+}
+.gal-drive a:hover{background:var(--purple-deep);transform:translateY(-2px);}
+.gal-drive-link:hover{background:var(--purple-deep)!important;transform:translateY(-2px);}
+/* Lightbox */
+.lb{
+  display:none;position:fixed;inset:0;z-index:1000;
+  background:rgba(18,4,28,.92);align-items:center;justify-content:center;
+  padding:16px;
+}
+.lb.open{display:flex;}
+.lb img{max-width:100%;max-height:90svh;border-radius:14px;object-fit:contain;
+  box-shadow:0 30px 80px rgba(0,0,0,.6);}
+.lb-stack{display:none;flex-direction:column;gap:16px;max-height:92svh;overflow-y:auto;align-items:center;}
+.lb-stack img{max-width:100%;max-height:88svh;border-radius:14px;object-fit:contain;
+  box-shadow:0 30px 80px rgba(0,0,0,.6);}
+.lb-close{
+  position:fixed;top:18px;right:22px;color:var(--cream);
+  font-size:2rem;cursor:pointer;line-height:1;background:none;border:none;
+  z-index:1001;opacity:.8;transition:opacity .2s;
+}
+.lb-close:hover{opacity:1;}
+
+/* Map */
+.map-card{
+  background:var(--white);border-radius:26px;padding:22px;
+  border:1px solid #E8DCC8;box-shadow:0 22px 48px -32px rgba(13,79,79,.4);
+}
+.map-svg{width:100%;height:auto;border-radius:16px;display:block;}
+.map-embed{width:100%;height:420px;border:0;border-radius:16px;display:block;}
+.map-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;}
+.map-link{
+  display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+  background:var(--cream);border:1px solid #E8DCC8;border-radius:999px;
+  padding:9px 18px;font-size:.85rem;font-weight:600;color:var(--purple-deep);
+  transition:background .2s;
+}
+.map-link:hover{background:#f2e3f3;}
+
+/* Places cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;}
+.place{
+  background:var(--white);border-radius:20px;padding:24px;
+  border:1px solid #E8DCC8;position:relative;overflow:hidden;
+  transition:transform .25s, box-shadow .25s;
+}
+.place:hover{transform:translateY(-4px);box-shadow:0 24px 44px -28px rgba(13,79,79,.4);}
+.place-tag{
+  display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;border-radius:999px;padding:4px 12px;margin-bottom:12px;color:var(--white);
+}
+.tag-food{background:var(--coral);}
+.tag-fun{background:var(--purple);}
+.place h3{font-size:1.45rem;color:var(--purple-deep);margin-bottom:6px;}
+.place-meta{font-size:.78rem;font-weight:600;color:var(--gold);letter-spacing:.05em;margin-bottom:10px;}
+.place p{font-size:.92rem;color:#4A4A4A;}
+.place-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.place-links a{font-size:.75rem;font-weight:600;padding:5px 12px;border-radius:999px;text-decoration:none;border:1.5px solid;transition:background .15s,color .15s;}
+.place-links .pl-menu{border-color:var(--gold);color:var(--gold);}
+.place-links .pl-menu:hover{background:var(--gold);color:var(--white);}
+.place-links .pl-map{border-color:var(--purple-deep);color:var(--purple-deep);}
+.place-links .pl-map:hover{background:var(--purple-deep);color:var(--white);}
+.place-links .pl-ig{border-color:#C13584;color:#C13584;}
+.place-links .pl-ig:hover{background:#C13584;color:var(--white);}
+
+/* Hosts */
+.hosts{
+  background:linear-gradient(150deg,var(--purple-dark),var(--purple-deep));
+  border-radius:30px;color:var(--cream);padding:50px 40px;
+  display:grid;grid-template-columns:200px 1fr;gap:40px;align-items:center;
+}
+.host-photo{
+  width:200px;height:200px;border-radius:50%;
+  background:linear-gradient(140deg,#7a3492,#a85cc0);
+  border:3px dashed rgba(222,185,122,.6);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  color:var(--gold-soft);font-size:.78rem;text-align:center;gap:6px;padding:14px;
+}
+.host-photo img{width:100%;height:100%;border-radius:50%;object-fit:cover;}
+.hosts h2{font-size:2.3rem;color:var(--gold-soft);margin-bottom:12px;}
+.hosts p{font-weight:300;color:rgba(253,250,245,.92);margin-bottom:14px;}
+.host-stats{display:flex;gap:22px;flex-wrap:wrap;margin-top:8px;}
+.hstat{font-size:.8rem;letter-spacing:.05em;}
+.hstat b{display:block;font-size:1.25rem;color:var(--gold);font-family:'Cormorant Garamond';}
+.host-sign{font-family:'Cormorant Garamond';font-style:italic;font-size:1.6rem;color:var(--gold-soft);margin-top:10px;}
+
+/* Amenities */
+.amen{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;}
+.amen div{
+  background:var(--white);border:1px solid #E8DCC8;border-radius:16px;
+  padding:20px 16px;text-align:center;font-size:.85rem;font-weight:500;color:var(--purple-deep);
+}
+.amen div span{display:block;font-size:1.6rem;margin-bottom:6px;}
+.rules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:24px;}
+.rule-card{
+  background:var(--white);border:1px solid #E8DCC8;border-radius:16px;
+  padding:18px 18px;font-size:.85rem;font-weight:500;color:var(--purple-deep);
+  display:flex;gap:12px;align-items:flex-start;line-height:1.4;
+}
+.rule-card span.rc-icon{font-size:1.4rem;line-height:1;flex-shrink:0;}
+.wifi-box{
+  margin-top:22px;background:var(--gold-soft);border-radius:18px;padding:22px 26px;
+  display:flex;gap:30px;flex-wrap:wrap;align-items:center;
+}
+.wifi-box b{color:var(--purple-dark);font-size:1.05rem;}
+.wifi-box small{display:block;letter-spacing:.15em;text-transform:uppercase;font-size:.65rem;color:#8a6d2f;font-weight:700;}
+
+/* Emergency */
+.sos{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;}
+.sos a{
+  text-decoration:none;background:var(--white);border-radius:18px;padding:22px;
+  border:1px solid #E8DCC8;display:flex;align-items:center;gap:16px;
+  color:var(--ink);transition:transform .2s, box-shadow .2s;
+}
+.sos a:hover{transform:translateY(-3px);box-shadow:0 18px 36px -26px rgba(13,79,79,.4);}
+.sos-icon{
+  flex:0 0 48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;color:var(--white);
+}
+.sos-expand-btn{
+  display:flex;align-items:center;gap:10px;margin:20px auto 0;
+  background:transparent;border:1px solid var(--purple);border-radius:999px;
+  padding:10px 24px;font-family:'Outfit';font-size:.85rem;font-weight:600;
+  color:var(--purple);cursor:pointer;transition:background .2s,color .2s;
+}
+.sos-expand-btn:hover{background:var(--purple);color:var(--cream);}
+.sos-expand{
+  max-height:0;overflow:hidden;transition:max-height .5s ease, opacity .4s ease;
+  opacity:0;margin-top:0;
+}
+.sos-expand.open{max-height:1000px;opacity:1;margin-top:20px;}
+.sos strong{display:block;color:var(--purple-deep);}
+.sos small{color:#7A7A7A;}
+.sos .num{font-weight:700;color:var(--sea);}
+
+/* Video */
+.video-wrap{
+  border-radius:26px;overflow:hidden;
+  box-shadow:0 30px 60px -30px rgba(13,79,79,.55);
+  background:#0D2F2F;line-height:0;
+}
+.video-wrap video{width:100%;max-height:72vh;display:block;}
+
+/* Weather */
+.weather{
+  margin-top:26px;
+  background:linear-gradient(135deg,#146277,#2E93A6);
+  border-radius:22px;padding:26px 28px;color:var(--cream);
+  display:flex;gap:26px;align-items:center;flex-wrap:wrap;
+  box-shadow:0 22px 44px -30px rgba(27,127,142,.7);
+}
+.weather-now{display:flex;align-items:center;gap:14px;}
+.weather-icon{font-size:3rem;line-height:1;}
+.weather-temp{font-family:'Cormorant Garamond';font-size:3rem;font-weight:600;line-height:1;}
+.weather-desc{font-size:.85rem;opacity:.9;}
+.weather-days{display:flex;gap:18px;margin-left:auto;flex-wrap:wrap;}
+.wday{text-align:center;font-size:.78rem;}
+.wday b{display:block;font-size:1.05rem;}
+.wday span{font-size:1.4rem;display:block;}
+.weather-loading{font-size:.9rem;opacity:.85;}
+@media(max-width:640px){.weather-days{margin-left:0;}}
+
+/* Footer */
+footer{
+  background:var(--purple-dark);color:rgba(253,250,245,.8);
+  text-align:center;padding:50px 24px 40px;margin-top:40px;
+}
+footer .display{font-size:1.9rem;color:var(--gold-soft);font-style:italic;margin-bottom:10px;}
+footer a{color:var(--gold);text-decoration:none;}
+.foot-links{display:flex;gap:18px;justify-content:center;margin-top:16px;flex-wrap:wrap;font-size:.85rem;}
+
+@media(max-width:720px){
+  .hosts{grid-template-columns:1fr;text-align:center;justify-items:center;}
+  section{padding:60px 18px;}
+}
+</style>
+</head>
+<body>
+
+<!-- PASSCODE GATE -->
+<div class="gate" id="gate">
+  <canvas class="gate-fluid" id="gate-fluid"></canvas>
+  <div class="bf-enter" id="bf-enter"></div>
+  <div class="gate-card">
+    <div class="gate-eyebrow" data-es="Bienvenido a" data-en="Welcome to">Bienvenido a</div>
+    <h1 class="gate-title">Amarel <em>Suite</em></h1>
+    <p class="gate-sub" data-es="Ingresa el código que te enviamos para ver tu guía de bienvenida." data-en="Enter the code we sent you to view your welcome guide.">Ingresa el código que te enviamos para ver tu guía de bienvenida.</p>
+    <input type="text" id="gate-name" class="gate-input" autocomplete="off" spellcheck="false" data-es-placeholder="Tu nombre" data-en-placeholder="Your name" placeholder="Tu nombre">
+    <input type="text" id="gate-input" class="gate-input" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="••••••">
+    <button class="gate-btn" onclick="checkGate()" data-es="Ingresar" data-en="Enter">Ingresar</button>
+    <p class="gate-error" id="gate-error" data-es="Código incorrecto, intenta de nuevo." data-en="Incorrect code, please try again.">Código incorrecto, intenta de nuevo.</p>
+  </div>
+</div>
+
+<div class="site" id="site">
+
+<div class="topbar">
+  <div class="brand">
+    <svg viewBox="0 0 40 40" fill="none"><path d="M6 20 L20 8 L34 20" stroke="#D68A2C" stroke-width="3" stroke-linecap="round"/><rect x="11" y="20" width="18" height="13" rx="2" fill="#D68A2C"/><rect x="17" y="25" width="6" height="8" rx="1" fill="#0B3E4D"/></svg>
+    <div class="brand-name">Amarel Suite</div>
+  </div>
+  <div class="lang-toggle">
+    <button id="btn-es" class="active" onclick="setLang('es')">ES</button>
+    <button id="btn-en" onclick="setLang('en')">EN</button>
+  </div>
+</div>
+
+<!-- PAGE-WIDE BUTTERFLIES (fixed, behind all content) -->
+<div class="bf-page" id="bf-page"></div>
+
+<!-- LIGHTBOX -->
+<div class="lb" id="lightbox" onclick="closeLB()">
+  <button class="lb-close" onclick="closeLB()">✕</button>
+  <img id="lb-img" src="" alt="">
+  <div class="lb-stack" id="lb-stack"></div>
+  <video id="lb-video" controls playsinline onclick="event.stopPropagation()" style="display:none;max-width:92vw;max-height:82vh;border-radius:12px;"></video>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="butterflies" id="butterflies"></div>
+  <div class="hero-eyebrow" data-es="Pozos Colorados · Santa Marta · Colombia" data-en="Pozos Colorados · Santa Marta · Colombia">Pozos Colorados · Santa Marta · Colombia</div>
+  <h1><span data-es="Bienvenido a" data-en="Welcome to">Bienvenido a</span> <em>Amarel Suite</em><span id="hero-name"></span></h1>
+  <p class="hero-sub" data-es="Una suite luminosa con balcón sobre las piscinas, a pasos del Caribe." data-en="A bright suite with a balcony over the pools, just steps from the Caribbean.">Una suite luminosa con balcón sobre las piscinas, a pasos del Caribe.</p>
+  <div class="hero-badges">
+    <span class="badge" data-es="Balcón con vista a las piscinas" data-en="Balcony over the pools">Balcón con vista a las piscinas</span>
+    <span class="badge" data-es="Cocina totalmente equipada" data-en="Fully equipped kitchen">Cocina totalmente equipada</span>
+    <span class="badge" data-es="Edificio Del Ventto · Apto x" data-en="Del Ventto Building · Apt x">Edificio Del Ventto · Apto x</span>
+  </div>
+  <div class="scroll-hint" data-es="Desliza para explorar" data-en="Scroll to explore">Desliza para explorar</div>
+</header>
+
+<!-- WELCOME -->
+<section id="welcome">
+  <span class="sec-eyebrow" data-es="Bienvenida" data-en="Welcome">Bienvenida</span>
+  <h2 class="sec-title"><span data-es="Tu refugio en" data-en="Your retreat in">Tu refugio en</span> <em data-es="Santa Marta" data-en="Santa Marta">Santa Marta</em></h2>
+  <p class="sec-lead" data-es="Amarel Suite es un espacio luminoso y moderno pensado para descansar bien: una sala acogedora con sofá y TV, cocina completamente equipada con lavadora y lavaplatos, cama tipo queen con su propio rincón para comer, y un balcón privado desde donde ves las piscinas del edificio y sientes la brisa del Caribe desde temprano." data-en="Amarel Suite is a bright, modern space designed for resting well: a cozy living corner with sofa and TV, a fully equipped kitchen with washer and dishwasher, a queen-size bed with its own dining nook, and a private balcony overlooking the building's pools where you can feel the Caribbean breeze from the first morning.">Amarel Suite es un espacio luminoso y moderno pensado para descansar bien: una sala acogedora con sofá y TV, cocina completamente equipada con lavadora y lavaplatos, cama tipo queen con su propio rincón para comer, y un balcón privado desde donde ves las piscinas del edificio y sientes la brisa del Caribe desde temprano.</p>
+  <p data-es="A pocos minutos tienes playas, restaurantes frente al mar y el centro histórico de Santa Marta esperando para explorar. Nosotros como anfitriones estamos aquí para que tu estadía sea tranquila y sin complicaciones — cualquier cosa que necesites, solo escríbenos." data-en="Just minutes away you'll find beaches, oceanfront restaurants, and Santa Marta's historic center waiting to be explored. As your hosts, we're here to make your stay smooth and worry-free — whatever you need, just reach out." style="color:#4A4A4A;">A pocos minutos tienes playas, restaurantes frente al mar y el centro histórico de Santa Marta esperando para explorar. Nosotros como anfitriones estamos aquí para que tu estadía sea tranquila y sin complicaciones — cualquier cosa que necesites, solo escríbenos.</p>
+</section>
+
+<!-- CHECK-IN -->
+<section id="checkin">
+  <span class="sec-eyebrow" data-es="Tu llegada" data-en="Your arrival">Tu llegada</span>
+  <h2 class="sec-title"><span data-es="Check-in y" data-en="Check-in &">Check-in y</span> <em>check-out</em></h2>
+  <p class="sec-lead" data-es="Desde el aeropuerto estás a solo 10-12 minutos en carro. Un ambiente familiar y tranquilo, con vigilancia 24/7." data-en="The airport is just a 10-12 minute drive away. A quiet, family-friendly building with 24/7 security.">Desde el aeropuerto estás a solo 10-12 minutos en carro. Un ambiente familiar y tranquilo, con vigilancia 24/7.</p>
+
+  <div class="count-wrap">
+    <div class="count-card gold">
+      <h3>Check-in</h3>
+      <div class="count-time">3:00 PM</div>
+      <p class="count-note" data-es="Disponible desde las 3 de la tarde" data-en="Available from 3 in the afternoon">Disponible desde las 3 de la tarde</p>
+    </div>
+    <div class="count-card">
+      <h3>Check-out</h3>
+      <div class="count-time">11:30 AM</div>
+      <p class="count-note" data-es="Pasa tu palma sobre el teclado digital para asegurar la puerta e informa en el lobby." data-en="Wave your palm over the digital keypad to lock the door and let the lobby know.">Pasa tu palma sobre el teclado digital para asegurar la puerta e informa en el lobby.</p>
+    </div>
+    <div class="count-card">
+      <h3 data-es="Hora local" data-en="Local time">Hora local</h3>
+      <div class="count-time" id="local-clock">--:--</div>
+      <p class="count-note">Santa Marta (GMT-5)</p>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div><strong data-es="Registro" data-en="Registration">Registro</strong><p data-es="Al llegar al Edificio Del Ventto, dirígete a la recepción." data-en="When you arrive at the Del Ventto Building, head to reception.">Al llegar al Edificio Del Ventto, dirígete a la recepción.</p></div></div>
+    <div class="step"><div class="step-num">2</div><div><strong data-es="Identificación" data-en="Identification">Identificación</strong><p data-es="Presenta los documentos de identidad de todos los huéspedes y tu confirmación de reserva para el Apto x." data-en="Present ID for all guests along with your booking confirmation for Apt x.">Presenta los documentos de identidad de todos los huéspedes y tu confirmación de reserva para el Apto x.</p></div></div>
+    <div class="step"><div class="step-num">3</div><div><strong data-es="Acceso" data-en="Access">Acceso</strong><p data-es="Te enviaremos la clave digital de la cerradura por WhatsApp. Solo digítala para entrar a tu suite." data-en="We'll send your digital lock code via WhatsApp. Just type it in to enter your suite.">Te enviaremos la clave digital de la cerradura por WhatsApp. Solo digítala para entrar a tu suite.</p></div></div>
+  </div>
+  <div class="weather" id="weather">
+    <div class="weather-loading" data-es="Cargando el clima de Santa Marta..." data-en="Loading Santa Marta weather...">Cargando el clima de Santa Marta...</div>
+  </div>
+</section>
+
+<!-- VIDEO TOUR -->
+<section id="tour">
+  <span class="sec-eyebrow" data-es="Recorrido en video" data-en="Video tour">Recorrido en video</span>
+  <h2 class="sec-title"><span data-es="Camina por tu" data-en="Walk through your">Camina por tu</span> <em data-es="suite" data-en="suite">suite</em></h2>
+  <p class="sec-lead" data-es="Un recorrido real por tu suite: la sala con TV, la cocina equipada, la habitación con balcón y el baño." data-en="A real walkthrough of your suite: the living room with TV, the equipped kitchen, the bedroom with balcony, and the bathroom.">Un recorrido real por tu suite: la sala con TV, la cocina equipada, la habitación con balcón y el baño.</p>
+  <div class="video-wrap">
+    <video controls playsinline preload="metadata">
+      <source src="tour.mp4" type="video/mp4">
+      <p data-es="Coloca tour.mp4 en la misma carpeta que este archivo." data-en="Place tour.mp4 in the same folder as this file.">Coloca tour.mp4 en la misma carpeta que este archivo.</p>
+    </video>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <span class="sec-eyebrow" data-es="Galería" data-en="Gallery">Galería</span>
+  <h2 class="sec-title"><span data-es="Imágenes de tu" data-en="Glimpses of your">Imágenes de tu</span> <em data-es="estadía" data-en="stay">estadía</em></h2>
+  <div class="gal-grid" id="gal-grid-prop"></div>
+  <div class="gal-drive">
+    <a href="#" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span data-es="Haz clic para ver todas las fotos" data-en="Click to see all pictures">Haz clic para ver todas las fotos</span>
+    </a>
+  </div>
+</section>
+
+<!-- AMENITIES (building) -->
+<section id="amenities-building">
+  <span class="sec-eyebrow" data-es="Amenidades" data-en="Amenities">Amenidades</span>
+  <h2 class="sec-title"><span data-es="Amenidades del" data-en="Building">Amenidades del</span> <em data-es="edificio" data-en="amenities">edificio</em></h2>
+  <div class="amen-list">
+    <span class="amen-chip" data-es="Gimnasio" data-en="Gym">Gimnasio</span>
+    <span class="amen-chip" data-es="Piscina para niños" data-en="Kids Pool">Piscina para niños</span>
+    <span class="amen-chip" data-es="Piscina" data-en="Pool">Piscina</span>
+    <span class="amen-chip" data-es="Piscina infinita" data-en="Infinity Pool">Piscina infinita</span>
+    <span class="amen-chip" data-es="Piscina interior" data-en="Indoor Pool">Piscina interior</span>
+    <span class="amen-chip" data-es="Squash" data-en="Squash">Squash</span>
+    <span class="amen-chip" data-es="Sauna" data-en="Sauna">Sauna</span>
+    <span class="amen-chip" data-es="Zona BBQ" data-en="BBQ Zone">Zona BBQ</span>
+    <span class="amen-chip" data-es="Terraza" data-en="Terrace">Terraza</span>
+    <span class="amen-chip" data-es="Sala de reuniones" data-en="Business Meeting Room">Sala de reuniones</span>
+  </div>
+  <div class="amen-fee">
+    <span class="amen-fee-icon">🎟️</span>
+    <p data-es="Costo de manilla: $25.000 COP por persona — incluye acceso a todas las amenidades del edificio. Niños menores de 5 años no pagan." data-en="Wristband fee: $25,000 COP per person — includes access to all building amenities. Children under 5 are free.">Costo de manilla: $25.000 COP por persona — incluye acceso a todas las amenidades del edificio. Niños menores de 5 años no pagan.</p>
+  </div>
+  <div class="video-wrap" style="margin-bottom:24px;">
+    <video controls playsinline preload="metadata">
+      <source src="video_vento.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="amen-hours">
+    <div class="amen-hour-row"><span>🏊</span><span data-es="Piscina piso 1" data-en="Pool floor 1">Piscina piso 1</span><span>9:00 am – 6:00 pm</span></div>
+    <div class="amen-hour-row"><span>🌊</span><span data-es="Piscina infinita" data-en="Infinity Pool">Piscina infinita</span><span>9:00 am – 7:00 pm</span></div>
+    <div class="amen-hour-row"><span>🏋️</span><span data-es="Gimnasio" data-en="Gym">Gimnasio</span><span>6:00 am – 10:00 pm</span></div>
+  </div>
+  <div class="gal-grid" id="gal-grid-amen" style="margin-top:28px;"></div>
+</section>
+
+<!-- MAP -->
+<section id="map">
+  <span class="sec-eyebrow" data-es="Tu mapa del barrio" data-en="Your neighborhood map">Tu mapa del barrio</span>
+  <h2 class="sec-title"><span data-es="Todo está" data-en="Everything is">Todo está</span> <em data-es="cerca" data-en="close by">cerca</em></h2>
+  <div class="map-card">
+    <iframe class="map-embed" src="https://www.google.com/maps?q=Edificio+Delventto,+Santa+Marta&z=15&output=embed" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <div class="map-links">
+      <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=11.1752557,-74.2335392&destination=11.1721217,-74.2343052" target="_blank" rel="noopener">🍽 <span data-es="Playa del Ritmo" data-en="Playa del Ritmo">Playa del Ritmo</span></a>
+      <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=11.1752557,-74.2335392&destination=11.1178518,-74.2317948" target="_blank" rel="noopener">✈️ <span data-es="Aeropuerto Santa Marta" data-en="Santa Marta Airport">Aeropuerto Santa Marta</span></a>
+      <a class="map-link" href="https://www.google.com/maps?q=Edificio+Delventto,+Santa+Marta" target="_blank" rel="noopener">🏠 <span data-es="Edificio Del Ventto" data-en="Del Ventto Building">Edificio Del Ventto</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- PLACES -->
+<section id="places">
+  <span class="sec-eyebrow" data-es="Recomendaciones de tus anfitriones" data-en="Your hosts' picks">Recomendaciones de tus anfitriones</span>
+  <h2 class="sec-title"><span data-es="Cosas por" data-en="Things to">Cosas por</span> <em data-es="hacer y ver" data-en="do and see">hacer y ver</em></h2>
+  <div class="cards">
+    <div class="place"><span class="place-tag tag-food" data-es="Comida y playa" data-en="Food & beach">Comida y playa</span><h3>Playa del Ritmo</h3><div class="place-meta" data-es="4 MIN CAMINANDO · DESDE $17K COP" data-en="4 MIN WALK · FROM $17K COP">4 MIN CAMINANDO · DESDE $17K COP</div><p data-es="Nuestro favorito. Gran variedad de comida y platos del día, con playa y servicio de ducha." data-en="Our favorite. Great variety of food and daily specials, with beach access and shower service.">Nuestro favorito. Gran variedad de comida y platos del día, con playa y servicio de ducha.</p></div>
+    <div class="place"><span class="place-tag tag-food" data-es="Compras y comida" data-en="Shopping & food">Compras y comida</span><h3>C.C. Zazué</h3><div class="place-meta" data-es="5 MIN CAMINANDO" data-en="5 MIN WALK">5 MIN CAMINANDO</div><p data-es="El centro comercial del sector: restaurantes, tiendas y todo lo que necesites a la mano." data-en="The neighborhood mall: restaurants, shops, and everything you need close at hand.">El centro comercial del sector: restaurantes, tiendas y todo lo que necesites a la mano.</p><div class="place-links"><a class="pl-map" href="https://maps.app.goo.gl/whVPKEkP45BuzX7y5" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    <div class="place"><span class="place-tag tag-food" data-es="Leyenda local" data-en="Local legend">Leyenda local</span><h3>Pizza El Vómito</h3><div class="place-meta" data-es="EL RODADERO / GAIRA" data-en="EL RODADERO / GAIRA">EL RODADERO / GAIRA</div><p data-es="No dejes que el nombre te engañe. Es legendaria por la generosa (y caótica) cantidad de ingredientes y queso en cada porción." data-en="Don't let the name fool you. It's legendary for the generous (and chaotic) amount of toppings and cheese on every slice.">No dejes que el nombre te engañe. Es legendaria por la generosa (y caótica) cantidad de ingredientes y queso en cada porción.</p></div>
+    <div class="place"><span class="place-tag tag-fun" data-es="Cultura y vida nocturna" data-en="Culture & nightlife">Cultura y vida nocturna</span><h3 data-es="Centro Histórico y Parque de los Novios" data-en="Historic Center & Parque de los Novios">Centro Histórico y Parque de los Novios</h3><div class="place-meta" data-es="15-20 MIN EN CARRO" data-en="15-20 MIN BY CAR">15-20 MIN EN CARRO</div><p data-es="El corazón vibrante de la ciudad: casas coloniales, arte urbano y música en vivo en las plazas." data-en="The vibrant heart of the city: colonial houses, street art, and live music in the plazas.">El corazón vibrante de la ciudad: casas coloniales, arte urbano y música en vivo en las plazas.</p></div>
+    <div class="place"><span class="place-tag tag-fun" data-es="Historia" data-en="History">Historia</span><h3>Quinta de San Pedro Alejandrino</h3><div class="place-meta" data-es="HACIENDA DEL SIGLO XVII" data-en="17TH CENTURY HACIENDA">HACIENDA DEL SIGLO XVII</div><p data-es="Rodeada de árboles centenarios, aquí murió Simón Bolívar. Un oasis de cultura, arte y jardines botánicos." data-en="Surrounded by century-old trees, this is where Simón Bolívar died. An oasis of culture, art, and botanical gardens.">Rodeada de árboles centenarios, aquí murió Simón Bolívar. Un oasis de cultura, arte y jardines botánicos.</p></div>
+    <div class="place"><span class="place-tag tag-food" data-es="Restaurante" data-en="Restaurant">Restaurante</span><h3>Harry's Steakhouse</h3><div class="place-meta" data-es="CARNES Y PARRILLA" data-en="STEAKS & GRILL">CARNES Y PARRILLA</div><p data-es="Cortes de carne premium en un ambiente íntimo. Ideal para una noche especial." data-en="Premium cuts in an intimate setting. Perfect for a special night out.">Cortes de carne premium en un ambiente íntimo. Ideal para una noche especial.</p><div class="place-links"><a class="pl-menu" href="https://www.qodeup.com/harrye039ssteakhouse" target="_blank" rel="noopener" data-es="📋 Menú" data-en="📋 Menu">📋 Menú</a><a class="pl-map" href="https://maps.app.goo.gl/oUi2Tstpj345js6A8" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    <div class="place"><span class="place-tag tag-food" data-es="Restaurante" data-en="Restaurant">Restaurante</span><h3>Cambiante</h3><div class="place-meta" data-es="COCINA DE AUTOR · VISTA AL MAR" data-en="CHEF'S KITCHEN · SEA VIEWS">COCINA DE AUTOR · VISTA AL MAR</div><p data-es="Propuesta gastronómica creativa con ingredientes locales y vistas al mar Caribe." data-en="Creative cuisine with local ingredients and Caribbean sea views.">Propuesta gastronómica creativa con ingredientes locales y vistas al mar Caribe.</p><div class="place-links"><a class="pl-menu" href="https://www.qodeup.com/cambiantealmar" target="_blank" rel="noopener" data-es="📋 Menú" data-en="📋 Menu">📋 Menú</a><a class="pl-map" href="https://maps.app.goo.gl/1vAeazmEDfQ7PWwy5" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    <div class="place"><span class="place-tag tag-fun" data-es="Bar & Atardecer" data-en="Bar & Sunset">Bar & Atardecer</span><h3>Burukuka</h3><div class="place-meta" data-es="RESTAURANTE · BAR · SUNSET SPOT" data-en="RESTAURANT · BAR · SUNSET SPOT">RESTAURANTE · BAR · SUNSET SPOT</div><p data-es="El lugar perfecto para ver el atardecer en Santa Marta con buenas bebidas y ambiente relajado frente al mar." data-en="The perfect spot to watch the Santa Marta sunset with great drinks and a relaxed vibe by the sea.">El lugar perfecto para ver el atardecer en Santa Marta con buenas bebidas y ambiente relajado frente al mar.</p><div class="place-links"><a class="pl-map" href="https://maps.app.goo.gl/m9KRTsJtyniCtJ5A7" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    <div class="place"><span class="place-tag tag-fun" data-es="Café & Libros" data-en="Café & Books">Café & Libros</span><h3>Brot</h3><div class="place-meta" data-es="CAFÉ · PANADERÍA · LIBRERÍA" data-en="CAFÉ · BAKERY · BOOKSTORE">CAFÉ · PANADERÍA · LIBRERÍA</div><p data-es="Un café con mucha personalidad: pan artesanal, buen café y una selección de libros que puedes comprar o intercambiar por los tuyos. Perfecto para una mañana tranquila." data-en="A café with loads of character: artisan bread, great coffee, and a selection of books you can buy or trade with your own. Perfect for a slow morning.">Un café con mucha personalidad: pan artesanal, buen café y una selección de libros que puedes comprar o intercambiar por los tuyos. Perfecto para una mañana tranquila.</p><div class="place-links"><a class="pl-map" href="https://maps.app.goo.gl/V8zNMRbCWC8YBwS67" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    <div class="place"><span class="place-tag tag-food" data-es="Pizzería" data-en="Pizzeria">Pizzería</span><h3>Holguer Pizza</h3><div class="place-meta" data-es="PIZZA ARTESANAL" data-en="ARTISAN PIZZA">PIZZA ARTESANAL</div><p data-es="Pizza artesanal con personalidad propia. Una opción deliciosa para una noche sin complicaciones." data-en="Artisan pizza with character. A delicious option for a laid-back night in.">Pizza artesanal con personalidad propia. Una opción deliciosa para una noche sin complicaciones.</p><div class="place-links"><a class="pl-ig" href="https://www.instagram.com/holguerpizza/" target="_blank" rel="noopener">📸 Instagram</a></div></div>
+  </div>
+</section>
+
+<!-- SUITE DETAILS -->
+<section id="suite-details">
+  <span class="sec-eyebrow" data-es="Tu suite" data-en="Your suite">Tu suite</span>
+  <h2 class="sec-title"><span data-es="Todo lo que" data-en="Everything you">Todo lo que</span> <em data-es="necesitas" data-en="need">necesitas</em></h2>
+  <div class="amen">
+    <div><span>🛏</span><span data-es="Cama tipo queen" data-en="Queen-size bed">Cama tipo queen</span></div>
+    <div><span>🛋</span><span data-es="Cocina equipada · lavadora y lavaplatos" data-en="Equipped kitchen · washer & dishwasher">Cocina equipada · lavadora y lavaplatos</span></div>
+    <div><span>❄️</span><span data-es="Aire acondicionado" data-en="Air conditioning">Aire acondicionado</span></div>
+    <div><span>🚿</span><span data-es="Ducha caliente" data-en="Hot shower">Ducha caliente</span></div>
+    <div><span>📶</span><span>WiFi</span></div>
+    <div><span>🌅</span><span data-es="Balcón con vista a las piscinas" data-en="Balcony overlooking the pools">Balcón con vista a las piscinas</span></div>
+  </div>
+  <div class="wifi-box">
+    <div><small data-es="Red WiFi" data-en="WiFi network">Red WiFi</small><b>[WIFI_SSID]</b></div>
+    <div><small data-es="Clave" data-en="Password">Clave</small><b>[WIFI_PASSWORD]</b></div>
+    <div><small data-es="Antes de salir" data-en="Before heading out">Antes de salir</small><b data-es="Apaga el TV y los aires 🙏" data-en="Turn off TV & AC 🙏">Apaga el TV y los aires 🙏</b></div>
+  </div>
+  <!-- If this unit has its own A/C or energy-system instructions/images, add an amen-fee callout + a
+       gal-drive-link button calling openLB(['img1.jpg','img2.jpg']) here, same pattern as the
+       house-info PDF link below. -->
+  <div class="amen-fee" style="margin-top:22px;">
+    <span class="amen-fee-icon">🚰</span>
+    <p data-es="El agua del grifo no es apta para consumo humano. Por favor usa agua embotellada para beber." data-en="Tap water is not safe for drinking. Please use bottled water for drinking.">El agua del grifo no es apta para consumo humano. Por favor usa agua embotellada para beber.</p>
+  </div>
+</section>
+
+<!-- HOUSE RULES -->
+<section id="house-rules">
+  <span class="sec-eyebrow" data-es="Para una estadía perfecta" data-en="For a perfect stay">Para una estadía perfecta</span>
+  <h2 class="sec-title"><span data-es="Reglas de la" data-en="House">Reglas de la</span> <em data-es="casa" data-en="rules">casa</em></h2>
+  <div class="rules-grid">
+    <div class="rule-card"><span class="rc-icon">🤫</span><span data-es="Por favor, mantén el volumen bajo entre 10pm y 8am" data-en="Please keep noise to a minimum between 10pm and 8am">Por favor, mantén el volumen bajo entre 10pm y 8am</span></div>
+    <div class="rule-card"><span class="rc-icon">👥</span><span data-es="Máximo de huéspedes según lo reservado, sin visitantes no registrados" data-en="Max occupancy as booked — no unregistered guests">Máximo de huéspedes según lo reservado, sin visitantes no registrados</span></div>
+    <div class="rule-card"><span class="rc-icon">🎉</span><span data-es="No se permiten fiestas ni eventos" data-en="No parties or events">No se permiten fiestas ni eventos</span></div>
+    <div class="rule-card"><span class="rc-icon">🚭</span><span data-es="No fumar dentro del apartamento" data-en="No smoking inside the apartment">No fumar dentro del apartamento</span></div>
+    <div class="rule-card"><span class="rc-icon">🐾</span><span data-es="No mascotas sin aprobación previa" data-en="No pets unless approved in advance">No mascotas sin aprobación previa</span></div>
+    <div class="rule-card"><span class="rc-icon">🪪</span><span data-es="Identificación válida requerida al check-in para todos los huéspedes" data-en="Valid ID required at check-in for all registered guests">Identificación válida requerida al check-in para todos los huéspedes</span></div>
+    <div class="rule-card"><span class="rc-icon">🎟</span><span data-es="El uso de las amenidades del edificio requiere la manilla indicada en la sección de Amenidades" data-en="Using the building amenities requires the wristband noted in the Amenities section">El uso de las amenidades del edificio requiere la manilla indicada en la sección de Amenidades</span></div>
+    <div class="rule-card"><span class="rc-icon">🔑</span><span data-es="Al salir: apaga luces y aires, deja la cerradura como se indicó" data-en="On checkout: turn off lights & AC, leave the lock as instructed">Al salir: apaga luces y aires, deja la cerradura como se indicó</span></div>
+    <div class="rule-card"><span class="rc-icon">🛠</span><span data-es="El huésped es responsable por cualquier daño causado al apartamento o sus bienes durante la estadía" data-en="The guest is liable for any damage caused to the apartment or its contents during the stay">El huésped es responsable por cualquier daño causado al apartamento o sus bienes durante la estadía</span></div>
+  </div>
+
+  <div class="amen-fee">
+    <span class="amen-fee-icon">📋</span>
+    <p data-es="Al reservar y/o hacer check-in, aceptas estas reglas de la casa. Los anfitriones no se hacen responsables por lesiones, pérdidas o robo de pertenencias personales, salvo negligencia comprobada del anfitrión, en la medida permitida por la ley aplicable. El incumplimiento de estas reglas (fiestas, fumar, huéspedes no registrados, daños a la propiedad) puede resultar en la terminación inmediata de la estadía sin reembolso, conforme a los términos de la plataforma de reserva (Airbnb / Booking.com). Cargos por daños o depósito de seguridad pueden tramitarse a través del Centro de Resolución de la plataforma correspondiente." data-en="By booking and/or checking in, you agree to these house rules. The hosts are not liable for guest injury, loss, or theft of personal belongings, except where caused by proven host negligence, to the extent permitted by applicable law. Violation of these rules (parties, smoking, unregistered guests, property damage) may result in immediate termination of the stay without refund, per the booking platform's terms (Airbnb / Booking.com). Damage charges or security deposit claims may be processed through the relevant platform's Resolution Center.">Al reservar y/o hacer check-in, aceptas estas reglas de la casa. Los anfitriones no se hacen responsables por lesiones, pérdidas o robo de pertenencias personales, salvo negligencia comprobada del anfitrión, en la medida permitida por la ley aplicable. El incumplimiento de estas reglas (fiestas, fumar, huéspedes no registrados, daños a la propiedad) puede resultar en la terminación inmediata de la estadía sin reembolso, conforme a los términos de la plataforma de reserva (Airbnb / Booking.com). Cargos por daños o depósito de seguridad pueden tramitarse a través del Centro de Resolución de la plataforma correspondiente.</p>
+  </div>
+
+  <!-- If the client sends an official house-info PDF, save its pages as images (e.g. house-info-1.jpg,
+       house-info-2.jpg) in this folder and uncomment the button below — it opens them in the
+       lightbox via openLB(['house-info-1.jpg','house-info-2.jpg']).
+  <div style="margin-top:22px;display:flex;justify-content:center;">
+    <a class="gal-drive-link" onclick="openLB(['house-info-1.jpg','house-info-2.jpg'])" data-es="📄 Ver guía oficial del apartamento (PDF)" data-en="📄 View official apartment guide (PDF)" style="display:inline-flex;align-items:center;gap:10px;background:var(--purple);color:var(--cream);padding:13px 28px;border-radius:999px;text-decoration:none;font-weight:600;font-size:.88rem;letter-spacing:.02em;cursor:pointer;transition:background .2s,transform .2s;">📄 Ver guía oficial del apartamento (PDF)</a>
+  </div>
+  -->
+</section>
+
+<!-- HOSTS -->
+<section id="hosts-sec">
+  <div class="hosts">
+    <div class="host-photo"><span>📷</span><span data-es="[Foto del anfitrión aquí]" data-en="[Host photo here]">[Foto del anfitrión aquí]</span></div>
+    <div>
+      <h2 data-es="Sobre nosotros" data-en="About us">Sobre nosotros</h2>
+      <p data-es="[Bio del anfitrión — edítalo aquí]." data-en="[Host bio — edit here].">[Bio del anfitrión — edítalo aquí].</p>
+      <div class="host-sign">[Nombre del anfitrión]</div>
+    </div>
+  </div>
+</section>
+
+<!-- SOS -->
+<section id="sos">
+  <span class="sec-eyebrow" data-es="Siempre a un toque" data-en="One tap away">Siempre a un toque</span>
+  <h2 class="sec-title"><span data-es="Contactos de" data-en="Emergency">Contactos de</span> <em data-es="emergencia" data-en="contacts">emergencia</em></h2>
+  <div class="sos">
+    <a href="https://wa.me/[HOST_WHATSAPP]"><div class="sos-icon" style="background:#25D366">💬</div><div><strong data-es="[Nombre del anfitrión] (WhatsApp)" data-en="[Host name] (WhatsApp)">[Nombre del anfitrión] (WhatsApp)</strong><span class="num">[+57 XXX XXX XXXX]</span><br><small data-es="Anfitrión" data-en="Host">Anfitrión</small></div></a>
+    <a href="https://wa.me/573117548493"><div class="sos-icon" style="background:#146277">🛎️</div><div><strong data-es="Recepción (WhatsApp)" data-en="Front Desk (WhatsApp)">Recepción (WhatsApp)</strong><span class="num">+57 311 754 8493</span><br><small data-es="Atención 24 horas · Citófono 100" data-en="24-hour service · Intercom 100">Atención 24 horas · Citófono 100</small></div></a>
+    <a href="tel:123"><div class="sos-icon" style="background:#C0392B">🚨</div><div><strong data-es="Línea de emergencias" data-en="Emergency line">Línea de emergencias</strong><span class="num">123</span><br><small data-es="Policía 112 · Bomberos 318 876 3338" data-en="Police 112 · Fire Dept. 318 876 3338">Policía 112 · Bomberos 318 876 3338</small></div></a>
+    <a href="tel:+576054219999"><div class="sos-icon" style="background:#146277">🏥</div><div><strong>Clínica Avidanti</strong><span class="num">(605) 421 9999</span><br><small data-es="Bello Horizonte, cerca de Pozos Colorados" data-en="Bello Horizonte, near Pozos Colorados">Bello Horizonte, cerca de Pozos Colorados</small></div></a>
+    <a href="tel:+573167449954"><div class="sos-icon" style="background:#2E93A6">💊</div><div><strong>Droguería Andina</strong><span class="num">316 744 9954</span><br><small data-es="Zazué Plaza, muy cerca" data-en="Zazué Plaza, very close">Zazué Plaza, muy cerca</small></div></a>
+    <a href="mailto:[EMAIL]"><div class="sos-icon" style="background:#D68A2C">✉️</div><div><strong>Email</strong><span class="num">[EMAIL]</span><br><small data-es="Para temas no urgentes" data-en="For non-urgent matters">Para temas no urgentes</small></div></a>
+  </div>
+  <button class="sos-expand-btn" id="sos-expand-btn" onclick="toggleSosExpand()" data-es="📋 Ver todos los números de emergencia" data-en="📋 See all emergency numbers">📋 Ver todos los números de emergencia</button>
+  <div class="sos-expand" id="sos-expand">
+    <img src="emergency_numbers.jpg" alt="Teléfonos de emergencia Colombia" style="width:100%;max-width:520px;border-radius:18px;display:block;margin:0 auto;">
+  </div>
+</section>
+
+<footer>
+  <div class="display" data-es="Que disfrutes tu estadía" data-en="Enjoy your stay">Que disfrutes tu estadía</div>
+  <p data-es="Carrera 4C #70-75, Edificio Del Ventto, Apto x · Santa Marta" data-en="Carrera 4C #70-75, Del Ventto Building, Apt x · Santa Marta">Carrera 4C #70-75, Edificio Del Ventto, Apto x · Santa Marta</p>
+  <div class="foot-links">
+    <a href="#house-rules" data-es="Reglas de la casa" data-en="House Rules">House Rules</a>
+  </div>
+  <p style="margin-top:18px;font-size:.78rem;opacity:.6">Amarel Suite · <span data-es="Si disfrutaste tu estancia, una reseña 5 estrellas nos ayuda muchísimo ⭐" data-en="If you enjoyed your stay, a 5-star review helps us so much ⭐">Si disfrutaste tu estancia, una reseña 5 estrellas nos ayuda muchísimo ⭐</span></p>
+</footer>
+
+</div><!-- /.site -->
+
+<script>
+/* ───── Seagull motif (two wing poses), mixed at random ───── */
+const gullSvg1='<svg viewBox="0 0 40 40"><path d="M2 22 C10 14 16 14 20 20 C24 14 30 14 38 22 C30 19 25 20 20 25 C15 20 10 19 2 22 Z" fill="#2E93A6" opacity=".85"/></svg>';
+const gullSvg2='<svg viewBox="0 0 40 40"><path d="M2 26 C11 12 16 16 20 20 C24 16 29 12 38 26 C29 21 24 22 20 27 C16 22 11 21 2 26 Z" fill="#6DC3D0" opacity=".85"/></svg>';
+function seaSvg(){ return Math.random()<0.5 ? gullSvg1 : gullSvg2; }
+
+/* ───── Gate entrance sea-life burst ───── */
+(function(){
+  const wrap=document.getElementById('bf-enter');
+  for(let i=0;i<24;i++){
+    const d=document.createElement('div');
+    d.className='bf-fly';
+    const s=16+Math.random()*22;
+    d.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*94}%;animation-delay:${Math.random()*2.5}s;animation-duration:${4.5+Math.random()*3}s;`;
+    d.innerHTML=seaSvg();
+    wrap.appendChild(d);
+    d.addEventListener('animationend',()=>d.remove());
+  }
+})();
+
+/* ───── Gate liquid fluid simulation ───── */
+WebGLFluid(document.getElementById('gate-fluid'),{
+  TRIGGER:'hover',
+  IMMEDIATE:true,
+  AUTO:true,
+  INTERVAL:3500,
+  DENSITY_DISSIPATION:3.2,
+  VELOCITY_DISSIPATION:1.8,
+  CURL:22,
+  SPLAT_RADIUS:0.4,
+  SPLAT_FORCE:5000,
+  SPLAT_COUNT:4,
+  TRANSPARENT:true,
+  SHADING:true,
+  COLORFUL:true,
+  COLOR_UPDATE_SPEED:6,
+  BLOOM:false,
+  SUNRAYS:false,
+});
+
+/* ───── Passcode gate ───── */
+const GATE_CODE='123';
+const GATE_SESSION_KEY='unitGate';
+const GUEST_NAME_KEY='unitGuestName';
+const gateInput=document.getElementById('gate-input');
+const gateName=document.getElementById('gate-name');
+function applyGuestName(){
+  const name=sessionStorage.getItem(GUEST_NAME_KEY)||'';
+  document.getElementById('hero-name').textContent=name?', '+name:'';
+}
+function unlock(){
+  document.getElementById('gate').style.display='none';
+  document.getElementById('site').style.display='block';
+  applyGuestName();
+  setTimeout(()=>window.dispatchEvent(new Event('resize')),50);
+}
+function checkGate(){
+  const val=gateInput.value.trim().toUpperCase();
+  if(val===GATE_CODE){
+    const name=gateName.value.trim();
+    if(name)sessionStorage.setItem(GUEST_NAME_KEY,name);
+    sessionStorage.setItem(GATE_SESSION_KEY,'1');
+    unlock();
+  } else {
+    document.getElementById('gate-error').classList.add('show');
+  }
+}
+gateInput.addEventListener('keydown',e=>{if(e.key==='Enter')checkGate();});
+gateName.addEventListener('keydown',e=>{if(e.key==='Enter')checkGate();});
+if(sessionStorage.getItem(GATE_SESSION_KEY)==='1')unlock();
+
+/* ───── Language ───── */
+let lang='es';
+function setLang(l){
+  lang=l;
+  document.getElementById('btn-es').classList.toggle('active',l==='es');
+  document.getElementById('btn-en').classList.toggle('active',l==='en');
+  document.querySelectorAll('[data-es]').forEach(el=>{
+    el.textContent=el.dataset[l];
+  });
+  document.querySelectorAll('[data-es-placeholder]').forEach(el=>{
+    el.placeholder=el.dataset[l+'Placeholder'];
+  });
+  document.documentElement.lang=l;
+  renderGal();
+  if(typeof renderWeather==='function')renderWeather();
+}
+
+/* ───── Clock ───── */
+function tick(){
+  const t=new Date().toLocaleTimeString('en-US',{timeZone:'America/Bogota',hour:'2-digit',minute:'2-digit'});
+  document.getElementById('local-clock').textContent=t;
+}
+tick();setInterval(tick,30000);
+
+/* ───── Hero sea-life ───── */
+const bWrap=document.getElementById('butterflies');
+for(let i=0;i<20;i++){
+  const d=document.createElement('div');
+  d.className='bf';
+  const s=14+Math.random()*22;
+  d.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*92}%;top:${15+Math.random()*65}%;animation-delay:-${Math.random()*14}s;animation-duration:${11+Math.random()*8}s;`;
+  d.innerHTML=seaSvg();
+  bWrap.appendChild(d);
+}
+
+/* ───── Gallery ───── */
+// Property photos — fill this array with this unit's photos: {src, es label, en label}
+const propPhotos=[
+  {src:'img_living-1.jpg',      es:'Sala',                    en:'Living Room'},
+  {src:'img_living-2.jpg',      es:'Sala y TV',               en:'Living Room & TV'},
+  {src:'img_bedroom-1.jpg',     es:'Habitación y balcón',     en:'Bedroom & Balcony'},
+  {src:'img_bedroom-2.jpg',     es:'Habitación principal',    en:'Main Bedroom'},
+  {src:'img_kitchen.jpg',       es:'Cocina',                  en:'Kitchen'},
+  {src:'img_bath-1.jpg',        es:'Baño',                    en:'Bathroom'},
+  {src:'img_balcony-1.jpg',     es:'Vista desde el balcón',   en:'View from the Balcony'},
+  {src:'img_detail-mugs.jpg',   es:'Detalles de la cocina',   en:'Kitchen Details'},
+];
+const amenPhotos=[
+  {src:'amen_lobby.jpg',   es:'Recepción',         en:'Lobby & Reception'},
+  {src:'amen_gym.jpg',     es:'Gimnasio',          en:'Gym'},
+  {src:'amen_pool.jpg',    es:'Piscina',           en:'Pool'},
+  {src:'amen_dining.jpg',  es:'Zona social',       en:'Social Area'},
+  {src:'amen_terrace.jpg', es:'Terraza',           en:'Rooftop Terrace'},
+  {src:'amen_terrace2.jpg',es:'Zona BBQ',          en:'BBQ Area'},
+  {src:'amen_pool4.jpg',   es:'',                  en:''},
+  {src:'amen_pool7.jpg',   es:'',                  en:''},
+  {src:'amen_building-night.jpg', es:'Edificio Delventto de noche', en:'Delventto Building at Night'},
+  {src:'amen_jacuzzi.jpg',        es:'Jacuzzi',                     en:'Jacuzzi'},
+  {src:'amen_pools-night.jpg',    es:'Piscinas de noche',           en:'Pools at Night'},
+  {src:'amen_indoor-pool.jpg',    es:'Piscina interior',            en:'Indoor Pool'},
+];
+/* ── Lightbox ── */
+function openLB(src){
+  const img=document.getElementById('lb-img');
+  const stack=document.getElementById('lb-stack');
+  const vid=document.getElementById('lb-video');
+  vid.pause(); vid.style.display='none'; vid.src='';
+  if(typeof src==='string' && src.match(/\.(mp4|webm|mov)$/i)){
+    img.style.display='none'; stack.style.display='none'; stack.innerHTML='';
+    vid.src=src; vid.style.display='block';
+  } else if(Array.isArray(src)){
+    img.style.display='none';
+    stack.innerHTML=src.map(s=>`<img src="${s}" alt="">`).join('');
+    stack.style.display='flex';
+  } else {
+    stack.style.display='none'; stack.innerHTML='';
+    img.style.display='block'; img.src=src;
+  }
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeLB(){
+  const vid=document.getElementById('lb-video');
+  vid.pause(); vid.src='';
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLB();});
+
+function renderPhotoGrid(gridId,photos){
+  const g=document.getElementById(gridId);
+  if(!g)return;
+  g.innerHTML='';
+  photos.forEach(p=>{
+    const d=document.createElement('div');
+    d.className='gal-item';
+    d.innerHTML=`<img src="${p.src}" alt="${p[lang]}" loading="lazy">${p[lang]?`<div class="gal-item-label">${p[lang]}</div>`:''}`;
+    d.onclick=()=>openLB(p.src);
+    g.appendChild(d);
+  });
+}
+function renderGal(){
+  renderPhotoGrid('gal-grid-prop',propPhotos);
+  renderPhotoGrid('gal-grid-amen',amenPhotos);
+}
+renderGal();
+
+/* ── SOS expand ── */
+function toggleSosExpand(){
+  const panel=document.getElementById('sos-expand');
+  const btn=document.getElementById('sos-expand-btn');
+  const open=panel.classList.toggle('open');
+  btn.dataset.es=open?'▲ Ocultar números':'📋 Ver todos los números de emergencia';
+  btn.dataset.en=open?'▲ Hide numbers':'📋 See all emergency numbers';
+  btn.textContent=btn.dataset[lang];
+}
+
+/* ── Page-wide sea-life ── */
+const bfPage=document.getElementById('bf-page');
+for(let i=0;i<14;i++){
+  const d=document.createElement('div');
+  d.className='bf';
+  const s=10+Math.random()*18;
+  d.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*96}%;top:${Math.random()*95}%;animation-delay:-${Math.random()*18}s;animation-duration:${12+Math.random()*10}s;`;
+  d.innerHTML=seaSvg();
+  bfPage.appendChild(d);
+}
+
+/* ───── Weather (Open-Meteo, no key needed) ───── */
+const wmoIcon=c=>{
+  if(c===0)return'☀️';if(c<=2)return'🌤';if(c===3)return'☁️';
+  if(c<=48)return'🌫';if(c<=57)return'🌦';if(c<=67)return'🌧';
+  if(c<=77)return'🌨';if(c<=82)return'🌧';if(c<=86)return'🌨';return'⛈';
+};
+const wmoText={es:{0:'Despejado',1:'Mayormente despejado',2:'Parcialmente nublado',3:'Nublado',45:'Neblina',61:'Lluvia ligera',63:'Lluvia',65:'Lluvia fuerte',80:'Chubascos',95:'Tormenta'},
+en:{0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Cloudy',45:'Fog',61:'Light rain',63:'Rain',65:'Heavy rain',80:'Showers',95:'Thunderstorm'}};
+let weatherData=null;
+function renderWeather(){
+  const el=document.getElementById('weather');
+  if(!weatherData){return;}
+  const d=weatherData;
+  const code=d.current.weather_code;
+  const desc=(wmoText[lang][code])||(lang==='es'?'Caribe en su punto':'Caribbean vibes');
+  const dayNames=lang==='es'?['Dom','Lun','Mar','Mié','Jue','Vie','Sáb']:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  let days='';
+  for(let i=1;i<=3;i++){
+    const dt=new Date(d.daily.time[i]+'T12:00:00');
+    days+=`<div class="wday"><span>${wmoIcon(d.daily.weather_code[i])}</span><b>${Math.round(d.daily.temperature_2m_max[i])}°</b>${dayNames[dt.getDay()]}</div>`;
+  }
+  el.innerHTML=`
+    <div class="weather-now">
+      <div class="weather-icon">${wmoIcon(code)}</div>
+      <div>
+        <div class="weather-temp">${Math.round(d.current.temperature_2m)}°C</div>
+        <div class="weather-desc">${desc} · Santa Marta</div>
+      </div>
+    </div>
+    <div class="weather-days">${days}</div>`;
+}
+fetch('https://api.open-meteo.com/v1/forecast?latitude=11.2008&longitude=-74.2247&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max&timezone=America%2FBogota&forecast_days=4')
+  .then(r=>r.json()).then(d=>{weatherData=d;renderWeather();})
+  .catch(()=>{
+    const el=document.getElementById('weather');
+    el.innerHTML='<div class="weather-now"><div class="weather-icon">🌴</div><div><div class="weather-temp">~30°C</div><div class="weather-desc">'+(lang==='es'?'Sol caribeño casi garantizado':'Caribbean sun, almost guaranteed')+'</div></div></div>';
+  });
+
+</script>
+</body>
+</html>
