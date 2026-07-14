@@ -10,15 +10,15 @@
 <script src="webgl-fluid.js"></script>
 <style>
 :root{
-  --purple:#2E93A6;
-  --purple-deep:#146277;
-  --purple-dark:#0B3E4D;
-  --gold:#D68A2C;
-  --gold-soft:#E8A94F;
-  --cream:#FEFAF2;
+  --purple:#2C4270;
+  --purple-deep:#1B2A4A;
+  --purple-dark:#16223B;
+  --gold:#C9A876;
+  --gold-soft:#E8DCC4;
+  --cream:#FAF6EE;
   --ink:#1C1C1C;
-  --sea:#146277;
-  --coral:#C2703A;
+  --sea:#2C4270;
+  --coral:#B97552;
   --white:#FFFFFF;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -37,7 +37,7 @@ h1,h2,h3,.display{font-family:'Cormorant Garamond',serif;}
 .gate{
   min-height:100svh;display:flex;align-items:center;justify-content:center;
   text-align:center;padding:24px;
-  background:linear-gradient(165deg,#0B3E4D 0%,#146277 30%,#1F8FA3 55%,#3EB4C2 75%,#D68A2C 100%);
+  background:linear-gradient(165deg,#16223B 0%,#2C4270 30%,#3D5A99 55%,#7C93BF 75%,#C9A876 100%);
   color:var(--cream);
   position:relative;overflow:hidden;
 }
@@ -59,7 +59,7 @@ h1,h2,h3,.display{font-family:'Cormorant Garamond',serif;}
 .gate-sub{font-weight:300;font-size:.95rem;color:rgba(253,250,245,.92);margin-bottom:26px;}
 .gate-input{
   width:100%;padding:14px 18px;border-radius:999px;border:1px solid rgba(222,185,122,.5);
-  background:rgba(13,79,79,.3);color:var(--cream);font-family:'Outfit';font-size:1rem;
+  background:rgba(22,34,59,.3);color:var(--cream);font-family:'Outfit';font-size:1rem;
   text-align:center;letter-spacing:.2em;outline:none;margin-bottom:14px;
 }
 .gate-input::placeholder{color:rgba(253,250,245,.5);}
@@ -70,7 +70,7 @@ h1,h2,h3,.display{font-family:'Cormorant Garamond',serif;}
   font-size:.95rem;letter-spacing:.08em;transition:background .2s;
 }
 .gate-btn:hover{background:var(--gold-soft);}
-.gate-error{margin-top:14px;font-size:.85rem;color:#E8A94F;opacity:0;transition:opacity .2s;}
+.gate-error{margin-top:14px;font-size:.85rem;color:#E8DCC4;opacity:0;transition:opacity .2s;}
 .gate-error.show{opacity:1;}
 
 /* ───── Top bar ───── */
@@ -78,7 +78,7 @@ h1,h2,h3,.display{font-family:'Cormorant Garamond',serif;}
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
   padding:14px 24px;
-  background:rgba(13,79,79,.85);
+  background:rgba(22,34,59,.85);
   backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px);
 }
@@ -101,7 +101,7 @@ h1,h2,h3,.display{font-family:'Cormorant Garamond',serif;}
   min-height:100svh;
   display:flex;flex-direction:column;justify-content:center;align-items:center;
   text-align:center;position:relative;
-  background:linear-gradient(165deg,#0B3E4D 0%,#146277 30%,#1F8FA3 55%,#3EB4C2 75%,#D68A2C 100%);
+  background:linear-gradient(165deg,#16223B 0%,#2C4270 30%,#3D5A99 55%,#7C93BF 75%,#C9A876 100%);
   color:var(--cream);
   padding:110px 24px 80px;
   overflow:hidden;
@@ -127,12 +127,12 @@ h1,h2,h3,.display{font-family:'Cormorant Garamond',serif;}
 .badge{
   border:1px solid rgba(222,185,122,.45);border-radius:999px;
   padding:8px 18px;font-size:.78rem;letter-spacing:.06em;color:var(--gold-soft);
-  background:rgba(13,79,79,.3);
+  background:rgba(22,34,59,.3);
 }
 .badge[onclick]{
   cursor:pointer;
   border-color:rgba(222,185,122,.8);
-  background:rgba(13,79,79,.5);
+  background:rgba(22,34,59,.5);
   transition:background .2s,transform .15s,box-shadow .2s;
   box-shadow:0 0 0 1px rgba(222,185,122,.3);
 }
@@ -174,8 +174,8 @@ section{padding:80px 24px;max-width:1080px;margin:0 auto;}
 }
 .count-card{
   background:var(--white);border-radius:22px;padding:30px 26px;
-  border:1px solid #E8DCC8;
-  box-shadow:0 18px 40px -28px rgba(13,79,79,.35);
+  border:1px solid #E4D6BC;
+  box-shadow:0 18px 40px -28px rgba(22,34,59,.35);
 }
 .count-card h3{font-size:1.5rem;color:var(--purple-deep);margin-bottom:4px;}
 .count-time{font-family:'Outfit';font-size:2.1rem;font-weight:700;color:var(--ink);}
@@ -187,7 +187,7 @@ section{padding:80px 24px;max-width:1080px;margin:0 auto;}
 .steps{margin-top:36px;display:grid;gap:14px;}
 .step{
   display:flex;gap:16px;background:var(--white);border-radius:16px;padding:18px 20px;
-  border:1px solid #E8DCC8;align-items:flex-start;
+  border:1px solid #E4D6BC;align-items:flex-start;
 }
 .step-num{
   flex:0 0 34px;height:34px;border-radius:50%;
@@ -222,9 +222,9 @@ section,header,footer,.topbar{position:relative;z-index:1;}
 }
 .amen-fee .amen-fee-icon{font-size:1.6rem;line-height:1;}
 .amen-fee p{margin:0;font-size:.92rem;line-height:1.5;}
-.amen-hours{border:1px solid #E8DCC8;border-radius:16px;overflow:hidden;margin-bottom:24px;}
+.amen-hours{border:1px solid #E4D6BC;border-radius:16px;overflow:hidden;margin-bottom:24px;}
 .amen-hour-row{display:flex;align-items:center;gap:12px;padding:12px 18px;font-size:.88rem;}
-.amen-hour-row:not(:last-child){border-bottom:1px solid #E8DCC8;}
+.amen-hour-row:not(:last-child){border-bottom:1px solid #E4D6BC;}
 .amen-hour-row span:first-child{font-size:1.2rem;flex-shrink:0;}
 .amen-hour-row span:nth-child(2){flex:1;font-weight:600;color:var(--purple-deep);}
 .amen-hour-row span:last-child{color:var(--gold);font-weight:700;white-space:nowrap;}
@@ -236,7 +236,7 @@ section,header,footer,.topbar{position:relative;z-index:1;}
 .gal-item:hover img{transform:scale(1.04);}
 .gal-item-label{
   position:absolute;bottom:0;left:0;right:0;
-  background:linear-gradient(transparent,rgba(13,79,79,.75));
+  background:linear-gradient(transparent,rgba(22,34,59,.75));
   color:var(--cream);font-size:.82rem;font-weight:600;padding:22px 14px 10px;
   opacity:0;transition:opacity .25s;
 }
@@ -283,14 +283,14 @@ section,header,footer,.topbar{position:relative;z-index:1;}
 /* Map */
 .map-card{
   background:var(--white);border-radius:26px;padding:22px;
-  border:1px solid #E8DCC8;box-shadow:0 22px 48px -32px rgba(13,79,79,.4);
+  border:1px solid #E4D6BC;box-shadow:0 22px 48px -32px rgba(22,34,59,.4);
 }
 .map-svg{width:100%;height:auto;border-radius:16px;display:block;}
 .map-embed{width:100%;height:420px;border:0;border-radius:16px;display:block;}
 .map-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;}
 .map-link{
   display:inline-flex;align-items:center;gap:8px;text-decoration:none;
-  background:var(--cream);border:1px solid #E8DCC8;border-radius:999px;
+  background:var(--cream);border:1px solid #E4D6BC;border-radius:999px;
   padding:9px 18px;font-size:.85rem;font-weight:600;color:var(--purple-deep);
   transition:background .2s;
 }
@@ -300,10 +300,11 @@ section,header,footer,.topbar{position:relative;z-index:1;}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;}
 .place{
   background:var(--white);border-radius:20px;padding:24px;
-  border:1px solid #E8DCC8;position:relative;overflow:hidden;
+  border:1px solid #E4D6BC;position:relative;overflow:hidden;
   transition:transform .25s, box-shadow .25s;
 }
-.place:hover{transform:translateY(-4px);box-shadow:0 24px 44px -28px rgba(13,79,79,.4);}
+.place:hover{transform:translateY(-4px);box-shadow:0 24px 44px -28px rgba(22,34,59,.4);}
+.place-img{width:calc(100% + 48px);margin:-24px -24px 16px;height:160px;object-fit:cover;display:block;}
 .place-tag{
   display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.12em;
   text-transform:uppercase;border-radius:999px;padding:4px 12px;margin-bottom:12px;color:var(--white);
@@ -346,13 +347,13 @@ section,header,footer,.topbar{position:relative;z-index:1;}
 /* Amenities */
 .amen{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;}
 .amen div{
-  background:var(--white);border:1px solid #E8DCC8;border-radius:16px;
+  background:var(--white);border:1px solid #E4D6BC;border-radius:16px;
   padding:20px 16px;text-align:center;font-size:.85rem;font-weight:500;color:var(--purple-deep);
 }
 .amen div span{display:block;font-size:1.6rem;margin-bottom:6px;}
 .rules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:24px;}
 .rule-card{
-  background:var(--white);border:1px solid #E8DCC8;border-radius:16px;
+  background:var(--white);border:1px solid #E4D6BC;border-radius:16px;
   padding:18px 18px;font-size:.85rem;font-weight:500;color:var(--purple-deep);
   display:flex;gap:12px;align-items:flex-start;line-height:1.4;
 }
@@ -368,10 +369,10 @@ section,header,footer,.topbar{position:relative;z-index:1;}
 .sos{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;}
 .sos a{
   text-decoration:none;background:var(--white);border-radius:18px;padding:22px;
-  border:1px solid #E8DCC8;display:flex;align-items:center;gap:16px;
+  border:1px solid #E4D6BC;display:flex;align-items:center;gap:16px;
   color:var(--ink);transition:transform .2s, box-shadow .2s;
 }
-.sos a:hover{transform:translateY(-3px);box-shadow:0 18px 36px -26px rgba(13,79,79,.4);}
+.sos a:hover{transform:translateY(-3px);box-shadow:0 18px 36px -26px rgba(22,34,59,.4);}
 .sos-icon{
   flex:0 0 48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;
   font-size:1.3rem;color:var(--white);
@@ -395,7 +396,7 @@ section,header,footer,.topbar{position:relative;z-index:1;}
 /* Video */
 .video-wrap{
   border-radius:26px;overflow:hidden;
-  box-shadow:0 30px 60px -30px rgba(13,79,79,.55);
+  box-shadow:0 30px 60px -30px rgba(22,34,59,.55);
   background:#0D2F2F;line-height:0;
 }
 .video-wrap video{width:100%;max-height:72vh;display:block;}
@@ -403,10 +404,10 @@ section,header,footer,.topbar{position:relative;z-index:1;}
 /* Weather */
 .weather{
   margin-top:26px;
-  background:linear-gradient(135deg,#146277,#2E93A6);
+  background:linear-gradient(135deg,#2C4270,#2C4270);
   border-radius:22px;padding:26px 28px;color:var(--cream);
   display:flex;gap:26px;align-items:center;flex-wrap:wrap;
-  box-shadow:0 22px 44px -30px rgba(27,127,142,.7);
+  box-shadow:0 22px 44px -30px rgba(44,66,112,.7);
 }
 .weather-now{display:flex;align-items:center;gap:14px;}
 .weather-icon{font-size:3rem;line-height:1;}
@@ -455,7 +456,7 @@ footer a{color:var(--gold);text-decoration:none;}
 
 <div class="topbar">
   <div class="brand">
-    <svg viewBox="0 0 40 40" fill="none"><path d="M6 20 L20 8 L34 20" stroke="#D68A2C" stroke-width="3" stroke-linecap="round"/><rect x="11" y="20" width="18" height="13" rx="2" fill="#D68A2C"/><rect x="17" y="25" width="6" height="8" rx="1" fill="#0B3E4D"/></svg>
+    <svg viewBox="0 0 40 40" fill="none"><path d="M6 20 L20 8 L34 20" stroke="#C9A876" stroke-width="3" stroke-linecap="round"/><rect x="11" y="20" width="18" height="13" rx="2" fill="#C9A876"/><rect x="17" y="25" width="6" height="8" rx="1" fill="#16223B"/></svg>
     <div class="brand-name">Amarel Suite</div>
   </div>
   <div class="lang-toggle">
@@ -612,13 +613,17 @@ footer a{color:var(--gold);text-decoration:none;}
     <div class="place"><span class="place-tag tag-food" data-es="Comida y playa" data-en="Food & beach">Comida y playa</span><h3>Playa del Ritmo</h3><div class="place-meta" data-es="4 MIN CAMINANDO · DESDE $17K COP" data-en="4 MIN WALK · FROM $17K COP">4 MIN CAMINANDO · DESDE $17K COP</div><p data-es="Nuestro favorito. Gran variedad de comida y platos del día, con playa y servicio de ducha." data-en="Our favorite. Great variety of food and daily specials, with beach access and shower service.">Nuestro favorito. Gran variedad de comida y platos del día, con playa y servicio de ducha.</p></div>
     <div class="place"><span class="place-tag tag-food" data-es="Compras y comida" data-en="Shopping & food">Compras y comida</span><h3>C.C. Zazué</h3><div class="place-meta" data-es="5 MIN CAMINANDO" data-en="5 MIN WALK">5 MIN CAMINANDO</div><p data-es="El centro comercial del sector: restaurantes, tiendas y todo lo que necesites a la mano." data-en="The neighborhood mall: restaurants, shops, and everything you need close at hand.">El centro comercial del sector: restaurantes, tiendas y todo lo que necesites a la mano.</p><div class="place-links"><a class="pl-map" href="https://maps.app.goo.gl/whVPKEkP45BuzX7y5" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
     <div class="place"><span class="place-tag tag-food" data-es="Leyenda local" data-en="Local legend">Leyenda local</span><h3>Pizza El Vómito</h3><div class="place-meta" data-es="EL RODADERO / GAIRA" data-en="EL RODADERO / GAIRA">EL RODADERO / GAIRA</div><p data-es="No dejes que el nombre te engañe. Es legendaria por la generosa (y caótica) cantidad de ingredientes y queso en cada porción." data-en="Don't let the name fool you. It's legendary for the generous (and chaotic) amount of toppings and cheese on every slice.">No dejes que el nombre te engañe. Es legendaria por la generosa (y caótica) cantidad de ingredientes y queso en cada porción.</p></div>
-    <div class="place"><span class="place-tag tag-fun" data-es="Cultura y vida nocturna" data-en="Culture & nightlife">Cultura y vida nocturna</span><h3 data-es="Centro Histórico y Parque de los Novios" data-en="Historic Center & Parque de los Novios">Centro Histórico y Parque de los Novios</h3><div class="place-meta" data-es="15-20 MIN EN CARRO" data-en="15-20 MIN BY CAR">15-20 MIN EN CARRO</div><p data-es="El corazón vibrante de la ciudad: casas coloniales, arte urbano y música en vivo en las plazas." data-en="The vibrant heart of the city: colonial houses, street art, and live music in the plazas.">El corazón vibrante de la ciudad: casas coloniales, arte urbano y música en vivo en las plazas.</p></div>
-    <div class="place"><span class="place-tag tag-fun" data-es="Historia" data-en="History">Historia</span><h3>Quinta de San Pedro Alejandrino</h3><div class="place-meta" data-es="HACIENDA DEL SIGLO XVII" data-en="17TH CENTURY HACIENDA">HACIENDA DEL SIGLO XVII</div><p data-es="Rodeada de árboles centenarios, aquí murió Simón Bolívar. Un oasis de cultura, arte y jardines botánicos." data-en="Surrounded by century-old trees, this is where Simón Bolívar died. An oasis of culture, art, and botanical gardens.">Rodeada de árboles centenarios, aquí murió Simón Bolívar. Un oasis de cultura, arte y jardines botánicos.</p></div>
-    <div class="place"><span class="place-tag tag-food" data-es="Restaurante" data-en="Restaurant">Restaurante</span><h3>Harry's Steakhouse</h3><div class="place-meta" data-es="CARNES Y PARRILLA" data-en="STEAKS & GRILL">CARNES Y PARRILLA</div><p data-es="Cortes de carne premium en un ambiente íntimo. Ideal para una noche especial." data-en="Premium cuts in an intimate setting. Perfect for a special night out.">Cortes de carne premium en un ambiente íntimo. Ideal para una noche especial.</p><div class="place-links"><a class="pl-menu" href="https://www.qodeup.com/harrye039ssteakhouse" target="_blank" rel="noopener" data-es="📋 Menú" data-en="📋 Menu">📋 Menú</a><a class="pl-map" href="https://maps.app.goo.gl/oUi2Tstpj345js6A8" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    <div class="place"><img class="place-img" src="place_centro-historico.jpg" alt="Centro Histórico de Santa Marta"><span class="place-tag tag-fun" data-es="Cultura y vida nocturna" data-en="Culture & nightlife">Cultura y vida nocturna</span><h3 data-es="Centro Histórico y Parque de los Novios" data-en="Historic Center & Parque de los Novios">Centro Histórico y Parque de los Novios</h3><div class="place-meta" data-es="15-20 MIN EN CARRO" data-en="15-20 MIN BY CAR">15-20 MIN EN CARRO</div><p data-es="El corazón vibrante de la ciudad: casas coloniales, arte urbano y música en vivo en las plazas." data-en="The vibrant heart of the city: colonial houses, street art, and live music in the plazas.">El corazón vibrante de la ciudad: casas coloniales, arte urbano y música en vivo en las plazas.</p></div>
+    <div class="place"><img class="place-img" src="place_quinta-san-pedro.jpg" alt="Quinta de San Pedro Alejandrino"><span class="place-tag tag-fun" data-es="Historia" data-en="History">Historia</span><h3>Quinta de San Pedro Alejandrino</h3><div class="place-meta" data-es="HACIENDA DEL SIGLO XVII" data-en="17TH CENTURY HACIENDA">HACIENDA DEL SIGLO XVII</div><p data-es="Rodeada de árboles centenarios, aquí murió Simón Bolívar. Un oasis de cultura, arte y jardines botánicos." data-en="Surrounded by century-old trees, this is where Simón Bolívar died. An oasis of culture, art, and botanical gardens.">Rodeada de árboles centenarios, aquí murió Simón Bolívar. Un oasis de cultura, arte y jardines botánicos.</p></div>
     <div class="place"><span class="place-tag tag-food" data-es="Restaurante" data-en="Restaurant">Restaurante</span><h3>Cambiante</h3><div class="place-meta" data-es="COCINA DE AUTOR · VISTA AL MAR" data-en="CHEF'S KITCHEN · SEA VIEWS">COCINA DE AUTOR · VISTA AL MAR</div><p data-es="Propuesta gastronómica creativa con ingredientes locales y vistas al mar Caribe." data-en="Creative cuisine with local ingredients and Caribbean sea views.">Propuesta gastronómica creativa con ingredientes locales y vistas al mar Caribe.</p><div class="place-links"><a class="pl-menu" href="https://www.qodeup.com/cambiantealmar" target="_blank" rel="noopener" data-es="📋 Menú" data-en="📋 Menu">📋 Menú</a><a class="pl-map" href="https://maps.app.goo.gl/1vAeazmEDfQ7PWwy5" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
     <div class="place"><span class="place-tag tag-fun" data-es="Bar & Atardecer" data-en="Bar & Sunset">Bar & Atardecer</span><h3>Burukuka</h3><div class="place-meta" data-es="RESTAURANTE · BAR · SUNSET SPOT" data-en="RESTAURANT · BAR · SUNSET SPOT">RESTAURANTE · BAR · SUNSET SPOT</div><p data-es="El lugar perfecto para ver el atardecer en Santa Marta con buenas bebidas y ambiente relajado frente al mar." data-en="The perfect spot to watch the Santa Marta sunset with great drinks and a relaxed vibe by the sea.">El lugar perfecto para ver el atardecer en Santa Marta con buenas bebidas y ambiente relajado frente al mar.</p><div class="place-links"><a class="pl-map" href="https://maps.app.goo.gl/m9KRTsJtyniCtJ5A7" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
     <div class="place"><span class="place-tag tag-fun" data-es="Café & Libros" data-en="Café & Books">Café & Libros</span><h3>Brot</h3><div class="place-meta" data-es="CAFÉ · PANADERÍA · LIBRERÍA" data-en="CAFÉ · BAKERY · BOOKSTORE">CAFÉ · PANADERÍA · LIBRERÍA</div><p data-es="Un café con mucha personalidad: pan artesanal, buen café y una selección de libros que puedes comprar o intercambiar por los tuyos. Perfecto para una mañana tranquila." data-en="A café with loads of character: artisan bread, great coffee, and a selection of books you can buy or trade with your own. Perfect for a slow morning.">Un café con mucha personalidad: pan artesanal, buen café y una selección de libros que puedes comprar o intercambiar por los tuyos. Perfecto para una mañana tranquila.</p><div class="place-links"><a class="pl-map" href="https://maps.app.goo.gl/V8zNMRbCWC8YBwS67" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
     <div class="place"><span class="place-tag tag-food" data-es="Pizzería" data-en="Pizzeria">Pizzería</span><h3>Holguer Pizza</h3><div class="place-meta" data-es="PIZZA ARTESANAL" data-en="ARTISAN PIZZA">PIZZA ARTESANAL</div><p data-es="Pizza artesanal con personalidad propia. Una opción deliciosa para una noche sin complicaciones." data-en="Artisan pizza with character. A delicious option for a laid-back night in.">Pizza artesanal con personalidad propia. Una opción deliciosa para una noche sin complicaciones.</p><div class="place-links"><a class="pl-ig" href="https://www.instagram.com/holguerpizza/" target="_blank" rel="noopener">📸 Instagram</a></div></div>
+    <div class="place"><img class="place-img" src="place_tayrona.jpg" alt="Parque Nacional Natural Tayrona"><span class="place-tag tag-fun" data-es="Naturaleza" data-en="Nature">Naturaleza</span><h3>Parque Nacional Natural Tayrona</h3><div class="place-meta" data-es="~45-60 MIN EN CARRO" data-en="~45-60 MIN BY CAR">~45-60 MIN EN CARRO</div><p data-es="Selva que se encuentra con el Caribe: playas escondidas, senderos entre la jungla y una biodiversidad impresionante. Imperdible si tienes un día libre." data-en="Where the jungle meets the Caribbean: hidden beaches, jungle trails, and impressive biodiversity. A must if you have a free day.">Selva que se encuentra con el Caribe: playas escondidas, senderos entre la jungla y una biodiversidad impresionante. Imperdible si tienes un día libre.</p><div class="place-links"><a class="pl-map" href="https://www.google.com/maps?q=Parque+Nacional+Natural+Tayrona" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    <div class="place"><img class="place-img" src="place_playa-blanca.jpg" alt="Playa Blanca / Bahía Concha"><span class="place-tag tag-fun" data-es="Playa tranquila" data-en="Quiet beach">Playa tranquila</span><h3>Playa Blanca / Bahía Concha</h3><div class="place-meta" data-es="20-30 MIN EN CARRO O LANCHA" data-en="20-30 MIN BY CAR OR BOAT">20-30 MIN EN CARRO O LANCHA</div><p data-es="Una alternativa más tranquila y menos concurrida que las playas del centro, con aguas cristalinas ideales para relajarte todo el día." data-en="A quieter, less crowded alternative to the downtown beaches, with crystal-clear waters perfect for a full day of relaxing.">Una alternativa más tranquila y menos concurrida que las playas del centro, con aguas cristalinas ideales para relajarte todo el día.</p><div class="place-links"><a class="pl-map" href="https://www.google.com/maps?q=Bahia+Concha+Santa+Marta" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    <div class="place"><img class="place-img" src="place_minca.jpg" alt="Minca"><span class="place-tag tag-fun" data-es="Montaña" data-en="Mountain">Montaña</span><h3>Minca</h3><div class="place-meta" data-es="~40 MIN EN CARRO" data-en="~40 MIN BY CAR">~40 MIN EN CARRO</div><p data-es="Pueblo de montaña en la Sierra Nevada con cascadas, fincas cafeteras y muy buen avistamiento de aves. Un cambio de aire refrescante frente al calor de la playa." data-en="A mountain town in the Sierra Nevada with waterfalls, coffee farms, and great birdwatching. A refreshing change of pace from the beach heat.">Pueblo de montaña en la Sierra Nevada con cascadas, fincas cafeteras y muy buen avistamiento de aves. Un cambio de aire refrescante frente al calor de la playa.</p><div class="place-links"><a class="pl-map" href="https://www.google.com/maps?q=Minca+Magdalena" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    <div class="place"><img class="place-img" src="place_marina.jpg" alt="Marina Internacional de Santa Marta"><span class="place-tag tag-fun" data-es="Atardecer" data-en="Sunset">Atardecer</span><h3>Marina Internacional de Santa Marta</h3><div class="place-meta" data-es="15-20 MIN EN CARRO" data-en="15-20 MIN BY CAR">15-20 MIN EN CARRO</div><p data-es="Un malecón agradable para caminar, con alquiler de lanchas y un gran lugar para ver el atardecer sobre la bahía." data-en="A pleasant boardwalk for a stroll, with boat rentals and a great spot to watch the sunset over the bay.">Un malecón agradable para caminar, con alquiler de lanchas y un gran lugar para ver el atardecer sobre la bahía.</p><div class="place-links"><a class="pl-map" href="https://www.google.com/maps?q=Marina+Internacional+de+Santa+Marta" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    <div class="place"><img class="place-img" src="place_museo-oro.jpg" alt="Museo del Oro Tairona"><span class="place-tag tag-fun" data-es="Museo" data-en="Museum">Museo</span><h3>Museo del Oro Tairona</h3><div class="place-meta" data-es="15-20 MIN EN CARRO · GRATIS" data-en="15-20 MIN BY CAR · FREE">15-20 MIN EN CARRO · GRATIS</div><p data-es="Museo gratuito en pleno Centro Histórico, con piezas de orfebrería y cultura Tairona. Perfecto para combinar con tu visita al centro." data-en="A free museum right in the Historic Center, with Tairona goldwork and cultural artifacts. Perfect to combine with your visit downtown.">Museo gratuito en pleno Centro Histórico, con piezas de orfebrería y cultura Tairona. Perfecto para combinar con tu visita al centro.</p><div class="place-links"><a class="pl-map" href="https://www.google.com/maps?q=Museo+del+Oro+Tairona+Santa+Marta" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
   </div>
 </section>
 
@@ -696,11 +701,11 @@ footer a{color:var(--gold);text-decoration:none;}
   <h2 class="sec-title"><span data-es="Contactos de" data-en="Emergency">Contactos de</span> <em data-es="emergencia" data-en="contacts">emergencia</em></h2>
   <div class="sos">
     <a href="https://wa.me/[HOST_WHATSAPP]"><div class="sos-icon" style="background:#25D366">💬</div><div><strong data-es="[Nombre del anfitrión] (WhatsApp)" data-en="[Host name] (WhatsApp)">[Nombre del anfitrión] (WhatsApp)</strong><span class="num">[+57 XXX XXX XXXX]</span><br><small data-es="Anfitrión" data-en="Host">Anfitrión</small></div></a>
-    <a href="https://wa.me/573117548493"><div class="sos-icon" style="background:#146277">🛎️</div><div><strong data-es="Recepción (WhatsApp)" data-en="Front Desk (WhatsApp)">Recepción (WhatsApp)</strong><span class="num">+57 311 754 8493</span><br><small data-es="Atención 24 horas · Citófono 100" data-en="24-hour service · Intercom 100">Atención 24 horas · Citófono 100</small></div></a>
+    <a href="https://wa.me/573117548493"><div class="sos-icon" style="background:#2C4270">🛎️</div><div><strong data-es="Recepción (WhatsApp)" data-en="Front Desk (WhatsApp)">Recepción (WhatsApp)</strong><span class="num">+57 311 754 8493</span><br><small data-es="Atención 24 horas · Citófono 100" data-en="24-hour service · Intercom 100">Atención 24 horas · Citófono 100</small></div></a>
     <a href="tel:123"><div class="sos-icon" style="background:#C0392B">🚨</div><div><strong data-es="Línea de emergencias" data-en="Emergency line">Línea de emergencias</strong><span class="num">123</span><br><small data-es="Policía 112 · Bomberos 318 876 3338" data-en="Police 112 · Fire Dept. 318 876 3338">Policía 112 · Bomberos 318 876 3338</small></div></a>
-    <a href="tel:+576054219999"><div class="sos-icon" style="background:#146277">🏥</div><div><strong>Clínica Avidanti</strong><span class="num">(605) 421 9999</span><br><small data-es="Bello Horizonte, cerca de Pozos Colorados" data-en="Bello Horizonte, near Pozos Colorados">Bello Horizonte, cerca de Pozos Colorados</small></div></a>
-    <a href="tel:+573167449954"><div class="sos-icon" style="background:#2E93A6">💊</div><div><strong>Droguería Andina</strong><span class="num">316 744 9954</span><br><small data-es="Zazué Plaza, muy cerca" data-en="Zazué Plaza, very close">Zazué Plaza, muy cerca</small></div></a>
-    <a href="mailto:[EMAIL]"><div class="sos-icon" style="background:#D68A2C">✉️</div><div><strong>Email</strong><span class="num">[EMAIL]</span><br><small data-es="Para temas no urgentes" data-en="For non-urgent matters">Para temas no urgentes</small></div></a>
+    <a href="tel:+576054219999"><div class="sos-icon" style="background:#2C4270">🏥</div><div><strong>Clínica Avidanti</strong><span class="num">(605) 421 9999</span><br><small data-es="Bello Horizonte, cerca de Pozos Colorados" data-en="Bello Horizonte, near Pozos Colorados">Bello Horizonte, cerca de Pozos Colorados</small></div></a>
+    <a href="tel:+573167449954"><div class="sos-icon" style="background:#2C4270">💊</div><div><strong>Droguería Andina</strong><span class="num">316 744 9954</span><br><small data-es="Zazué Plaza, muy cerca" data-en="Zazué Plaza, very close">Zazué Plaza, muy cerca</small></div></a>
+    <a href="mailto:[EMAIL]"><div class="sos-icon" style="background:#C9A876">✉️</div><div><strong>Email</strong><span class="num">[EMAIL]</span><br><small data-es="Para temas no urgentes" data-en="For non-urgent matters">Para temas no urgentes</small></div></a>
   </div>
   <button class="sos-expand-btn" id="sos-expand-btn" onclick="toggleSosExpand()" data-es="📋 Ver todos los números de emergencia" data-en="📋 See all emergency numbers">📋 Ver todos los números de emergencia</button>
   <div class="sos-expand" id="sos-expand">
@@ -721,8 +726,8 @@ footer a{color:var(--gold);text-decoration:none;}
 
 <script>
 /* ───── Seagull motif (two wing poses), mixed at random ───── */
-const gullSvg1='<svg viewBox="0 0 40 40"><path d="M2 22 C10 14 16 14 20 20 C24 14 30 14 38 22 C30 19 25 20 20 25 C15 20 10 19 2 22 Z" fill="#2E93A6" opacity=".85"/></svg>';
-const gullSvg2='<svg viewBox="0 0 40 40"><path d="M2 26 C11 12 16 16 20 20 C24 16 29 12 38 26 C29 21 24 22 20 27 C16 22 11 21 2 26 Z" fill="#6DC3D0" opacity=".85"/></svg>';
+const gullSvg1='<svg viewBox="0 0 40 40"><path d="M2 22 C10 14 16 14 20 20 C24 14 30 14 38 22 C30 19 25 20 20 25 C15 20 10 19 2 22 Z" fill="#2C4270" opacity=".85"/></svg>';
+const gullSvg2='<svg viewBox="0 0 40 40"><path d="M2 26 C11 12 16 16 20 20 C24 16 29 12 38 26 C29 21 24 22 20 27 C16 22 11 21 2 26 Z" fill="#7C93BF" opacity=".85"/></svg>';
 function seaSvg(){ return Math.random()<0.5 ? gullSvg1 : gullSvg2; }
 
 /* ───── Gate entrance sea-life burst ───── */

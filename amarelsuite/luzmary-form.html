@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Amarel Suite · Información pendiente</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{
+  --ink:#1B2A4A;
+  --ink-soft:#2C4270;
+  --bg:#FAF6EE;
+  --card:#FFFFFF;
+  --line:#E4D6BC;
+  --accent:#B97A3E;
+  --accent-soft:#F1E4CE;
+  --ok:#3B6D11;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#F3EEE2;
+    --ink-soft:#C9BFA6;
+    --bg:#161C2B;
+    --card:#1F2740;
+    --line:#33405E;
+    --accent:#D9A05B;
+    --accent-soft:#3A2E1E;
+    --ok:#9AD16A;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#F3EEE2; --ink-soft:#C9BFA6; --bg:#161C2B; --card:#1F2740; --line:#33405E; --accent:#D9A05B; --accent-soft:#3A2E1E; --ok:#9AD16A;
+}
+:root[data-theme="light"]{
+  --ink:#1B2A4A; --ink-soft:#2C4270; --bg:#FAF6EE; --card:#FFFFFF; --line:#E4D6BC; --accent:#B97A3E; --accent-soft:#F1E4CE; --ok:#3B6D11;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:Georgia,'Iowan Old Style','Palatino Linotype',serif;
+  line-height:1.55;
+}
+.wrap{max-width:720px;margin:0 auto;padding:48px 24px 80px;}
+.eyebrow{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);
+  font-weight:600;margin-bottom:10px;
+}
+h1{font-size:clamp(1.7rem,4vw,2.3rem);margin:0 0 8px;font-weight:400;text-wrap:balance;}
+.sub{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  color:var(--ink-soft);font-size:14.5px;max-width:56ch;margin:0 0 36px;
+}
+.section{margin-bottom:14px;border:1px solid var(--line);border-radius:14px;background:var(--card);overflow:hidden;}
+.section-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:16px 20px;cursor:pointer;user-select:none;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+.section-title{font-size:15.5px;font-weight:600;color:var(--ink);}
+.section-count{font-size:12px;color:var(--ink-soft);}
+.chev{transition:transform .2s;color:var(--ink-soft);font-size:13px;}
+.section.open .chev{transform:rotate(90deg);}
+.section-body{
+  max-height:0;overflow:hidden;transition:max-height .3s ease;
+  padding:0 20px;
+}
+.section.open .section-body{max-height:2000px;padding:2px 20px 20px;}
+.field{margin-bottom:16px;}
+.field:last-child{margin-bottom:0;}
+label{
+  display:block;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:5px;
+}
+.hint{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:12.5px;color:var(--ink-soft);opacity:.85;margin:2px 0 6px;
+}
+input[type=text],textarea{
+  width:100%;border:1px solid var(--line);border-radius:8px;
+  background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:14.5px;padding:9px 12px;
+}
+textarea{resize:vertical;min-height:64px;}
+input:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:480px){.row2{grid-template-columns:1fr;}}
+.actions{
+  position:sticky;bottom:0;margin-top:28px;
+  background:linear-gradient(to bottom, transparent, var(--bg) 40%);
+  padding-top:24px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+button.primary{
+  background:var(--ink);color:var(--bg);border:none;border-radius:999px;
+  padding:12px 26px;font-size:14px;font-weight:600;cursor:pointer;
+}
+button.primary:active{transform:scale(.98);}
+button.secondary{
+  background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:999px;
+  padding:11px 22px;font-size:14px;font-weight:600;cursor:pointer;
+}
+button.secondary:hover{background:var(--accent-soft);}
+button.secondary:active{transform:scale(.98);}
+.status{font-size:13px;color:var(--ok);opacity:0;transition:opacity .2s;}
+.status.show{opacity:1;}
+.progress{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:12.5px;color:var(--ink-soft);margin-left:auto;
+}
+.photo-item{
+  display:flex;align-items:center;gap:10px;padding:8px 0;
+  border-bottom:1px solid var(--line);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:14px;
+}
+.photo-item:last-child{border-bottom:none;}
+.photo-item input[type=checkbox]{width:16px;height:16px;accent-color:var(--accent);flex:none;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="eyebrow">Amarel Suite — para Luz Mary</div>
+  <h1>Lo que nos falta para completar la guía</h1>
+  <p class="sub">Llena lo que puedas en cada sección (no es necesario todo de una vez). Al final hay un botón para copiar toda la información y enviárnosla por WhatsApp o email.</p>
+
+  <div class="section open" data-section>
+    <div class="section-head" onclick="toggleSection(this)">
+      <span class="section-title">Anfitrión / contacto</span>
+      <span class="chev">▸</span>
+    </div>
+    <div class="section-body">
+      <div class="field"><label>Nombre del anfitrión</label><input type="text" data-key="Nombre del anfitrión" placeholder="Ej. Luz Mary Rodríguez"></div>
+      <div class="row2">
+        <div class="field"><label>WhatsApp del anfitrión</label><input type="text" data-key="WhatsApp del anfitrión" placeholder="+57 300 000 0000"></div>
+        <div class="field"><label>Email de contacto</label><input type="text" data-key="Email de contacto" placeholder="nombre@correo.com"></div>
+      </div>
+      <div class="field"><label>Breve bio / mensaje de bienvenida</label><div class="hint">2-3 líneas que aparecen en la sección "Sobre nosotros".</div><textarea data-key="Bio del anfitrión" placeholder="Ej. Somos una familia santandereana que ama Santa Marta..."></textarea></div>
+    </div>
+  </div>
+
+  <div class="section" data-section>
+    <div class="section-head" onclick="toggleSection(this)">
+      <span class="section-title">Datos del apartamento</span>
+      <span class="chev">▸</span>
+    </div>
+    <div class="section-body">
+      <div class="row2">
+        <div class="field"><label>Número de apto</label><input type="text" data-key="Número de apto" placeholder="Ej. 815"></div>
+        <div class="field"><label>Piso</label><input type="text" data-key="Piso" placeholder="Ej. 8"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>Red WiFi (SSID)</label><input type="text" data-key="Red WiFi" placeholder="Ej. Amarel_Suite"></div>
+        <div class="field"><label>Clave WiFi</label><input type="text" data-key="Clave WiFi" placeholder="Ej. caribe2024"></div>
+      </div>
+      <div class="field"><label>Política de mascotas</label><div class="hint">¿Se permiten? ¿Alguna condición o costo?</div><input type="text" data-key="Política de mascotas" placeholder="Ej. Se permiten mascotas pequeñas sin costo adicional"></div>
+    </div>
+  </div>
+
+  <div class="section" data-section>
+    <div class="section-head" onclick="toggleSection(this)">
+      <span class="section-title">Fotos que faltan</span>
+      <span class="chev">▸</span>
+    </div>
+    <div class="section-body">
+      <div class="hint" style="margin-bottom:10px;">Marca las que puedas enviarnos por WhatsApp (foto o video, la calidad del celular está bien).</div>
+      <div class="photo-item"><input type="checkbox" data-photo="Foto del anfitrión (retrato)"><span>Foto del anfitrión (retrato)</span></div>
+      <div class="photo-item"><input type="checkbox" data-photo="Vista completa del balcón de día"><span>Vista completa del balcón de día</span></div>
+      <div class="photo-item"><input type="checkbox" data-photo="Detalle de la ducha / bañera"><span>Detalle de la ducha / bañera</span></div>
+      <div class="photo-item"><input type="checkbox" data-photo="Clóset o zona de almacenamiento"><span>Clóset o zona de almacenamiento</span></div>
+      <div class="photo-item"><input type="checkbox" data-photo="Aire acondicionado / control"><span>Aire acondicionado / control</span></div>
+    </div>
+  </div>
+
+  <div class="section" data-section>
+    <div class="section-head" onclick="toggleSection(this)">
+      <span class="section-title">Otros detalles</span>
+      <span class="chev">▸</span>
+    </div>
+    <div class="section-body">
+      <div class="field"><label>Algo más que debamos saber</label><div class="hint">Instrucciones especiales, objetos frágiles, reglas propias del apto, etc.</div><textarea data-key="Otros detalles" placeholder="Escribe aquí..."></textarea></div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="primary" onclick="sendWhatsApp()">Enviar por WhatsApp</button>
+    <button class="secondary" onclick="sendEmail()">Enviar por email</button>
+    <button class="secondary" onclick="copyAll()">Copiar texto</button>
+    <span class="status" id="status">Copiado ✓</span>
+    <span class="progress" id="progress"></span>
+  </div>
+</div>
+
+<script>
+function toggleSection(head){
+  head.parentElement.classList.toggle('open');
+}
+function updateProgress(){
+  const inputs=[...document.querySelectorAll('[data-key]')];
+  const filled=inputs.filter(i=>i.value.trim().length>0).length;
+  document.getElementById('progress').textContent=filled+' de '+inputs.length+' campos completados';
+}
+document.querySelectorAll('[data-key]').forEach(el=>el.addEventListener('input',updateProgress));
+updateProgress();
+
+function buildText(){
+  const lines=['Amarel Suite — Información del anfitrión',''];
+  document.querySelectorAll('[data-key]').forEach(el=>{
+    const v=el.value.trim();
+    if(v) lines.push(el.dataset.key+': '+v);
+  });
+  const photos=[...document.querySelectorAll('[data-photo]')].filter(c=>c.checked).map(c=>c.dataset.photo);
+  if(photos.length){
+    lines.push('');
+    lines.push('Fotos que enviaré:');
+    photos.forEach(p=>lines.push('- '+p));
+  }
+  return lines.join('\n');
+}
+function flashStatus(msg){
+  const s=document.getElementById('status');
+  s.textContent=msg;
+  s.classList.add('show');
+  setTimeout(()=>s.classList.remove('show'),2200);
+}
+function copyAll(){
+  navigator.clipboard.writeText(buildText()).then(()=>flashStatus('Copiado ✓'));
+}
+function sendWhatsApp(){
+  const text=buildText();
+  window.open('https://wa.me/573502053147?text='+encodeURIComponent(text),'_blank');
+}
+function sendEmail(){
+  const text=buildText();
+  const subject=encodeURIComponent('Amarel Suite — Información del anfitrión');
+  window.location.href='mailto:team@77rentals.com?subject='+subject+'&body='+encodeURIComponent(text);
+}
+</script>
+</body>
+</html>
