@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Del Ventto · Información para tu guía — Lilliana</title>
+<title>Información para tus guías — Lilliana</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <style>
@@ -50,6 +50,17 @@ h1{font-size:clamp(1.7rem,4vw,2.3rem);margin:0 0 8px;font-weight:400;text-wrap:b
 .sub{
   font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   color:var(--ink-soft);font-size:14.5px;max-width:56ch;margin:0 0 36px;
+}
+.group-title{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+  color:var(--accent);margin:34px 0 10px;padding-top:10px;border-top:1px solid var(--line);
+  display:flex;align-items:center;gap:8px;
+}
+.group-title:first-of-type{border-top:none;padding-top:0;margin-top:0;}
+.group-sub{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:13px;color:var(--ink-soft);margin:-4px 0 14px;
 }
 .section{margin-bottom:14px;border:1px solid var(--line);border-radius:14px;background:var(--card);overflow:hidden;}
 .section-head{
@@ -116,18 +127,30 @@ button.secondary:active{transform:scale(.98);}
 }
 .photo-item:last-child{border-bottom:none;}
 .photo-item input[type=checkbox]{width:16px;height:16px;accent-color:var(--accent);flex:none;}
+.hours-list{display:grid;gap:8px;margin-bottom:10px;}
+.hours-row{display:flex;gap:8px;}
+.hours-row input{flex:1;}
+.hours-row button{
+  border:none;background:var(--accent-soft);color:var(--ink);border-radius:8px;
+  padding:0 12px;cursor:pointer;font-weight:700;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+.add-btn{
+  background:transparent;border:1px dashed var(--accent);color:var(--accent);
+  border-radius:8px;padding:8px 14px;font-size:12.5px;font-weight:600;cursor:pointer;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
 </style>
 </head>
 <body>
 
 <div class="wrap">
-  <div class="eyebrow">Edificio Del Ventto — para Lilliana</div>
-  <h1>Cuéntanos sobre tu apartamento</h1>
-  <p class="sub">Con esta información armamos tu guía de bienvenida digital, como las que ya tenemos para otros apartamentos del edificio. Las amenidades del edificio, el mapa y las recomendaciones de la zona ya están listas — solo necesitamos los detalles de tu apartamento. Llena lo que puedas (no es necesario todo de una vez). No te preocupes por la redacción: escribe la idea con tus palabras y nosotros pulimos el texto final. Al final hay un botón para enviarnos toda la información por WhatsApp o email.</p>
+  <div class="eyebrow">Para Lilliana</div>
+  <h1>Cuéntanos sobre tus apartamentos</h1>
+  <p class="sub">Este formulario cubre tus dos apartamentos: el de <strong>Edificio Del Ventto</strong> y el de <strong>Salguero Suites</strong>. No es necesario llenar los dos — completa el que vayas a alquilar primero, o ambos si ya tienes la información lista. No te preocupes por la redacción: escribe la idea con tus palabras y nosotros pulimos el texto final. Al final hay un botón para enviarnos todo de una vez.</p>
 
   <div class="section open" data-section>
     <div class="section-head" onclick="toggleSection(this)">
-      <span class="section-title">Anfitrión / contacto</span>
+      <span class="section-title">Anfitrión / contacto (aplica a ambos)</span>
       <span class="chev">▸</span>
     </div>
     <div class="section-body">
@@ -137,9 +160,12 @@ button.secondary:active{transform:scale(.98);}
         <div class="field"><label>Email de contacto</label><input type="text" data-key="Email de contacto" placeholder="nombre@correo.com"></div>
       </div>
       <div class="field"><label>Breve bio / mensaje de bienvenida</label><div class="hint">2-3 líneas que aparecen en la sección "Sobre nosotros" de la guía.</div><textarea data-key="Bio del anfitrión" placeholder="Ej. Soy Lilliana, y llevo X años recibiendo huéspedes en Santa Marta..."></textarea></div>
-      <div class="field"><label>¿Tienes coanfitrión?</label><div class="hint">Si alguien más ayuda a recibir huéspedes o responde mensajes, cuéntanos su nombre y contacto. Si no aplica, déjalo en blanco.</div><input type="text" data-key="Coanfitrión (nombre y contacto)" placeholder="Ej. Juan Pérez, +57 300 000 0000"></div>
+      <div class="field"><label>¿Tienes coanfitrión?</label><div class="hint">Si alguien más ayuda a recibir huéspedes o responde mensajes, cuéntanos su nombre y contacto. Si aplica diferente por apartamento, acláralo aquí. Si no aplica, déjalo en blanco.</div><input type="text" data-key="Coanfitrión (nombre y contacto)" placeholder="Ej. Juan Pérez, +57 300 000 0000"></div>
     </div>
   </div>
+
+  <div class="group-title">🏢 Edificio Del Ventto</div>
+  <div class="group-sub">Las amenidades del edificio, el mapa y las recomendaciones de la zona ya están listas — solo necesitamos los detalles de este apartamento.</div>
 
   <div class="section" data-section>
     <div class="section-head" onclick="toggleSection(this)">
@@ -147,17 +173,17 @@ button.secondary:active{transform:scale(.98);}
       <span class="chev">▸</span>
     </div>
     <div class="section-body">
-      <div class="field"><label>Nombre de la suite / apartamento</label><div class="hint">Así se llamará tu guía — aparece en el título, la portada y el pie de página. Ej: "Amarel Suite", "Suite Caribe Paz".</div><input type="text" data-key="Nombre de la suite" placeholder="Ej. Lilliana Suite"></div>
+      <div class="field"><label>Nombre de la suite / apartamento</label><div class="hint">Así se llamará tu guía — aparece en el título, la portada y el pie de página. Ej: "Amarel Suite", "Suite Caribe Paz".</div><input type="text" data-key="[Del Ventto] Nombre de la suite" placeholder="Ej. Lilliana Suite"></div>
       <div class="row2">
-        <div class="field"><label>Número de apto</label><input type="text" data-key="Número de apto" placeholder="Ej. 815"></div>
-        <div class="field"><label>Piso</label><input type="text" data-key="Piso" placeholder="Ej. 8"></div>
+        <div class="field"><label>Número de apto</label><input type="text" data-key="[Del Ventto] Número de apto" placeholder="Ej. 815"></div>
+        <div class="field"><label>Piso</label><input type="text" data-key="[Del Ventto] Piso" placeholder="Ej. 8"></div>
       </div>
-      <div class="field"><label>Torre (si tu edificio tiene varias)</label><input type="text" data-key="Torre" placeholder="Ej. Torre 2, o déjalo en blanco si no aplica"></div>
+      <div class="field"><label>Torre (si tu edificio tiene varias)</label><input type="text" data-key="[Del Ventto] Torre" placeholder="Ej. Torre 2, o déjalo en blanco si no aplica"></div>
       <div class="row2">
-        <div class="field"><label>Red WiFi (SSID)</label><input type="text" data-key="Red WiFi" placeholder="Ej. Lilliana_815"></div>
-        <div class="field"><label>Clave WiFi</label><input type="text" data-key="Clave WiFi" placeholder="Ej. caribe2024"></div>
+        <div class="field"><label>Red WiFi (SSID)</label><input type="text" data-key="[Del Ventto] Red WiFi" placeholder="Ej. Lilliana_815"></div>
+        <div class="field"><label>Clave WiFi</label><input type="text" data-key="[Del Ventto] Clave WiFi" placeholder="Ej. caribe2024"></div>
       </div>
-      <div class="field"><label>Política de mascotas</label><div class="hint">¿Se permiten? ¿Alguna condición o costo?</div><input type="text" data-key="Política de mascotas" placeholder="Ej. Se permiten mascotas pequeñas sin costo adicional"></div>
+      <div class="field"><label>Política de mascotas</label><div class="hint">¿Se permiten? ¿Alguna condición o costo?</div><input type="text" data-key="[Del Ventto] Política de mascotas" placeholder="Ej. Se permiten mascotas pequeñas sin costo adicional"></div>
     </div>
   </div>
 
@@ -168,10 +194,10 @@ button.secondary:active{transform:scale(.98);}
     </div>
     <div class="section-body">
       <div class="hint" style="margin-bottom:10px;">Escribe con tus palabras, sin presión — nosotros ajustamos la redacción al final.</div>
-      <div class="field"><label>Frase corta de portada (una línea)</label><div class="hint">Aparece justo debajo del título en la portada. Corta y llamativa.</div><input type="text" data-key="Frase corta de portada" placeholder="Ej. Una suite luminosa con balcón sobre las piscinas, a pasos del Caribe."></div>
-      <div class="field"><label>2-3 destacados cortos para la portada</label><div class="hint">Frases muy cortas que aparecen como insignias en la portada. Sepáralas con una coma.</div><input type="text" data-key="Destacados de portada" placeholder="Ej. Balcón con vista a las piscinas, Cocina totalmente equipada"></div>
-      <div class="field"><label>Párrafo 1 — describe el apartamento, el balcón/vista y lo que lo hace especial</label><textarea data-key="Bienvenida - párrafo 1" placeholder="Ej. Un refugio frente al mar en el corazón de Santa Marta..."></textarea></div>
-      <div class="field"><label>Párrafo 2 — qué hacer en Santa Marta y tu mensaje de bienvenida</label><textarea data-key="Bienvenida - párrafo 2" placeholder="Ej. Deseamos que tu estadía sea inolvidable..."></textarea></div>
+      <div class="field"><label>Frase corta de portada (una línea)</label><div class="hint">Aparece justo debajo del título en la portada. Corta y llamativa.</div><input type="text" data-key="[Del Ventto] Frase corta de portada" placeholder="Ej. Una suite luminosa con balcón sobre las piscinas, a pasos del Caribe."></div>
+      <div class="field"><label>2-3 destacados cortos para la portada</label><div class="hint">Frases muy cortas que aparecen como insignias en la portada. Sepáralas con una coma.</div><input type="text" data-key="[Del Ventto] Destacados de portada" placeholder="Ej. Balcón con vista a las piscinas, Cocina totalmente equipada"></div>
+      <div class="field"><label>Párrafo 1 — describe el apartamento, el balcón/vista y lo que lo hace especial</label><textarea data-key="[Del Ventto] Bienvenida - párrafo 1" placeholder="Ej. Un refugio frente al mar en el corazón de Santa Marta..."></textarea></div>
+      <div class="field"><label>Párrafo 2 — qué hacer en Santa Marta y tu mensaje de bienvenida</label><textarea data-key="[Del Ventto] Bienvenida - párrafo 2" placeholder="Ej. Deseamos que tu estadía sea inolvidable..."></textarea></div>
     </div>
   </div>
 
@@ -182,10 +208,10 @@ button.secondary:active{transform:scale(.98);}
     </div>
     <div class="section-body">
       <div class="row2">
-        <div class="field"><label>Hora de check-in</label><input type="text" data-key="Hora de check-in" placeholder="Ej. 3:00 PM"></div>
-        <div class="field"><label>Hora de check-out</label><input type="text" data-key="Hora de check-out" placeholder="Ej. 11:30 AM"></div>
+        <div class="field"><label>Hora de check-in</label><input type="text" data-key="[Del Ventto] Hora de check-in" placeholder="Ej. 3:00 PM"></div>
+        <div class="field"><label>Hora de check-out</label><input type="text" data-key="[Del Ventto] Hora de check-out" placeholder="Ej. 11:30 AM"></div>
       </div>
-      <div class="field"><label>¿El proceso de llegada es el estándar del edificio?</label><div class="hint">Estándar: el huésped llega a recepción, presenta identificación y confirmación de reserva, y le enviamos por WhatsApp la clave digital de la cerradura. Si tu apartamento funciona diferente (llave física, portero, etc.), descríbelo aquí.</div><textarea data-key="Proceso de llegada (si es diferente)" placeholder="Ej. Es el estándar del edificio / o describe la diferencia"></textarea></div>
+      <div class="field"><label>¿El proceso de llegada es el estándar del edificio?</label><div class="hint">Estándar: el huésped llega a recepción, presenta identificación y confirmación de reserva, y le enviamos por WhatsApp la clave digital de la cerradura. Si tu apartamento funciona diferente (llave física, portero, etc.), descríbelo aquí.</div><textarea data-key="[Del Ventto] Proceso de llegada (si es diferente)" placeholder="Ej. Es el estándar del edificio / o describe la diferencia"></textarea></div>
     </div>
   </div>
 
@@ -196,10 +222,10 @@ button.secondary:active{transform:scale(.98);}
     </div>
     <div class="section-body">
       <div class="row2">
-        <div class="field"><label>Camas (tipo y cantidad)</label><input type="text" data-key="Camas" placeholder="Ej. 1 cama queen + sofá cama"></div>
-        <div class="field"><label>Vista o feature principal</label><input type="text" data-key="Vista o feature" placeholder="Ej. Vista al mar / a la Sierra"></div>
+        <div class="field"><label>Camas (tipo y cantidad)</label><input type="text" data-key="[Del Ventto] Camas" placeholder="Ej. 1 cama queen + sofá cama"></div>
+        <div class="field"><label>Vista o feature principal</label><input type="text" data-key="[Del Ventto] Vista o feature" placeholder="Ej. Vista al mar / a la Sierra"></div>
       </div>
-      <div class="field"><label>Otras comodidades destacadas</label><input type="text" data-key="Otras comodidades" placeholder="Ej. Jacuzzi, escritorio, balcón con mesa para dos"></div>
+      <div class="field"><label>Otras comodidades destacadas</label><input type="text" data-key="[Del Ventto] Otras comodidades" placeholder="Ej. Jacuzzi, escritorio, balcón con mesa para dos"></div>
     </div>
   </div>
 
@@ -209,8 +235,8 @@ button.secondary:active{transform:scale(.98);}
       <span class="chev">▸</span>
     </div>
     <div class="section-body">
-      <div class="field"><label>Enlace de Google Drive con tus fotos y video</label><div class="hint">La forma más fácil de mandarlo todo junto. En Drive: clic derecho sobre la carpeta → Compartir → cambia a "Cualquier persona con el enlace" → Copiar enlace, y pégalo aquí.</div><input type="text" data-key="Enlace de Google Drive (fotos y video)" placeholder="https://drive.google.com/drive/folders/..."></div>
-      <div class="field"><label>¿Tienes un video recorrido del apartamento?</label><input type="text" data-key="Video recorrido" placeholder="Ej. Sí, está en el Drive / No, hay que grabarlo"></div>
+      <div class="field"><label>Enlace de Google Drive con tus fotos y video</label><div class="hint">La forma más fácil de mandarlo todo junto. En Drive: clic derecho sobre la carpeta → Compartir → cambia a "Cualquier persona con el enlace" → Copiar enlace, y pégalo aquí.</div><input type="text" data-key="[Del Ventto] Enlace de Google Drive (fotos y video)" placeholder="https://drive.google.com/drive/folders/..."></div>
+      <div class="field"><label>¿Tienes un video recorrido del apartamento?</label><input type="text" data-key="[Del Ventto] Video recorrido" placeholder="Ej. Sí, está en el Drive / No, hay que grabarlo"></div>
     </div>
   </div>
 
@@ -220,7 +246,111 @@ button.secondary:active{transform:scale(.98);}
       <span class="chev">▸</span>
     </div>
     <div class="section-body">
-      <div class="field"><label>Algo más que debamos saber</label><div class="hint">Instrucciones especiales, objetos frágiles, reglas propias del apto que no sean las estándar del edificio, etc.</div><textarea data-key="Otros detalles" placeholder="Escribe aquí..."></textarea></div>
+      <div class="field"><label>Algo más que debamos saber</label><div class="hint">Instrucciones especiales, objetos frágiles, reglas propias del apto que no sean las estándar del edificio, etc.</div><textarea data-key="[Del Ventto] Otros detalles" placeholder="Escribe aquí..."></textarea></div>
+    </div>
+  </div>
+
+  <div class="group-title">🏢 Salguero Suites</div>
+  <div class="group-sub">Este es un edificio nuevo para nosotros, así que necesitamos también la información general del edificio (no solo tu apartamento). Los restaurantes/atractivos recomendados y los contactos de emergencia son los mismos que usamos para Santa Marta en general, así que no hace falta preguntarte por eso.</div>
+
+  <div class="section" data-section>
+    <div class="section-head" onclick="toggleSection(this)">
+      <span class="section-title">Datos del edificio</span>
+      <span class="chev">▸</span>
+    </div>
+    <div class="section-body">
+      <div class="field"><label>Dirección completa del edificio</label><input type="text" data-key="[Salguero Suites] Dirección" placeholder="Ej. Calle ..., Salguero, Santa Marta"></div>
+      <div class="field"><label>Amenidades del edificio</label><div class="hint">Una por línea: piscina, gimnasio, BBQ, salón social, etc.</div><textarea data-key="[Salguero Suites] Amenidades del edificio" placeholder="Piscina&#10;Gimnasio&#10;Zona BBQ&#10;..."></textarea></div>
+      <div class="field">
+        <label>Horarios de las amenidades principales</label>
+        <div class="hours-list" id="hoursListSalguero"></div>
+        <button type="button" class="add-btn" id="addHourSalguero">+ Agregar horario</button>
+      </div>
+      <div class="field"><label>¿Hay algún costo por manilla o uso de amenidades?</label><input type="text" data-key="[Salguero Suites] Costo de manilla / uso de amenidades" placeholder="Ej. $25.000 COP por persona, o &quot;No aplica&quot;"></div>
+      <div class="field"><label>Teléfono / WhatsApp de recepción o portería del edificio</label><input type="text" data-key="[Salguero Suites] Teléfono recepción del edificio" placeholder="+57 300 000 0000"></div>
+    </div>
+  </div>
+
+  <div class="section" data-section>
+    <div class="section-head" onclick="toggleSection(this)">
+      <span class="section-title">Datos del apartamento</span>
+      <span class="chev">▸</span>
+    </div>
+    <div class="section-body">
+      <div class="field"><label>Nombre de la suite / apartamento</label><input type="text" data-key="[Salguero Suites] Nombre de la suite" placeholder="Ej. Lilliana Suite Salguero"></div>
+      <div class="row2">
+        <div class="field"><label>Número de apto</label><input type="text" data-key="[Salguero Suites] Número de apto" placeholder="Ej. 402"></div>
+        <div class="field"><label>Piso</label><input type="text" data-key="[Salguero Suites] Piso" placeholder="Ej. 4"></div>
+      </div>
+      <div class="field"><label>Torre (si tu edificio tiene varias)</label><input type="text" data-key="[Salguero Suites] Torre" placeholder="Ej. Torre 1, o déjalo en blanco si no aplica"></div>
+      <div class="row2">
+        <div class="field"><label>Red WiFi (SSID)</label><input type="text" data-key="[Salguero Suites] Red WiFi" placeholder="Ej. Salguero_402"></div>
+        <div class="field"><label>Clave WiFi</label><input type="text" data-key="[Salguero Suites] Clave WiFi" placeholder="Ej. caribe2024"></div>
+      </div>
+      <div class="field"><label>Política de mascotas</label><input type="text" data-key="[Salguero Suites] Política de mascotas" placeholder="Ej. Se permiten mascotas pequeñas sin costo adicional"></div>
+    </div>
+  </div>
+
+  <div class="section" data-section>
+    <div class="section-head" onclick="toggleSection(this)">
+      <span class="section-title">Texto de bienvenida</span>
+      <span class="chev">▸</span>
+    </div>
+    <div class="section-body">
+      <div class="hint" style="margin-bottom:10px;">Escribe con tus palabras, sin presión — nosotros ajustamos la redacción al final.</div>
+      <div class="field"><label>Frase corta de portada (una línea)</label><input type="text" data-key="[Salguero Suites] Frase corta de portada" placeholder="Ej. Un refugio tranquilo a pasos del mar en Salguero."></div>
+      <div class="field"><label>2-3 destacados cortos para la portada</label><div class="hint">Sepáralas con una coma.</div><input type="text" data-key="[Salguero Suites] Destacados de portada" placeholder="Ej. Vista al mar, Cocina totalmente equipada"></div>
+      <div class="field"><label>Párrafo 1 — describe el apartamento y lo que lo hace especial</label><textarea data-key="[Salguero Suites] Bienvenida - párrafo 1" placeholder="Ej. Un refugio frente al mar en Salguero, Santa Marta..."></textarea></div>
+      <div class="field"><label>Párrafo 2 — qué hacer en Santa Marta y tu mensaje de bienvenida</label><textarea data-key="[Salguero Suites] Bienvenida - párrafo 2" placeholder="Ej. Deseamos que tu estadía sea inolvidable..."></textarea></div>
+    </div>
+  </div>
+
+  <div class="section" data-section>
+    <div class="section-head" onclick="toggleSection(this)">
+      <span class="section-title">Check-in / Check-out</span>
+      <span class="chev">▸</span>
+    </div>
+    <div class="section-body">
+      <div class="row2">
+        <div class="field"><label>Hora de check-in</label><input type="text" data-key="[Salguero Suites] Hora de check-in" placeholder="Ej. 3:00 PM"></div>
+        <div class="field"><label>Hora de check-out</label><input type="text" data-key="[Salguero Suites] Hora de check-out" placeholder="Ej. 11:30 AM"></div>
+      </div>
+      <div class="field"><label>¿Cómo es el proceso de llegada?</label><div class="hint">Como es un edificio nuevo para nosotros, cuéntanos el proceso completo: ¿el huésped llega a recepción? ¿cómo recibe la llave o clave de acceso?</div><textarea data-key="[Salguero Suites] Proceso de llegada" placeholder="Ej. El huésped llega a recepción, presenta identificación, y le entregan la llave / le enviamos el código por WhatsApp"></textarea></div>
+    </div>
+  </div>
+
+  <div class="section" data-section>
+    <div class="section-head" onclick="toggleSection(this)">
+      <span class="section-title">Tu suite</span>
+      <span class="chev">▸</span>
+    </div>
+    <div class="section-body">
+      <div class="row2">
+        <div class="field"><label>Camas (tipo y cantidad)</label><input type="text" data-key="[Salguero Suites] Camas" placeholder="Ej. 1 cama queen + sofá cama"></div>
+        <div class="field"><label>Vista o feature principal</label><input type="text" data-key="[Salguero Suites] Vista o feature" placeholder="Ej. Vista al mar"></div>
+      </div>
+      <div class="field"><label>Otras comodidades destacadas</label><input type="text" data-key="[Salguero Suites] Otras comodidades" placeholder="Ej. Jacuzzi, escritorio, balcón con mesa para dos"></div>
+    </div>
+  </div>
+
+  <div class="section" data-section>
+    <div class="section-head" onclick="toggleSection(this)">
+      <span class="section-title">Video y fotos</span>
+      <span class="chev">▸</span>
+    </div>
+    <div class="section-body">
+      <div class="field"><label>Enlace de Google Drive con tus fotos y video</label><div class="hint">En Drive: clic derecho sobre la carpeta → Compartir → cambia a "Cualquier persona con el enlace" → Copiar enlace, y pégalo aquí. Nos sirve tanto fotos del apartamento como del edificio (fachada, piscina, gimnasio, etc.).</div><input type="text" data-key="[Salguero Suites] Enlace de Google Drive (fotos y video)" placeholder="https://drive.google.com/drive/folders/..."></div>
+      <div class="field"><label>¿Tienes un video recorrido del apartamento?</label><input type="text" data-key="[Salguero Suites] Video recorrido" placeholder="Ej. Sí, está en el Drive / No, hay que grabarlo"></div>
+    </div>
+  </div>
+
+  <div class="section" data-section>
+    <div class="section-head" onclick="toggleSection(this)">
+      <span class="section-title">Otros detalles</span>
+      <span class="chev">▸</span>
+    </div>
+    <div class="section-body">
+      <div class="field"><label>Algo más que debamos saber sobre Salguero Suites</label><textarea data-key="[Salguero Suites] Otros detalles" placeholder="Escribe aquí..."></textarea></div>
     </div>
   </div>
 
@@ -245,12 +375,35 @@ function updateProgress(){
 document.querySelectorAll('[data-key]').forEach(el=>el.addEventListener('input',updateProgress));
 updateProgress();
 
+function addHourRow(listId,name,hours){
+  const list=document.getElementById(listId);
+  const row=document.createElement('div');
+  row.className='hours-row';
+  row.innerHTML='<input type="text" placeholder="Amenidad (ej. Piscina)" class="hour-name" value="'+(name||'')+'">'+
+    '<input type="text" placeholder="Horario (ej. 9:00am - 6:00pm)" class="hour-time" value="'+(hours||'')+'">'+
+    '<button type="button">✕</button>';
+  row.querySelector('button').onclick=()=>row.remove();
+  list.appendChild(row);
+}
+addHourRow('hoursListSalguero');
+addHourRow('hoursListSalguero');
+document.getElementById('addHourSalguero').onclick=()=>addHourRow('hoursListSalguero');
+
 function buildText(){
-  const lines=['Del Ventto — Información de Lilliana',''];
+  const lines=['Formulario de Lilliana — Del Ventto y Salguero Suites',''];
   document.querySelectorAll('[data-key]').forEach(el=>{
     const v=el.value.trim();
     if(v) lines.push(el.dataset.key+': '+v);
   });
+  const salgueroHours=[...document.querySelectorAll('#hoursListSalguero .hours-row')].map(r=>{
+    const n=r.querySelector('.hour-name').value.trim();
+    const t=r.querySelector('.hour-time').value.trim();
+    return n?n+': '+t:null;
+  }).filter(Boolean);
+  if(salgueroHours.length){
+    lines.push('[Salguero Suites] Horarios de amenidades:');
+    salgueroHours.forEach(h=>lines.push('- '+h));
+  }
   const photos=[...document.querySelectorAll('[data-photo]')].filter(c=>c.checked).map(c=>c.dataset.photo);
   if(photos.length){
     lines.push('');
@@ -284,8 +437,8 @@ async function submitForm(){
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         access_key:WEB3FORMS_KEY,
-        subject:'Del Ventto — Información de Lilliana',
-        from_name:'Lilliana (Formulario Del Ventto)',
+        subject:'Formulario de Lilliana — Del Ventto y Salguero Suites',
+        from_name:'Lilliana (Formulario Del Ventto / Salguero Suites)',
         email:'team@77rentals.com',
         message:text,
       }),
