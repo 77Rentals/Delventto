@@ -225,8 +225,8 @@ button.secondary:active{transform:scale(.98);}
   </div>
 
   <div class="actions">
-    <button class="primary" onclick="sendWhatsApp()">Enviar por WhatsApp</button>
-    <button class="secondary" onclick="sendEmail()">Enviar por email</button>
+    <button class="primary" id="submit-btn" onclick="submitForm()">Enviar formulario</button>
+    <button class="secondary" onclick="sendWhatsApp()">Enviar por WhatsApp</button>
     <button class="secondary" onclick="copyAll()">Copiar texto</button>
     <span class="status" id="status">Copiado ✓</span>
     <span class="progress" id="progress"></span>
@@ -272,10 +272,36 @@ function sendWhatsApp(){
   const text=buildText();
   window.open('https://wa.me/573502053147?text='+encodeURIComponent(text),'_blank');
 }
-function sendEmail(){
+const WEB3FORMS_KEY='6979f913-1573-41ce-bbdd-1df63fa27f73';
+async function submitForm(){
+  const btn=document.getElementById('submit-btn');
   const text=buildText();
-  const subject=encodeURIComponent('Del Ventto — Información de Lilliana');
-  window.location.href='mailto:team@77rentals.com?subject='+subject+'&body='+encodeURIComponent(text);
+  btn.disabled=true;
+  btn.textContent='Enviando...';
+  try{
+    const res=await fetch('https://api.web3forms.com/submit',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        access_key:WEB3FORMS_KEY,
+        subject:'Del Ventto — Información de Lilliana',
+        from_name:'Lilliana (Formulario Del Ventto)',
+        email:'team@77rentals.com',
+        message:text,
+      }),
+    });
+    const data=await res.json();
+    if(data.success){
+      btn.textContent='¡Enviado! ✓';
+      flashStatus('Enviado — ¡gracias! 🙌');
+    } else {
+      throw new Error(data.message||'error');
+    }
+  } catch(e){
+    btn.disabled=false;
+    btn.textContent='Enviar formulario';
+    flashStatus('No se pudo enviar — intenta con WhatsApp');
+  }
 }
 </script>
 </body>
