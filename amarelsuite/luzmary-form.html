@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Amarel Suite · Información pendiente</title>
+<title>Serena Apartasuite · Información pendiente</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <style>
@@ -121,7 +121,7 @@ button.secondary:active{transform:scale(.98);}
 <body>
 
 <div class="wrap">
-  <div class="eyebrow">Amarel Suite — para Luz Mary</div>
+  <div class="eyebrow">Serena Apartasuite — para Luz Mary</div>
   <h1>Lo que nos falta para completar la guía</h1>
   <p class="sub">Llena lo que puedas en cada sección (no es necesario todo de una vez). Al final hay un botón para copiar toda la información y enviárnosla por WhatsApp o email.</p>
 
@@ -151,7 +151,7 @@ button.secondary:active{transform:scale(.98);}
         <div class="field"><label>Piso</label><input type="text" data-key="Piso" placeholder="Ej. 8"></div>
       </div>
       <div class="row2">
-        <div class="field"><label>Red WiFi (SSID)</label><input type="text" data-key="Red WiFi" placeholder="Ej. Amarel_Suite"></div>
+        <div class="field"><label>Red WiFi (SSID)</label><input type="text" data-key="Red WiFi" placeholder="Ej. Serena Apart"></div>
         <div class="field"><label>Clave WiFi</label><input type="text" data-key="Clave WiFi" placeholder="Ej. caribe2024"></div>
       </div>
       <div class="field"><label>Política de mascotas</label><div class="hint">¿Se permiten? ¿Alguna condición o costo?</div><input type="text" data-key="Política de mascotas" placeholder="Ej. Se permiten mascotas pequeñas sin costo adicional"></div>
@@ -205,7 +205,7 @@ document.querySelectorAll('[data-key]').forEach(el=>el.addEventListener('input',
 updateProgress();
 
 function buildText(){
-  const lines=['Amarel Suite — Información del anfitrión',''];
+  const lines=['Serena Apartasuite — Información del anfitrión',''];
   document.querySelectorAll('[data-key]').forEach(el=>{
     const v=el.value.trim();
     if(v) lines.push(el.dataset.key+': '+v);
@@ -233,7 +233,7 @@ function sendWhatsApp(){
 }
 function sendEmail(){
   const text=buildText();
-  const subject=encodeURIComponent('Amarel Suite — Información del anfitrión');
+  const subject=encodeURIComponent('Serena Apartasuite — Información del anfitrión');
   window.location.href='mailto:team@77rentals.com?subject='+subject+'&body='+encodeURIComponent(text);
 }
 </script>
