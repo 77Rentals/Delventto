@@ -330,6 +330,20 @@ section,header,footer,.topbar{position:relative;z-index:1;}
 .place-links .pl-map:hover{background:var(--purple-deep);color:var(--white);}
 .place-links .pl-ig{border-color:#C13584;color:#C13584;}
 .place-links .pl-ig:hover{background:#C13584;color:var(--white);}
+.cards-photo{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:18px;}
+.place-photo{
+  background:var(--white);border-radius:20px;overflow:hidden;
+  border:1px solid #E8DCC8;position:relative;
+  transition:transform .25s, box-shadow .25s;
+}
+.place-photo:hover{transform:translateY(-4px);box-shadow:0 24px 44px -28px rgba(13,79,79,.4);}
+.place-photo-img{width:100%;height:170px;object-fit:cover;display:block;}
+.place-photo-body{padding:20px 22px 24px;position:relative;}
+.place-photo .place-tag{position:absolute;top:-16px;left:22px;}
+.place-photo h3{font-size:1.3rem;color:var(--purple-deep);margin:8px 0 4px;}
+.place-photo .place-meta{font-size:.76rem;font-weight:600;color:var(--gold);letter-spacing:.05em;margin-bottom:8px;}
+.place-photo p{font-size:.88rem;color:#4A4A4A;margin-bottom:12px;}
+.places-subtitle{margin-top:36px;font-size:1.5rem;color:var(--purple-deep);}
 
 /* Hosts */
 .hosts{
@@ -367,6 +381,18 @@ section,header,footer,.topbar{position:relative;z-index:1;}
   display:flex;gap:12px;align-items:flex-start;line-height:1.4;
 }
 .rule-card span.rc-icon{font-size:1.4rem;line-height:1;flex-shrink:0;}
+.escnna-card{
+  margin-top:18px;
+  border:1px solid #c0392b;border-radius:16px;
+  background:rgba(192,57,43,.06);
+  padding:18px 20px;
+  display:flex;gap:14px;align-items:flex-start;
+  cursor:pointer;transition:background .2s;
+}
+.escnna-card:hover{background:rgba(192,57,43,.12);}
+.escnna-card .rc-icon{font-size:1.6rem;line-height:1;flex-shrink:0;}
+.escnna-card b{display:block;color:#c0392b;font-size:.95rem;margin-bottom:3px;}
+.escnna-card small{display:block;color:#7a3229;font-size:.78rem;line-height:1.4;}
 .wifi-box{
   margin-top:22px;background:var(--gold-soft);border-radius:18px;padding:22px 26px;
   display:flex;gap:30px;flex-wrap:wrap;align-items:center;
@@ -631,17 +657,74 @@ footer a{color:var(--gold);text-decoration:none;}
 <section id="places">
   <span class="sec-eyebrow" data-es="Recomendaciones de tus anfitriones" data-en="Your hosts' picks">Recomendaciones de tus anfitriones</span>
   <h2 class="sec-title"><span data-es="Cosas por" data-en="Things to">Cosas por</span> <em data-es="hacer y ver" data-en="do and see">hacer y ver</em></h2>
-  <div class="cards">
-    <div class="place"><span class="place-tag tag-food" data-es="Comida y playa" data-en="Food & beach">Comida y playa</span><h3>Playa del Ritmo</h3><div class="place-meta" data-es="4 MIN CAMINANDO · DESDE $17K COP" data-en="4 MIN WALK · FROM $17K COP">4 MIN CAMINANDO · DESDE $17K COP</div><p data-es="Nuestro favorito. Gran variedad de comida y platos del día, con playa y servicio de ducha." data-en="Our favorite. Great variety of food and daily specials, with beach access and shower service.">Nuestro favorito. Gran variedad de comida y platos del día, con playa y servicio de ducha.</p></div>
-    <div class="place"><span class="place-tag tag-food" data-es="Compras y comida" data-en="Shopping & food">Compras y comida</span><h3>C.C. Zazué</h3><div class="place-meta" data-es="5 MIN EN CARRO" data-en="5 MIN BY CAR">5 MIN EN CARRO</div><p data-es="El centro comercial del sector: restaurantes, tiendas y todo lo que necesites a la mano." data-en="The neighborhood mall: restaurants, shops, and everything you need close at hand.">El centro comercial del sector: restaurantes, tiendas y todo lo que necesites a la mano.</p><div class="place-links"><a class="pl-map" href="https://maps.app.goo.gl/whVPKEkP45BuzX7y5" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
-    <div class="place"><span class="place-tag tag-food" data-es="Supermercado y restaurantes" data-en="Supermarket & dining">Supermercado y restaurantes</span><h3>Crepes & Waffles · Carulla</h3><div class="place-meta" data-es="C.C. ZAZUÉ · 5 MIN EN CARRO" data-en="ZAZUÉ MALL · 5 MIN BY CAR">C.C. ZAZUÉ · 5 MIN EN CARRO</div><p data-es="Buena oferta gastronómica y supermercado a la mano, justo en el centro comercial Zazué." data-en="Great dining options and a supermarket close by, right at the Zazué mall.">Buena oferta gastronómica y supermercado a la mano, justo en el centro comercial Zazué.</p></div>
-    <div class="place"><span class="place-tag tag-food" data-es="Leyenda local" data-en="Local legend">Leyenda local</span><h3>Pizza El Vómito</h3><div class="place-meta" data-es="EL RODADERO / GAIRA" data-en="EL RODADERO / GAIRA">EL RODADERO / GAIRA</div><p data-es="No dejes que el nombre te engañe. Es legendaria por la generosa (y caótica) cantidad de ingredientes y queso en cada porción." data-en="Don't let the name fool you. It's legendary for the generous (and chaotic) amount of toppings and cheese on every slice.">No dejes que el nombre te engañe. Es legendaria por la generosa (y caótica) cantidad de ingredientes y queso en cada porción.</p></div>
-    <div class="place"><span class="place-tag tag-fun" data-es="Playa y vida nocturna" data-en="Beach & nightlife">Playa y vida nocturna</span><h3>El Rodadero</h3><div class="place-meta" data-es="10 MIN EN CARRO" data-en="10 MIN BY CAR">10 MIN EN CARRO</div><p data-es="La zona turística más animada de Santa Marta: playa, restaurantes y vida nocturna." data-en="Santa Marta's liveliest tourist strip: beach, restaurants, and nightlife.">La zona turística más animada de Santa Marta: playa, restaurantes y vida nocturna.</p></div>
-    <div class="place"><span class="place-tag tag-fun" data-es="Cultura y vida nocturna" data-en="Culture & nightlife">Cultura y vida nocturna</span><h3 data-es="Centro Histórico y Parque de los Novios" data-en="Historic Center & Parque de los Novios">Centro Histórico y Parque de los Novios</h3><div class="place-meta" data-es="20 MIN EN CARRO" data-en="20 MIN BY CAR">20 MIN EN CARRO</div><p data-es="El corazón vibrante de la ciudad: casas coloniales, arte urbano y música en vivo en las plazas." data-en="The vibrant heart of the city: colonial houses, street art, and live music in the plazas.">El corazón vibrante de la ciudad: casas coloniales, arte urbano y música en vivo en las plazas.</p></div>
-    <div class="place"><span class="place-tag tag-food" data-es="Restaurante" data-en="Restaurant">Restaurante</span><h3>Harry's Steakhouse</h3><div class="place-meta" data-es="SANTA MARTA" data-en="SANTA MARTA">SANTA MARTA</div><p data-es="Cortes de carne de primera y ambiente sofisticado. Ideal para una cena especial." data-en="Premium cuts and a sophisticated atmosphere. Perfect for a special dinner.">Cortes de carne de primera y ambiente sofisticado. Ideal para una cena especial.</p><div class="place-links"><a class="pl-menu" href="https://www.qodeup.com/harrye039ssteakhouse" target="_blank" rel="noopener" data-es="📋 Menú" data-en="📋 Menu">📋 Menú</a><a class="pl-map" href="https://maps.app.goo.gl/oUi2Tstpj345js6A8" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
-    <div class="place"><span class="place-tag tag-food" data-es="Restaurante" data-en="Restaurant">Restaurante</span><h3>Cambiante</h3><div class="place-meta" data-es="SANTA MARTA" data-en="SANTA MARTA">SANTA MARTA</div><p data-es="Cocina contemporánea frente al mar. Una experiencia gastronómica que cambia con la temporada." data-en="Contemporary cuisine by the sea. A dining experience that changes with the season.">Cocina contemporánea frente al mar. Una experiencia gastronómica que cambia con la temporada.</p><div class="place-links"><a class="pl-menu" href="https://www.qodeup.com/cambiantealmar" target="_blank" rel="noopener" data-es="📋 Menú" data-en="📋 Menu">📋 Menú</a><a class="pl-map" href="https://maps.app.goo.gl/1vAeazmEDfQ7PWwy5" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
-    <div class="place"><span class="place-tag tag-food" data-es="Pizzería" data-en="Pizzeria">Pizzería</span><h3>Holguer Pizza</h3><div class="place-meta" data-es="SANTA MARTA" data-en="SANTA MARTA">SANTA MARTA</div><p data-es="Pizza artesanal con mucha personalidad. Uno de los favoritos locales." data-en="Artisan pizza with a lot of personality. A local favorite.">Pizza artesanal con mucha personalidad. Uno de los favoritos locales.</p><div class="place-links"><a class="pl-ig" href="https://www.instagram.com/holguerpizza/?hl=es" target="_blank" rel="noopener">📸 Instagram</a></div></div>
-    <div class="place"><span class="place-tag tag-fun" data-es="Historia" data-en="History">Historia</span><h3>Quinta de San Pedro Alejandrino</h3><div class="place-meta" data-es="HACIENDA DEL SIGLO XVII" data-en="17TH CENTURY HACIENDA">HACIENDA DEL SIGLO XVII</div><p data-es="Rodeada de árboles centenarios, aquí murió Simón Bolívar. Un oasis de cultura, arte y jardines botánicos." data-en="Surrounded by century-old trees, this is where Simón Bolívar died. An oasis of culture, art, and botanical gardens.">Rodeada de árboles centenarios, aquí murió Simón Bolívar. Un oasis de cultura, arte y jardines botánicos.</p></div>
+  <div class="cards-photo">
+    <div class="place-photo">
+      <img class="place-photo-img" src="https://images.pexels.com/photos/18054762/pexels-photo-18054762.jpeg" alt="Playa del Ritmo" loading="lazy">
+      <div class="place-photo-body"><span class="place-tag tag-food" data-es="Comida y playa" data-en="Food & beach">Comida y playa</span><h3>Playa del Ritmo</h3><div class="place-meta" data-es="4 MIN CAMINANDO · DESDE $17K COP" data-en="4 MIN WALK · FROM $17K COP">4 MIN CAMINANDO · DESDE $17K COP</div><p data-es="Nuestro favorito. Gran variedad de comida y platos del día, con playa y servicio de ducha." data-en="Our favorite. Great variety of food and daily specials, with beach access and shower service.">Nuestro favorito. Gran variedad de comida y platos del día, con playa y servicio de ducha.</p><div class="place-links"><a class="pl-map" href="https://www.google.com/maps/search/?api=1&query=Playa%20del%20Ritmo%20Santa%20Marta%20Colombia" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    </div>
+    <div class="place-photo">
+      <img class="place-photo-img" src="https://images.pexels.com/photos/264507/pexels-photo-264507.jpeg" alt="C.C. Zazué" loading="lazy">
+      <div class="place-photo-body"><span class="place-tag tag-food" data-es="Compras y comida" data-en="Shopping & food">Compras y comida</span><h3>C.C. Zazué</h3><div class="place-meta" data-es="5 MIN EN CARRO" data-en="5 MIN BY CAR">5 MIN EN CARRO</div><p data-es="El centro comercial del sector: restaurantes, tiendas y todo lo que necesites a la mano." data-en="The neighborhood mall: restaurants, shops, and everything you need close at hand.">El centro comercial del sector: restaurantes, tiendas y todo lo que necesites a la mano.</p><div class="place-links"><a class="pl-map" href="https://maps.app.goo.gl/whVPKEkP45BuzX7y5" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    </div>
+    <div class="place-photo">
+      <img class="place-photo-img" src="https://images.pexels.com/photos/315755/pexels-photo-315755.jpeg" alt="Pizza El Vómito" loading="lazy">
+      <div class="place-photo-body"><span class="place-tag tag-food" data-es="Leyenda local" data-en="Local legend">Leyenda local</span><h3>Pizza El Vómito</h3><div class="place-meta" data-es="EL RODADERO / GAIRA" data-en="EL RODADERO / GAIRA">EL RODADERO / GAIRA</div><p data-es="No dejes que el nombre te engañe. Es legendaria por la generosa (y caótica) cantidad de ingredientes y queso en cada porción." data-en="Don't let the name fool you. It's legendary for the generous (and chaotic) amount of toppings and cheese on every slice.">No dejes que el nombre te engañe. Es legendaria por la generosa (y caótica) cantidad de ingredientes y queso en cada porción.</p><div class="place-links"><a class="pl-map" href="https://www.google.com/maps/search/?api=1&query=Pizza%20El%20Vomito%20Santa%20Marta%20Colombia" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    </div>
+    <div class="place-photo">
+      <img class="place-photo-img" src="https://upload.wikimedia.org/wikipedia/commons/d/d8/2019_Santa_Marta_-_Casa_azul_en_el_Parque_de_Los_Novios.jpg" alt="Centro Histórico y Parque de los Novios" loading="lazy">
+      <div class="place-photo-body"><span class="place-tag tag-fun" data-es="Cultura y vida nocturna" data-en="Culture & nightlife">Cultura y vida nocturna</span><h3 data-es="Centro Histórico y Parque de los Novios" data-en="Historic Center & Parque de los Novios">Centro Histórico y Parque de los Novios</h3><div class="place-meta" data-es="20 MIN EN CARRO" data-en="20 MIN BY CAR">20 MIN EN CARRO</div><p data-es="El corazón vibrante de la ciudad: casas coloniales, arte urbano y música en vivo en las plazas." data-en="The vibrant heart of the city: colonial houses, street art, and live music in the plazas.">El corazón vibrante de la ciudad: casas coloniales, arte urbano y música en vivo en las plazas.</p><div class="place-links"><a class="pl-map" href="https://www.google.com/maps/search/?api=1&query=Parque%20de%20los%20Novios%20Centro%20Historico%20Santa%20Marta%20Colombia" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    </div>
+    <div class="place-photo">
+      <img class="place-photo-img" src="https://upload.wikimedia.org/wikipedia/commons/a/aa/Quinta_San_Pedro_de_Alejandrino_%282%29.JPG" alt="Quinta de San Pedro Alejandrino" loading="lazy">
+      <div class="place-photo-body"><span class="place-tag tag-fun" data-es="Historia" data-en="History">Historia</span><h3>Quinta de San Pedro Alejandrino</h3><div class="place-meta" data-es="HACIENDA DEL SIGLO XVII" data-en="17TH CENTURY HACIENDA">HACIENDA DEL SIGLO XVII</div><p data-es="Rodeada de árboles centenarios, aquí murió Simón Bolívar. Un oasis de cultura, arte y jardines botánicos." data-en="Surrounded by century-old trees, this is where Simón Bolívar died. An oasis of culture, art, and botanical gardens.">Rodeada de árboles centenarios, aquí murió Simón Bolívar. Un oasis de cultura, arte y jardines botánicos.</p><div class="place-links"><a class="pl-map" href="https://www.google.com/maps/search/?api=1&query=Quinta%20de%20San%20Pedro%20Alejandrino%20Santa%20Marta%20Colombia" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    </div>
+    <div class="place-photo">
+      <img class="place-photo-img" src="https://images.pexels.com/photos/675951/pexels-photo-675951.jpeg" alt="Harry's Steakhouse" loading="lazy">
+      <div class="place-photo-body"><span class="place-tag tag-food" data-es="Restaurante" data-en="Restaurant">Restaurante</span><h3>Harry's Steakhouse</h3><div class="place-meta" data-es="SANTA MARTA" data-en="SANTA MARTA">SANTA MARTA</div><p data-es="Cortes de carne de primera y ambiente sofisticado. Ideal para una cena especial." data-en="Premium cuts and a sophisticated atmosphere. Perfect for a special dinner.">Cortes de carne de primera y ambiente sofisticado. Ideal para una cena especial.</p><div class="place-links"><a class="pl-menu" href="https://www.qodeup.com/harrye039ssteakhouse" target="_blank" rel="noopener" data-es="📋 Menú" data-en="📋 Menu">📋 Menú</a><a class="pl-map" href="https://maps.app.goo.gl/oUi2Tstpj345js6A8" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    </div>
+    <div class="place-photo">
+      <img class="place-photo-img" src="https://images.pexels.com/photos/2120624/pexels-photo-2120624.jpeg" alt="Cambiante" loading="lazy">
+      <div class="place-photo-body"><span class="place-tag tag-food" data-es="Restaurante" data-en="Restaurant">Restaurante</span><h3>Cambiante</h3><div class="place-meta" data-es="SANTA MARTA" data-en="SANTA MARTA">SANTA MARTA</div><p data-es="Cocina contemporánea frente al mar. Una experiencia gastronómica que cambia con la temporada." data-en="Contemporary cuisine by the sea. A dining experience that changes with the season.">Cocina contemporánea frente al mar. Una experiencia gastronómica que cambia con la temporada.</p><div class="place-links"><a class="pl-menu" href="https://www.qodeup.com/cambiantealmar" target="_blank" rel="noopener" data-es="📋 Menú" data-en="📋 Menu">📋 Menú</a><a class="pl-map" href="https://maps.app.goo.gl/1vAeazmEDfQ7PWwy5" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    </div>
+    <div class="place-photo">
+      <img class="place-photo-img" src="https://images.pexels.com/photos/803290/pexels-photo-803290.jpeg" alt="Holguer Pizza" loading="lazy">
+      <div class="place-photo-body"><span class="place-tag tag-food" data-es="Pizzería" data-en="Pizzeria">Pizzería</span><h3>Holguer Pizza</h3><div class="place-meta" data-es="SANTA MARTA" data-en="SANTA MARTA">SANTA MARTA</div><p data-es="Pizza artesanal con mucha personalidad. Uno de los favoritos locales." data-en="Artisan pizza with a lot of personality. A local favorite.">Pizza artesanal con mucha personalidad. Uno de los favoritos locales.</p><div class="place-links"><a class="pl-ig" href="https://www.instagram.com/holguerpizza/?hl=es" target="_blank" rel="noopener">📸 Instagram</a></div></div>
+    </div>
+  </div>
+
+  <div class="cards-photo" style="margin-top:18px;">
+    <div class="place-photo">
+      <img class="place-photo-img" src="https://images.pexels.com/photos/264636/pexels-photo-264636.jpeg" alt="Crepes & Waffles · Carulla" loading="lazy">
+      <div class="place-photo-body"><span class="place-tag tag-food" data-es="Supermercado y restaurantes" data-en="Supermarket & dining">Supermercado y restaurantes</span><h3>Crepes & Waffles · Carulla</h3><div class="place-meta" data-es="C.C. ZAZUÉ · 5 MIN EN CARRO" data-en="ZAZUÉ MALL · 5 MIN BY CAR">C.C. ZAZUÉ · 5 MIN EN CARRO</div><p data-es="Buena oferta gastronómica y supermercado a la mano, justo en el centro comercial Zazué." data-en="Great dining options and a supermarket close by, right at the Zazué mall.">Buena oferta gastronómica y supermercado a la mano, justo en el centro comercial Zazué.</p><div class="place-links"><a class="pl-map" href="https://maps.app.goo.gl/whVPKEkP45BuzX7y5" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    </div>
+    <div class="place-photo">
+      <img class="place-photo-img" src="https://upload.wikimedia.org/wikipedia/commons/8/84/Beach_at_El_Rodadero_Colombia_-_panoramio_-_Lorne_Kelly.jpg" alt="El Rodadero" loading="lazy">
+      <div class="place-photo-body"><span class="place-tag tag-fun" data-es="Playa y vida nocturna" data-en="Beach & nightlife">Playa y vida nocturna</span><h3>El Rodadero</h3><div class="place-meta" data-es="10 MIN EN CARRO" data-en="10 MIN BY CAR">10 MIN EN CARRO</div><p data-es="La zona turística más animada de Santa Marta: playa, restaurantes y vida nocturna." data-en="Santa Marta's liveliest tourist strip: beach, restaurants, and nightlife.">La zona turística más animada de Santa Marta: playa, restaurantes y vida nocturna.</p><div class="place-links"><a class="pl-map" href="https://www.google.com/maps/search/?api=1&query=El%20Rodadero%2C%20Santa%20Marta%2C%20Colombia" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    </div>
+  </div>
+
+  <h3 class="places-subtitle" data-es="Excursiones de un día" data-en="Full day trips">Excursiones de un día</h3>
+  <div class="cards-photo">
+    <div class="place-photo">
+      <img class="place-photo-img" src="https://images.pexels.com/photos/12227830/pexels-photo-12227830.jpeg" alt="Parque Nacional Natural Tayrona" loading="lazy">
+      <div class="place-photo-body"><span class="place-tag tag-fun" data-es="Naturaleza" data-en="Nature">Naturaleza</span><h3>Parque Nacional Natural Tayrona</h3><div class="place-meta" data-es="~30-35 MIN EN CARRO" data-en="~30-35 MIN BY CAR">~30-35 MIN EN CARRO</div><p data-es="Selva tropical, montañas y playas de arena blanca bordeadas de palmeras — uno de los rincones más espectaculares del Caribe colombiano." data-en="Tropical jungle, mountains, and white-sand beaches fringed with palms — one of the most spectacular corners of the Colombian Caribbean.">Selva tropical, montañas y playas de arena blanca bordeadas de palmeras — uno de los rincones más espectaculares del Caribe colombiano.</p><div class="place-links"><a class="pl-map" href="https://www.google.com/maps/search/?api=1&query=Parque%20Nacional%20Natural%20Tayrona%2C%20Santa%20Marta" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    </div>
+    <div class="place-photo">
+      <img class="place-photo-img" src="https://images.pexels.com/photos/12858513/pexels-photo-12858513.jpeg" alt="Playa Blanca / Bahía Concha" loading="lazy">
+      <div class="place-photo-body"><span class="place-tag tag-fun" data-es="Playa tranquila" data-en="Quiet beach">Playa tranquila</span><h3>Playa Blanca / Bahía Concha</h3><div class="place-meta" data-es="~15-25 MIN EN CARRO O LANCHA" data-en="~15-25 MIN BY CAR OR BOAT">~15-25 MIN EN CARRO O LANCHA</div><p data-es="Una alternativa más tranquila y menos concurrida que las playas del centro, con aguas cristalinas ideales para relajarte todo el día." data-en="A calmer, less crowded alternative to the city beaches, with crystal-clear waters ideal for relaxing all day.">Una alternativa más tranquila y menos concurrida que las playas del centro, con aguas cristalinas ideales para relajarte todo el día.</p><div class="place-links"><a class="pl-map" href="https://www.google.com/maps/search/?api=1&query=Bah%C3%ADa%20Concha%2C%20Santa%20Marta" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    </div>
+    <div class="place-photo">
+      <img class="place-photo-img" src="https://images.pexels.com/photos/30717831/pexels-photo-30717831.jpeg" alt="Minca" loading="lazy">
+      <div class="place-photo-body"><span class="place-tag tag-fun" data-es="Montaña" data-en="Mountain">Montaña</span><h3>Minca</h3><div class="place-meta" data-es="~40-50 MIN EN CARRO" data-en="~40-50 MIN BY CAR">~40-50 MIN EN CARRO</div><p data-es="Pueblo de montaña en la Sierra Nevada, con cascadas, fincas cafeteras y muy buen avistamiento de aves. Un cambio de aire refrescante frente al calor de la playa." data-en="A mountain town in the Sierra Nevada, with waterfalls, coffee farms, and great birdwatching. A refreshing change of pace from the beach heat.">Pueblo de montaña en la Sierra Nevada, con cascadas, fincas cafeteras y muy buen avistamiento de aves. Un cambio de aire refrescante frente al calor de la playa.</p><div class="place-links"><a class="pl-map" href="https://www.google.com/maps/search/?api=1&query=Minca%2C%20Magdalena%2C%20Colombia" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    </div>
+    <div class="place-photo">
+      <img class="place-photo-img" src="https://images.pexels.com/photos/13717490/pexels-photo-13717490.jpeg" alt="Marina Internacional de Santa Marta" loading="lazy">
+      <div class="place-photo-body"><span class="place-tag tag-fun" data-es="Atardecer" data-en="Sunset">Atardecer</span><h3 data-es="Marina de Santa Marta" data-en="Santa Marta Marina">Marina de Santa Marta</h3><div class="place-meta" data-es="~20-25 MIN EN CARRO" data-en="~20-25 MIN BY CAR">~20-25 MIN EN CARRO</div><p data-es="Un paseo marítimo moderno junto al puerto histórico, perfecto para ver el atardecer con un cóctel mientras los yates se mecen en el agua." data-en="A modern waterfront promenade beside the historic port, perfect for watching the sunset with a cocktail while yachts bob in the water.">Un paseo marítimo moderno junto al puerto histórico, perfecto para ver el atardecer con un cóctel mientras los yates se mecen en el agua.</p><div class="place-links"><a class="pl-map" href="https://www.google.com/maps/search/?api=1&query=Marina%20Santa%20Marta%2C%20Santa%20Marta" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    </div>
+    <div class="place-photo">
+      <img class="place-photo-img" src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Casa_de_la_Aduana_Santa_Marta.jpg" alt="Museo del Oro Tairona" loading="lazy">
+      <div class="place-photo-body"><span class="place-tag tag-fun" data-es="Museo" data-en="Museum">Museo</span><h3 data-es="Museo del Oro Tairona" data-en="Museo del Oro Tairona">Museo del Oro Tairona</h3><div class="place-meta" data-es="~15-20 MIN EN CARRO" data-en="~15-20 MIN BY CAR">~15-20 MIN EN CARRO</div><p data-es="Ubicado en la Casa de la Aduana (1751), este museo exhibe orfebrería y cerámica precolombina de la cultura Tairona, con entrada gratuita en pleno centro histórico." data-en="Housed in the 1751 Casa de la Aduana, this museum displays pre-Columbian Tairona goldwork and ceramics, with free admission in the heart of the historic center.">Ubicado en la Casa de la Aduana (1751), este museo exhibe orfebrería y cerámica precolombina de la cultura Tairona, con entrada gratuita en pleno centro histórico.</p><div class="place-links"><a class="pl-map" href="https://www.google.com/maps/search/?api=1&query=Museo%20del%20Oro%20Tairona%2C%20Santa%20Marta" target="_blank" rel="noopener" data-es="📍 Cómo llegar" data-en="📍 Directions">📍 Cómo llegar</a></div></div>
+    </div>
   </div>
 </section>
 
@@ -679,6 +762,14 @@ footer a{color:var(--gold);text-decoration:none;}
     <div class="rule-card"><span class="rc-icon">🔑</span><span data-es="Cuidar las llaves o tarjetas de acceso" data-en="Please take care of keys and access cards">Cuidar las llaves o tarjetas de acceso</span></div>
     <div class="rule-card"><span class="rc-icon">📵</span><span data-es="Prohibido realizar fotos o videos con fines comerciales" data-en="Commercial photography or filming is not allowed">Prohibido realizar fotos o videos con fines comerciales</span></div>
     <div class="rule-card"><span class="rc-icon">🛠</span><span data-es="El huésped es responsable por cualquier daño causado al apartamento o sus bienes durante la estadía" data-en="The guest is liable for any damage caused to the apartment or its contents during the stay">El huésped es responsable por cualquier daño causado al apartamento o sus bienes durante la estadía</span></div>
+  </div>
+
+  <div class="escnna-card" onclick="openLB('escnna-notice.jpg')">
+    <span class="rc-icon">⚠️</span>
+    <div>
+      <b data-es="Advertencia ESCNNA" data-en="ESCNNA Warning">Advertencia ESCNNA</b>
+      <small data-es="Toca para ver el aviso completo sobre la prevención de la explotación sexual comercial de niños, niñas y adolescentes." data-en="Tap to view the full notice on preventing the commercial sexual exploitation of children and adolescents.">Toca para ver el aviso completo sobre la prevención de la explotación sexual comercial de niños, niñas y adolescentes.</small>
+    </div>
   </div>
 
   <h3 style="font-size:1.15rem;color:var(--purple-deep);margin:32px 0 14px;" data-es="Antes de salir" data-en="Before leaving">Antes de salir</h3>
