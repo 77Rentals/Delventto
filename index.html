@@ -4,15 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Delventto Pozos Colorados | Apartamentos en Santa Marta</title>
-  <meta name="description" content="Delventto — edificio premium en Pozos Colorados, Santa Marta. Piscina infinita en azotea, jacuzzi, sauna, gimnasio y zona social. Reserva tu estadía en Airbnb.">
+  <meta name="description" content="Delventto: edificio premium en Pozos Colorados, Santa Marta. Piscina infinita en azotea, jacuzzi, sauna, gimnasio y zona social. Reserva tu estadía en Airbnb.">
   <link rel="canonical" href="https://delventto.cloud/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://delventto.cloud/">
   <meta property="og:title" content="Delventto Pozos Colorados | Santa Marta">
-  <meta property="og:description" content="Delventto — edificio premium en Pozos Colorados, Santa Marta. Piscina infinita en azotea, jacuzzi, sauna, gimnasio y zona social. Reserva tu estadía en Airbnb.">
-  <meta property="og:image" content="https://delventto.cloud/Images/Delventto1.jpg">
+  <meta property="og:description" content="Delventto: edificio premium en Pozos Colorados, Santa Marta. Piscina infinita en azotea, jacuzzi, sauna, gimnasio y zona social. Reserva tu estadía en Airbnb.">
+  <meta property="og:image" content="https://delventto.cloud/Images/web/InfinityPool.jpg">
   <meta property="og:locale" content="es_CO">
   <meta property="og:locale:alternate" content="en_US">
 
@@ -20,7 +20,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Delventto Pozos Colorados | Santa Marta">
   <meta name="twitter:description" content="Edificio premium en Pozos Colorados, Santa Marta.">
-  <meta name="twitter:image" content="https://delventto.cloud/Images/Delventto1.jpg">
+  <meta name="twitter:image" content="https://delventto.cloud/Images/web/InfinityPool.jpg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -336,7 +336,7 @@
       height: 100%;
       z-index: 0;
       mix-blend-mode: screen;
-      opacity: 0.9;
+      opacity: 0.35;
     }
     .hero-overlay,
     .hero-content,
@@ -356,14 +356,16 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(155deg, #0d4f4f 0%, #1e6b6b 30%, #2d9a94 55%, #4aada8 75%, #c9a45a 100%);
+      background:
+        url('Images/web/InfinityPool.jpg') center 60% / cover no-repeat,
+        linear-gradient(155deg, #0d4f4f 0%, #1e6b6b 30%, #2d9a94 55%, #4aada8 75%, #c9a45a 100%);
       z-index: -1;
     }
 
     .hero-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom, rgba(15,50,50,0.35) 0%, rgba(15,50,50,0.20) 50%, rgba(15,50,50,0.55) 100%);
+      background: linear-gradient(to bottom, rgba(9,38,40,0.62) 0%, rgba(9,38,40,0.42) 45%, rgba(9,38,40,0.70) 100%);
       z-index: 1;
     }
 
@@ -390,7 +392,7 @@
       color: var(--turq-light);
       margin-bottom: 1.4rem;
       opacity: 0;
-      animation: fadeUp 0.8s 0.3s var(--ease) forwards;
+      animation: fadeUp 0.45s 0.05s var(--ease) forwards;
     }
     .hero-location::before,
     .hero-location::after {
@@ -405,7 +407,7 @@
       color: var(--white);
       margin-bottom: 1.2rem;
       opacity: 0;
-      animation: fadeUp 0.9s 0.5s var(--ease) forwards;
+      animation: fadeUp 0.45s 0.10s var(--ease) forwards;
     }
     .hero-content h1 em {
       color: var(--gold-light);
@@ -414,11 +416,12 @@
     .hero-sub {
       font-size: 1.08rem;
       font-weight: 300;
-      color: rgba(255,255,255,0.8);
+      color: rgba(255,255,255,0.92);
+      text-shadow: 0 1px 12px rgba(0,0,0,0.35);
       margin-bottom: 2.4rem;
       line-height: 1.6;
       opacity: 0;
-      animation: fadeUp 0.9s 0.7s var(--ease) forwards;
+      animation: fadeUp 0.45s 0.16s var(--ease) forwards;
     }
 
     .hero-ctas {
@@ -427,7 +430,7 @@
       justify-content: center;
       flex-wrap: wrap;
       opacity: 0;
-      animation: fadeUp 0.9s 0.9s var(--ease) forwards;
+      animation: fadeUp 0.45s 0.22s var(--ease) forwards;
     }
 
     /* Floating stat cards */
@@ -438,7 +441,7 @@
       justify-content: center;
       margin-top: 2.2rem;
       opacity: 0;
-      animation: fadeUp 0.9s 1.2s var(--ease) forwards;
+      animation: fadeUp 0.45s 0.28s var(--ease) forwards;
     }
     .hero-stat-card {
       background: rgba(255,255,255,0.12);
@@ -480,7 +483,7 @@
       text-transform: uppercase;
       color: rgba(255,255,255,0.5);
       opacity: 0;
-      animation: fadeUp 0.9s 1.5s var(--ease) forwards;
+      animation: fadeUp 0.45s 0.34s var(--ease) forwards;
     }
     .hero-scroll-line {
       width: 1px;
@@ -504,7 +507,7 @@
     }
 
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
+      from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
     }
     @keyframes scrollPulse {
@@ -606,50 +609,86 @@
     .amenities-header h2 { margin-bottom: 0.8rem; }
     .amenities-header p { max-width: 520px; margin: 0 auto; }
 
-    .amenities-grid {
+    .icon {
+      width: 1.5rem;
+      height: 1.5rem;
+      flex-shrink: 0;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .pillar-icon .icon { width: 1.7rem; height: 1.7rem; color: var(--turquoise); }
+    .location-point-icon .icon { width: 1.4rem; height: 1.4rem; color: var(--turq-light); display: block; }
+
+    .amenities-featured {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 1.2rem;
     }
-    .amenity-card {
-      background: rgba(253, 250, 245, 0.75);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.6);
-      border-radius: 4px;
-      padding: 1.8rem 1.4rem;
-      transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), background 0.3s var(--ease), border-color 0.3s var(--ease);
-      cursor: default;
-    }
-    .amenity-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 36px rgba(74,173,168,0.14);
+    .amenity-feature {
       background: var(--white);
-      border-color: var(--turq-light);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 2px 14px rgba(30,107,107,0.08);
+      transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
     }
-    .amenity-icon {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      display: block;
+    .amenity-feature:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 36px rgba(30,107,107,0.16);
     }
-    .amenity-card h3 {
-      font-size: 1.1rem;
-      margin-bottom: 0.4rem;
+    .amenity-feature-wide { grid-column: span 2; }
+    .amenity-feature-photo {
+      aspect-ratio: 4/3;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .amenity-feature { display: flex; flex-direction: column; }
+    .amenity-feature-wide .amenity-feature-photo { aspect-ratio: auto; flex: 1; min-height: 280px; }
+    .amenity-feature-body {
+      display: flex;
+      gap: 0.9rem;
+      align-items: flex-start;
+      padding: 1.2rem 1.3rem 1.4rem;
+      color: var(--deep-teal);
+    }
+    .amenity-feature-body h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.25rem;
       color: var(--text);
     }
-    .amenity-card p {
-      font-size: 0.83rem;
-      color: var(--text-light);
+    .amenity-feature-body p {
+      font-size: 0.9rem;
+      color: var(--text-mid);
       line-height: 1.55;
     }
-    .amenity-card .amenity-badge {
-      display: inline-block;
-      margin-top: 0.8rem;
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--turquoise);
+    .amenities-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.4rem;
+      margin-top: 2.2rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(30,107,107,0.15);
+    }
+    .amenity-item {
+      display: flex;
+      gap: 0.7rem;
+      align-items: flex-start;
+      color: var(--deep-teal);
+    }
+    .amenity-item strong {
+      display: block;
+      font-size: 0.92rem;
       font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.15rem;
+    }
+    .amenity-item span {
+      font-size: 0.82rem;
+      color: var(--text-mid);
+      line-height: 1.45;
     }
 
     /* ══════════════════════════════════════════════════
@@ -678,6 +717,7 @@
     .gallery-track::-webkit-scrollbar { height: 4px; }
     .gallery-track::-webkit-scrollbar-thumb { background: var(--sand-mid); border-radius: 2px; }
     .gallery-item {
+      cursor: zoom-in;
       flex: 0 0 360px;
       scroll-snap-align: start;
       aspect-ratio: 4/3;
@@ -691,17 +731,17 @@
       transition: transform 0.5s var(--ease);
     }
     .gallery-item:hover .gallery-item-bg { transform: scale(1.04); }
-    .gallery-item:nth-child(1) .gallery-item-bg { background: url('Images/InfinityPool.jpg') center/cover no-repeat; }
-    .gallery-item:nth-child(2) .gallery-item-bg { background: url('Images/Lobby.jpg') center/cover no-repeat; }
-    .gallery-item:nth-child(3) .gallery-item-bg { background: url('Images/RooftopPool.jpg') center/cover no-repeat; }
-    .gallery-item:nth-child(4) .gallery-item-bg { background: url('Images/Gym.jpg') center/cover no-repeat; }
-    .gallery-item:nth-child(5) .gallery-item-bg { background: url('Images/Social.jpg') center/cover no-repeat; }
-    .gallery-item:nth-child(6) .gallery-item-bg { background: url('Images/Rooftop.jpg') center/cover no-repeat; }
-    .gallery-item:nth-child(7) .gallery-item-bg { background: url('Images/Jacuzzi.jpg') center/cover no-repeat; }
-    .gallery-item:nth-child(8) .gallery-item-bg { background: url('Images/BuildingAerial.jpg') center/cover no-repeat; }
-    .gallery-item:nth-child(9) .gallery-item-bg { background: url('Images/Sauna.jpg') center/cover no-repeat; }
-    .gallery-item:nth-child(10) .gallery-item-bg { background: url('Images/BBQ.jpg') center/cover no-repeat; }
-    .gallery-item:nth-child(11) .gallery-item-bg { background: url('Images/MainPool.jpg') center/cover no-repeat; }
+    .gallery-item:nth-child(1) .gallery-item-bg { background: url('Images/web/InfinityPool.jpg') center/cover no-repeat; }
+    .gallery-item:nth-child(2) .gallery-item-bg { background: url('Images/web/Lobby.jpg') center/cover no-repeat; }
+    .gallery-item:nth-child(3) .gallery-item-bg { background: url('Images/web/RooftopPool.jpg') center/cover no-repeat; }
+    .gallery-item:nth-child(4) .gallery-item-bg { background: url('Images/web/Gym.jpg') center/cover no-repeat; }
+    .gallery-item:nth-child(5) .gallery-item-bg { background: url('Images/web/Social.jpg') center/cover no-repeat; }
+    .gallery-item:nth-child(6) .gallery-item-bg { background: url('Images/web/Rooftop.jpg') center/cover no-repeat; }
+    .gallery-item:nth-child(7) .gallery-item-bg { background: url('Images/web/Jacuzzi.jpg') center/cover no-repeat; }
+    .gallery-item:nth-child(8) .gallery-item-bg { background: url('Images/web/BuildingAerial.jpg') center/cover no-repeat; }
+    .gallery-item:nth-child(9) .gallery-item-bg { background: url('Images/web/Sauna.jpg') center/cover no-repeat; }
+    .gallery-item:nth-child(10) .gallery-item-bg { background: url('Images/web/BBQ.jpg') center/cover no-repeat; }
+    .gallery-item:nth-child(11) .gallery-item-bg { background: url('Images/web/MainPool.jpg') center/cover no-repeat; }
     .gallery-caption {
       position: absolute;
       bottom: 0; left: 0; right: 0;
@@ -719,6 +759,41 @@
       font-size: 1.1rem;
       font-weight: 400;
       color: var(--white);
+    }
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(6,26,27,0.92);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1.5rem;
+      cursor: zoom-out;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: min(1200px, 100%);
+      max-height: 80vh;
+      border-radius: 4px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .lightbox p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      color: var(--white);
+    }
+    .lightbox button {
+      position: absolute;
+      top: 1rem; right: 1.2rem;
+      background: none;
+      border: 0;
+      color: var(--white);
+      font-size: 1.6rem;
+      cursor: pointer;
+      padding: 0.5rem;
     }
     .gallery-placeholder-text {
       position: absolute;
@@ -1068,7 +1143,7 @@
     }
     .footer-copy {
       font-size: 0.76rem;
-      color: rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.45);
     }
     .footer-sponsor {
       font-size: 0.76rem;
@@ -1091,6 +1166,8 @@
       font-size: 0.85rem;
       transition: border-color 0.25s, color 0.25s;
       cursor: pointer;
+    }
+    .footer-social-icon .icon { width: 1rem; height: 1rem;
     }
     .footer-social-icon:hover {
       border-color: var(--turquoise);
@@ -1126,34 +1203,66 @@
     }
 
     @media (max-width: 1024px) {
-      .amenities-grid { grid-template-columns: repeat(2, 1fr); }
+      .amenities-featured { grid-template-columns: repeat(2, 1fr); }
+      .amenities-list { grid-template-columns: repeat(3, 1fr); }
       .building-pillars { grid-template-columns: 1fr 1fr; }
       .footer-top { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 768px) {
       .nav-logo span { display: none; }
       .nav-links, .nav-sponsor { display: none; }
+      .hero-scroll { display: none; }
       .hero-stat-card { padding: 0.7rem 1rem; }
       .hero-stats { gap: 0.6rem; }
       .nav-hamburger { display: flex; }
       .building-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       .location-grid { grid-template-columns: 1fr; }
       .location-map { aspect-ratio: 4/3; }
-      .amenities-grid { grid-template-columns: repeat(2, 1fr); }
+      .amenities-list { grid-template-columns: repeat(2, 1fr); }
       .owners-card { grid-template-columns: 1fr; }
       .footer-top { grid-template-columns: 1fr; gap: 2rem; }
       .footer-bottom { flex-direction: column; align-items: flex-start; }
       .building-pillars { grid-template-columns: 1fr; }
     }
     @media (max-width: 480px) {
-      .amenities-grid { grid-template-columns: 1fr; }
+      .amenities-featured { grid-template-columns: 1fr; }
+      .amenity-feature-wide { grid-column: auto; }
+      .amenity-feature-wide .amenity-feature-photo { aspect-ratio: 4/3; flex: none; min-height: 0; }
+      .amenities-list { grid-template-columns: 1fr; }
+      .gallery-item { flex-basis: 82vw; }
       .hero-ctas { flex-direction: column; align-items: center; }
       .stay-ctas { flex-direction: column; align-items: center; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01s !important; animation-delay: 0s !important; transition-duration: 0.01s !important; }
+      .fade-in { opacity: 1; transform: none; }
     }
   </style>
 </head>
 
 <body>
+
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <defs>
+      <symbol id="i-waves" viewBox="0 0 24 24"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></symbol>
+      <symbol id="i-gym" viewBox="0 0 24 24"><path d="M6 7v10M3 9.5v5M18 7v10M21 9.5v5M6 12h12"/></symbol>
+      <symbol id="i-sunset" viewBox="0 0 24 24"><path d="M12 3v4M5.6 8.6 7 10M18.4 8.6 17 10M2 17h20M7 17a5 5 0 0 1 10 0M6 21h12"/></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+      <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M2 9a15 15 0 0 1 20 0M5.5 12.5a10 10 0 0 1 13 0M9 16a5 5 0 0 1 6 0"/><circle cx="12" cy="19.5" r=".6"/></symbol>
+      <symbol id="i-car" viewBox="0 0 24 24"><path d="M5 17H3v-5l2-5h14l2 5v5h-2M4 12h16M9 17h6"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></symbol>
+      <symbol id="i-work" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></symbol>
+      <symbol id="i-racket" viewBox="0 0 24 24"><ellipse cx="14.5" cy="8.5" rx="4.6" ry="6" transform="rotate(35 14.5 8.5)"/><path d="M10.6 13.6 4 21"/><circle cx="19.5" cy="19" r="1.2"/></symbol>
+      <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1 3.5 5 5 5 10a5 5 0 0 1-10 0c0-2 .8-3.2 2-4.4.2 2 1 3 2 3.2C11 9 10.5 6.5 12 3z"/></symbol>
+      <symbol id="i-steam" viewBox="0 0 24 24"><path d="M4 20h16M6 16h12M8 4c-1.5 2 1.5 3.5 0 6M12 4c-1.5 2 1.5 3.5 0 6M16 4c-1.5 2 1.5 3.5 0 6"/></symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5a7 7 0 0 0-14 0C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+      <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l2.3 6.7L21 12l-6.7 2.3L12 21l-2.3-6.7L3 12l6.7-2.3z"/></symbol>
+      <symbol id="i-landmark" viewBox="0 0 24 24"><path d="M3 21h18M5 21V10M9.5 21V10M14.5 21V10M19 21V10M3 10l9-6 9 6z"/></symbol>
+      <symbol id="i-plane" viewBox="0 0 24 24"><path d="M21 3 3 10.5l7 2.5 2.5 7z"/><path d="M10 13l5-5"/></symbol>
+      <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19C5 10 10 5 20 5c0 10-5 15-14 15M5 19l8-8"/></symbol>
+      <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="3.8"/><circle cx="17" cy="7" r=".6"/></symbol>
+      <symbol id="i-chat" viewBox="0 0 24 24"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.6-4.3A8.5 8.5 0 1 1 20.5 11.5z"/></symbol>
+    </defs>
+  </svg>
 
   <!-- ═══════════════════ NAV ═══════════════════ -->
   <nav id="nav">
@@ -1201,16 +1310,16 @@
 
       <div class="hero-stats">
         <div class="hero-stat-card">
-          <span class="stat-num">5★</span>
-          <span class="stat-label" data-es="Calificación" data-en="Guest Rating">Calificación</span>
+          <span class="stat-num">4</span>
+          <span class="stat-label" data-es="Piscinas" data-en="Pools">Piscinas</span>
         </div>
         <div class="hero-stat-card">
-          <span class="stat-num">8+</span>
+          <span class="stat-num">10</span>
           <span class="stat-label" data-es="Amenidades" data-en="Amenities">Amenidades</span>
         </div>
         <div class="hero-stat-card">
-          <span class="stat-num">100m</span>
-          <span class="stat-label" data-es="A la Playa" data-en="To the Beach">A la Playa</span>
+          <span class="stat-num">15 min</span>
+          <span class="stat-label" data-es="Al Aeropuerto" data-en="To the Airport">Al Aeropuerto</span>
         </div>
       </div>
     </div>
@@ -1233,7 +1342,7 @@
       <div class="building-grid">
         <div class="fade-in">
           <div class="building-image">
-            <img src="Images/Delventto1.jpg" alt="Delventto Building" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+            <img src="Images/web/Delventto1.jpg" alt="Edificio Delventto en Pozos Colorados, Santa Marta" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
             <div class="building-image-accent"></div>
           </div>
         </div>
@@ -1245,12 +1354,12 @@
           <p data-es="Cada unidad combina un diseño cuidadoso con acabados de primera clase. La luz natural inunda los espacios a través de amplias ventanas, y cada detalle desde los materiales hasta la distribución ha sido seleccionado para crear espacios que se sienten tanto lujosos como genuinamente habitables." data-en="Each unit combines thoughtful design with first-class finishes. Natural light pours through expansive windows, and every detail from the materials to the layout has been selected to create spaces that feel both luxurious and genuinely livable.">Cada unidad combina un diseño cuidadoso con acabados de primera clase. La luz natural inunda los espacios a través de amplias ventanas, y cada detalle desde los materiales hasta la distribución ha sido seleccionado para crear espacios que se sienten tanto lujosos como genuinamente habitables.</p>
           <div class="building-pillars">
             <div class="pillar">
-              <span class="pillar-icon">🌴</span>
+              <span class="pillar-icon"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg></span>
               <h4 data-es="Ubicación Privilegiada" data-en="Prime Location">Ubicación Privilegiada</h4>
               <p data-es="A pasos de las mejores playas, restaurantes y cultura de Santa Marta" data-en="Steps from Santa Marta's best beaches, dining, and culture">A pasos de las mejores playas, restaurantes y cultura de Santa Marta</p>
             </div>
             <div class="pillar">
-              <span class="pillar-icon">✦</span>
+              <span class="pillar-icon"><svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg></span>
               <h4 data-es="Diseño Moderno" data-en="Modern Design">Diseño Moderno</h4>
               <p data-es="Acabados contemporáneos con calidez caribeña en cada detalle" data-en="Contemporary finishes with Caribbean warmth throughout">Acabados contemporáneos con calidez caribeña en cada detalle</p>
             </div>
@@ -1268,68 +1377,95 @@
         <h2 data-es="Visita Delventto<br>y sus Amenidades" data-en="Visit Delventto<br>and Its Amenities">Visita Delventto<br>y sus Amenidades</h2>
         <p data-es="Todo lo que necesitas para una estadía cómoda, cuidadosamente integrado en una sola dirección en Pozos Colorados." data-en="Everything you need for a comfortable stay, thoughtfully built into one address in Pozos Colorados.">Todo lo que necesitas para una estadía cómoda, cuidadosamente integrado en una sola dirección en Pozos Colorados.</p>
       </div>
-      <div class="amenities-grid">
-        <div class="amenity-card fade-in fade-in-delay-1">
-          <span class="amenity-icon">🏊</span>
-          <h3 data-es="4 Piscinas" data-en="4 Swimming Pools">4 Piscinas</h3>
-          <p data-es="Piscina principal, piscina infantil, piscina infinita en azotea y piscina cubierta en azotea." data-en="Main pool, kids pool, infinity rooftop pool, and indoor rooftop pool.">Piscina principal, piscina infantil, piscina infinita en azotea y piscina cubierta en azotea.</p>
-          <span class="amenity-badge" data-es="4 Opciones · Azotea Incluida" data-en="4 Options · Rooftop Included">4 Opciones · Azotea Incluida</span>
-        </div>
-        <div class="amenity-card fade-in fade-in-delay-2">
-          <span class="amenity-icon">🏋️</span>
-          <h3 data-es="Gimnasio" data-en="Fitness Center">Gimnasio</h3>
-          <p data-es="Gimnasio completamente equipado con máquinas modernas, pesas libres y luz natural." data-en="Fully equipped gym with modern machines, free weights, and natural light.">Gimnasio completamente equipado con máquinas modernas, pesas libres y luz natural.</p>
-          <span class="amenity-badge" data-es="Completamente Equipado" data-en="Fully Equipped">Completamente Equipado</span>
-        </div>
-        <div class="amenity-card fade-in fade-in-delay-3">
-          <span class="amenity-icon">🌅</span>
-          <h3 data-es="Terraza en Azotea" data-en="Rooftop Terrace">Terraza en Azotea</h3>
-          <p data-es="Un espacio social al aire libre con vistas al mar Caribe y zona de descanso." data-en="An open-air social space with Caribbean sea views and lounge seating.">Un espacio social al aire libre con vistas al mar Caribe y zona de descanso.</p>
-          <span class="amenity-badge" data-es="Vistas al Mar" data-en="Sea Views">Vistas al Mar</span>
-        </div>
-        <div class="amenity-card fade-in fade-in-delay-4">
-          <span class="amenity-icon">🔒</span>
-          <h3 data-es="Seguridad 24/7" data-en="24/7 Security">Seguridad 24/7</h3>
-          <p data-es="Seguridad permanente y acceso controlado para una total tranquilidad." data-en="Round-the-clock security and controlled access for complete peace of mind.">Seguridad permanente y acceso controlado para una total tranquilidad.</p>
-          <span class="amenity-badge" data-es="Siempre Activa" data-en="Always On">Siempre Activa</span>
-        </div>
-        <div class="amenity-card fade-in fade-in-delay-1">
-          <span class="amenity-icon">⚡</span>
-          <h3 data-es="WiFi de Alta Velocidad" data-en="High-Speed WiFi">WiFi de Alta Velocidad</h3>
-          <p data-es="Fibra óptica en cada unidad y área común. Mantente conectado desde cualquier lugar." data-en="Gigabit fiber in every unit and common area. Stay connected from anywhere.">Fibra óptica en cada unidad y área común. Mantente conectado desde cualquier lugar.</p>
-          <span class="amenity-badge" data-es="Fibra Óptica" data-en="Fiber Optic">Fibra Óptica</span>
-        </div>
-        <div class="amenity-card fade-in fade-in-delay-2">
-          <span class="amenity-icon">🚗</span>
-          <h3 data-es="Parqueadero Gratuito" data-en="Free Parking">Parqueadero Gratuito</h3>
-          <p data-es="Parqueadero seguro y gratuito disponible para huéspedes y residentes." data-en="Secure and free parking available for guests and residents.">Parqueadero seguro y gratuito disponible para huéspedes y residentes.</p>
-          <span class="amenity-badge" data-es="Gratuito · Seguro" data-en="Free · Secure">Gratuito · Seguro</span>
-        </div>
-        <div class="amenity-card fade-in fade-in-delay-3">
-          <span class="amenity-icon">💼</span>
-          <h3 data-es="Lounge de Coworking" data-en="Co-working Lounge">Lounge de Coworking</h3>
-          <p data-es="Un espacio de trabajo dedicado con áreas de reunión y mobiliario ergonómico para trabajo concentrado." data-en="A dedicated workspace with meeting areas and ergonomic seating for focused work.">Un espacio de trabajo dedicado con áreas de reunión y mobiliario ergonómico para trabajo concentrado.</p>
-          <span class="amenity-badge" data-es="Sala de Reuniones" data-en="Private Meeting Room">Sala de Reuniones</span>
-        </div>
-        <div class="amenity-card fade-in fade-in-delay-4">
-          <span class="amenity-icon">🎾</span>
-          <h3 data-es="Cancha de Squash" data-en="Squash Court">Cancha de Squash</h3>
-          <p data-es="Cancha de squash profesional disponible para residentes y huéspedes del edificio." data-en="Professional squash court available for residents and guests of the building.">Cancha de squash profesional disponible para residentes y huéspedes del edificio.</p>
-          <span class="amenity-badge" data-es="Cancha Profesional" data-en="Professional Court">Cancha Profesional</span>
-        </div>
-        <div class="amenity-card fade-in fade-in-delay-1">
-          <span class="amenity-icon">🔥</span>
-          <h3 data-es="Zona BBQ" data-en="BBQ Zone">Zona BBQ</h3>
-          <p data-es="Zona de barbacoa al aire libre, ideal para compartir con familia y amigos en el ambiente caribeño." data-en="Outdoor BBQ area, perfect for gathering with family and friends in the Caribbean setting.">Zona de barbacoa al aire libre, ideal para compartir con familia y amigos en el ambiente caribeño.</p>
-          <span class="amenity-badge" data-es="Aire Libre · Social" data-en="Outdoor · Social">Aire Libre · Social</span>
-        </div>
-        <div class="amenity-card fade-in fade-in-delay-2">
-          <span class="amenity-icon">🧖</span>
-          <h3 data-es="Sauna" data-en="Sauna">Sauna</h3>
-          <p data-es="Sauna privada para relajación y bienestar, con vistas a las montañas de Santa Marta." data-en="Private sauna for relaxation and wellness, with views of the Santa Marta mountains.">Sauna privada para relajación y bienestar, con vistas a las montañas de Santa Marta.</p>
-          <span class="amenity-badge" data-es="Relax · Bienestar" data-en="Relax · Wellness">Relax · Bienestar</span>
-        </div>
+      <div class="amenities-featured">
+        <article class="amenity-feature amenity-feature-wide fade-in">
+          <div class="amenity-feature-photo" role="img" aria-label="Piscina principal de Delventto" style="background-image:url('Images/web/MainPool.jpg');background-position:center;"></div>
+          <div class="amenity-feature-body">
+            <svg class="icon" aria-hidden="true"><use href="#i-waves"/></svg>
+            <div>
+              <h3 data-es="4 Piscinas" data-en="4 Swimming Pools">4 Piscinas</h3>
+              <p data-es="Piscina principal, piscina infantil, piscina infinita en azotea y piscina cubierta en azotea." data-en="Main pool, kids pool, infinity rooftop pool, and indoor rooftop pool.">Piscina principal, piscina infantil, piscina infinita en azotea y piscina cubierta en azotea.</p>
+            </div>
+          </div>
+        </article>
+        <article class="amenity-feature fade-in">
+          <div class="amenity-feature-photo" role="img" aria-label="Gimnasio de Delventto" style="background-image:url('Images/web/Gym.jpg');background-position:center;"></div>
+          <div class="amenity-feature-body">
+            <svg class="icon" aria-hidden="true"><use href="#i-gym"/></svg>
+            <div>
+              <h3 data-es="Gimnasio" data-en="Fitness Center">Gimnasio</h3>
+              <p data-es="Gimnasio completamente equipado con máquinas modernas, pesas libres y luz natural." data-en="Fully equipped gym with modern machines, free weights, and natural light.">Gimnasio completamente equipado con máquinas modernas, pesas libres y luz natural.</p>
+            </div>
+          </div>
+        </article>
+        <article class="amenity-feature fade-in">
+          <div class="amenity-feature-photo" role="img" aria-label="Terraza en la azotea de Delventto" style="background-image:url('Images/web/Rooftop.jpg');background-position:center;"></div>
+          <div class="amenity-feature-body">
+            <svg class="icon" aria-hidden="true"><use href="#i-sunset"/></svg>
+            <div>
+              <h3 data-es="Terraza en Azotea" data-en="Rooftop Terrace">Terraza en Azotea</h3>
+              <p data-es="Un espacio social al aire libre con vistas al mar Caribe y zona de descanso." data-en="An open-air social space with Caribbean sea views and lounge seating.">Un espacio social al aire libre con vistas al mar Caribe y zona de descanso.</p>
+            </div>
+          </div>
+        </article>
+        <article class="amenity-feature fade-in">
+          <div class="amenity-feature-photo" role="img" aria-label="Sauna de Delventto" style="background-image:url('Images/web/Sauna.jpg');background-position:center;"></div>
+          <div class="amenity-feature-body">
+            <svg class="icon" aria-hidden="true"><use href="#i-steam"/></svg>
+            <div>
+              <h3 data-es="Sauna" data-en="Sauna">Sauna</h3>
+              <p data-es="Sauna privada para relajación y bienestar, con vistas a las montañas de Santa Marta." data-en="Private sauna for relaxation and wellness, with views of the Santa Marta mountains.">Sauna privada para relajación y bienestar, con vistas a las montañas de Santa Marta.</p>
+            </div>
+          </div>
+        </article>
+        <article class="amenity-feature fade-in">
+          <div class="amenity-feature-photo" role="img" aria-label="Zona BBQ de Delventto" style="background-image:url('Images/web/BBQ.jpg');background-position:center;"></div>
+          <div class="amenity-feature-body">
+            <svg class="icon" aria-hidden="true"><use href="#i-flame"/></svg>
+            <div>
+              <h3 data-es="Zona BBQ" data-en="BBQ Zone">Zona BBQ</h3>
+              <p data-es="Zona de barbacoa al aire libre, ideal para compartir con familia y amigos en el ambiente caribeño." data-en="Outdoor BBQ area, perfect for gathering with family and friends in the Caribbean setting.">Zona de barbacoa al aire libre, ideal para compartir con familia y amigos en el ambiente caribeño.</p>
+            </div>
+          </div>
+        </article>
       </div>
+      <ul class="amenities-list fade-in">
+        <li class="amenity-item">
+          <svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg>
+          <div>
+            <strong data-es="Seguridad 24/7" data-en="24/7 Security">Seguridad 24/7</strong>
+            <span data-es="Seguridad permanente y acceso controlado." data-en="Round-the-clock security and controlled access.">Seguridad permanente y acceso controlado.</span>
+          </div>
+        </li>
+        <li class="amenity-item">
+          <svg class="icon" aria-hidden="true"><use href="#i-wifi"/></svg>
+          <div>
+            <strong data-es="WiFi de Alta Velocidad" data-en="High-Speed WiFi">WiFi de Alta Velocidad</strong>
+            <span data-es="Fibra óptica en cada unidad y área común." data-en="Fiber in every unit and common area.">Fibra óptica en cada unidad y área común.</span>
+          </div>
+        </li>
+        <li class="amenity-item">
+          <svg class="icon" aria-hidden="true"><use href="#i-car"/></svg>
+          <div>
+            <strong data-es="Parqueadero Gratuito" data-en="Free Parking">Parqueadero Gratuito</strong>
+            <span data-es="Seguro y gratuito para huéspedes y residentes." data-en="Secure and free for guests and residents.">Seguro y gratuito para huéspedes y residentes.</span>
+          </div>
+        </li>
+        <li class="amenity-item">
+          <svg class="icon" aria-hidden="true"><use href="#i-work"/></svg>
+          <div>
+            <strong data-es="Lounge de Coworking" data-en="Co-working Lounge">Lounge de Coworking</strong>
+            <span data-es="Espacio de trabajo con áreas de reunión." data-en="A dedicated workspace with meeting areas.">Espacio de trabajo con áreas de reunión.</span>
+          </div>
+        </li>
+        <li class="amenity-item">
+          <svg class="icon" aria-hidden="true"><use href="#i-racket"/></svg>
+          <div>
+            <strong data-es="Cancha de Squash" data-en="Squash Court">Cancha de Squash</strong>
+            <span data-es="Disponible para residentes y huéspedes." data-en="Available for residents and guests.">Disponible para residentes y huéspedes.</span>
+          </div>
+        </li>
+      </ul>
     </div>
   </section>
 
@@ -1430,28 +1566,28 @@
           <p data-es="Santa Marta es la ciudad más antigua de Colombia y la joya caribeña del país, donde las playas doradas, la Sierra Nevada y la vida urbana se encuentran. Delventto te pone en el centro de todo." data-en="Santa Marta is Colombia's oldest city and its Caribbean crown jewel, where golden beaches, the Sierra Nevada mountains, and vibrant city life converge. Delventto puts you at the center of it all.">Santa Marta es la ciudad más antigua de Colombia y la joya caribeña del país, donde las playas doradas, la Sierra Nevada y la vida urbana se encuentran. Delventto te pone en el centro de todo.</p>
           <div class="location-points">
             <div class="location-point">
-              <span class="location-point-icon">🏖️</span>
+              <span class="location-point-icon"><svg class="icon" aria-hidden="true"><use href="#i-waves"/></svg></span>
               <div class="location-point-text">
                 <strong data-es="Acceso a la Playa" data-en="Beach Access">Acceso a la Playa</strong>
                 <span data-es="3 min a pie hasta Playa Cabo Tortuga" data-en="3 min walk to Cabo Tortuga Beach">3 min a pie hasta Playa Cabo Tortuga</span>
               </div>
             </div>
             <div class="location-point">
-              <span class="location-point-icon">🏛️</span>
+              <span class="location-point-icon"><svg class="icon" aria-hidden="true"><use href="#i-landmark"/></svg></span>
               <div class="location-point-text">
                 <strong data-es="Centro Histórico" data-en="Historic Center">Centro Histórico</strong>
                 <span data-es="10 min al casco colonial" data-en="10 min to the colonial Old Town">10 min al casco colonial</span>
               </div>
             </div>
             <div class="location-point">
-              <span class="location-point-icon">✈️</span>
+              <span class="location-point-icon"><svg class="icon" aria-hidden="true"><use href="#i-plane"/></svg></span>
               <div class="location-point-text">
                 <strong data-es="Aeropuerto Simón Bolívar" data-en="Simón Bolívar Airport">Aeropuerto Simón Bolívar</strong>
                 <span data-es="15 min en carro desde el edificio" data-en="15 min drive from the building">15 min en carro desde el edificio</span>
               </div>
             </div>
             <div class="location-point">
-              <span class="location-point-icon">🌿</span>
+              <span class="location-point-icon"><svg class="icon" aria-hidden="true"><use href="#i-leaf"/></svg></span>
               <div class="location-point-text">
                 <strong data-es="Parque Tayrona" data-en="Tayrona National Park">Parque Tayrona</strong>
                 <span data-es="45 min al parque más icónico de Colombia" data-en="45 min to Colombia's most iconic park">45 min al parque más icónico de Colombia</span>
@@ -1473,7 +1609,7 @@
     <div class="stay-inner">
       <span class="section-label fade-in" data-es="Quédate en Delventto" data-en="Stay at Delventto">Quédate en Delventto</span>
       <h2 class="fade-in fade-in-delay-1" data-es="Encuentra tu Estadía<br><em>en Delventto</em>" data-en="Find Your Stay<br><em>at Delventto</em>">Encuentra tu Estadía<br><em>en Delventto</em></h2>
-      <p class="fade-in fade-in-delay-2" data-es='Muchos anfitriones en Delventto se pueden encontrar en Airbnb. Busca "Delventto" para descubrir unidades disponibles gestionadas por diferentes proveedores de servicios, incluyendo nuestro patrocinador <strong style="color:rgba(255,255,255,0.9)">77Rentals</strong>.' data-en='Many hosts at Delventto can be found on Airbnb. Search "Delventto" to discover available units managed by different service providers, including our sponsor <strong style="color:rgba(255,255,255,0.9)">77Rentals</strong>.'>Muchos anfitriones en Delventto se pueden encontrar en Airbnb. Busca "Delventto" para descubrir unidades disponibles gestionadas por diferentes proveedores de servicios, incluyendo nuestro patrocinador <strong style="color:rgba(255,255,255,0.9)">77Rentals</strong>.</p>
+      <p class="fade-in fade-in-delay-2" data-es='Muchos anfitriones en Delventto se pueden encontrar en Airbnb. Busca "Delventto" para descubrir unidades disponibles gestionadas por diferentes proveedores de servicios, incluyendo nuestro patrocinador <a href="https://77rentals.com/" target="_blank" rel="noopener" style="color:#fff;font-weight:600;text-decoration:underline;text-underline-offset:3px;">77Rentals</a>.' data-en='Many hosts at Delventto can be found on Airbnb. Search "Delventto" to discover available units managed by different service providers, including our sponsor <a href="https://77rentals.com/" target="_blank" rel="noopener" style="color:#fff;font-weight:600;text-decoration:underline;text-underline-offset:3px;">77Rentals</a>.'>Muchos anfitriones en Delventto se pueden encontrar en Airbnb. Busca "Delventto" para descubrir unidades disponibles gestionadas por diferentes proveedores de servicios, incluyendo nuestro patrocinador <a href="https://77rentals.com/" target="_blank" rel="noopener" style="color:#fff;font-weight:600;text-decoration:underline;text-underline-offset:3px;">77Rentals</a>.</p>
       <div class="stay-ctas fade-in fade-in-delay-3">
         <a href="https://www.airbnb.com.co/" target="_blank" rel="noopener" class="btn-white" data-es="Buscar Delventto en Airbnb ↗" data-en="Search Delventto on Airbnb ↗">Buscar Delventto en Airbnb ↗</a>
       </div>
@@ -1502,7 +1638,7 @@
       <div class="faq-list">
         <div class="faq-item">
           <button class="faq-q" data-es="¿Dónde está ubicado Delventto?" data-en="Where is Delventto located?">¿Dónde está ubicado Delventto?</button>
-          <div class="faq-a" data-es="En Pozos Colorados, Santa Marta, Colombia — a 5 minutos caminando de la playa Cabo Tortuga y a 15 minutos en carro del aeropuerto internacional." data-en="In Pozos Colorados, Santa Marta, Colombia — a 5-minute walk from Cabo Tortuga beach and 15 minutes by car from the international airport.">En Pozos Colorados, Santa Marta, Colombia — a 5 minutos caminando de la playa Cabo Tortuga y a 15 minutos en carro del aeropuerto internacional.</div>
+          <div class="faq-a" data-es="En Pozos Colorados, Santa Marta, Colombia, a 5 minutos caminando de la playa Cabo Tortuga y a 15 minutos en carro del aeropuerto internacional." data-en="In Pozos Colorados, Santa Marta, Colombia, a 5-minute walk from Cabo Tortuga beach and 15 minutes by car from the international airport.">En Pozos Colorados, Santa Marta, Colombia, a 5 minutos caminando de la playa Cabo Tortuga y a 15 minutos en carro del aeropuerto internacional.</div>
         </div>
         <div class="faq-item">
           <button class="faq-q" data-es="¿Qué amenidades tiene Delventto?" data-en="What amenities does Delventto have?">¿Qué amenidades tiene Delventto?</button>
@@ -1522,7 +1658,7 @@
         </div>
         <div class="faq-item">
           <button class="faq-q" data-es="¿Qué hace especial a Delventto?" data-en="What makes Delventto special?">¿Qué hace especial a Delventto?</button>
-          <div class="faq-a" data-es="La combinación de piscina infinita en azotea con vista al mar y las montañas, más la atención personalizada de todos los hosts. No es solo un lugar donde quedarse — es una experiencia." data-en="The combination of a rooftop infinity pool with views of the sea and mountains, plus the personalized attention of every host. It's not just a place to stay — it's an experience.">La combinación de piscina infinita en azotea con vista al mar y las montañas, más la atención personalizada de todos los hosts. No es solo un lugar donde quedarse — es una experiencia.</div>
+          <div class="faq-a" data-es="La combinación de piscina infinita en azotea con vista al mar y las montañas, más la atención personalizada de todos los hosts. No es solo un lugar donde quedarse: es una experiencia." data-en="The combination of a rooftop infinity pool with views of the sea and mountains, plus the personalized attention of every host. It's not just a place to stay: it's an experience.">La combinación de piscina infinita en azotea con vista al mar y las montañas, más la atención personalizada de todos los hosts. No es solo un lugar donde quedarse: es una experiencia.</div>
         </div>
         <div class="faq-item">
           <button class="faq-q" data-es="¿Hay cobro de manillas?" data-en="Is there a wristband fee?">¿Hay cobro de manillas?</button>
@@ -1555,23 +1691,25 @@
             <li><a href="https://www.airbnb.com.co/" target="_blank" rel="noopener" data-es="Reservar en Airbnb" data-en="Book on Airbnb">Reservar en Airbnb</a></li>
             <li><a href="#owners" data-es="Consultas de Propietarios" data-en="Owner Inquiries">Consultas de Propietarios</a></li>
             <li><a href="mailto:team@77rentals.com" data-es="Contáctanos" data-en="Contact Us">Contáctanos</a></li>
-            <li><a href="#" style="opacity:0.4;pointer-events:none;" data-es="Listar tu Unidad (Próximamente)" data-en="List Your Unit (Soon)">Listar tu Unidad (Próximamente)</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p class="footer-copy" data-es="v1.0 · © 2025 Delventto Pozos Colorados · Todos los derechos reservados" data-en="v1.0 · © 2025 Delventto Pozos Colorados · All rights reserved">v1.0 · © 2025 Delventto Pozos Colorados · Todos los derechos reservados</p>
-        <p class="footer-sponsor" data-es='Patrocinado con orgullo por <a href="#">77Rentals</a>' data-en='Proudly sponsored by <a href="#">77Rentals</a>'>Patrocinado con orgullo por <a href="#">77Rentals</a></p>
+        <p class="footer-copy" data-es="© 2026 77Rentals · Sitio creado y mantenido por 77Rentals" data-en="© 2026 77Rentals · Site created and maintained by 77Rentals">© 2026 77Rentals · Sitio creado y mantenido por 77Rentals</p>
+        <p class="footer-sponsor" data-es='Patrocinado con orgullo por <a href="https://77rentals.com/delventto/">77Rentals</a>' data-en='Proudly sponsored by <a href="https://77rentals.com/en/delventto/">77Rentals</a>'>Patrocinado con orgullo por <a href="https://77rentals.com/delventto/">77Rentals</a></p>
         <div class="footer-socials">
-          <div class="footer-social-icon" title="Instagram">IG</div>
-          <div class="footer-social-icon" title="Facebook">FB</div>
-          <div class="footer-social-icon" title="WhatsApp">WA</div>
+          <a class="footer-social-icon" href="https://www.instagram.com/co77rentals/" target="_blank" rel="noopener" aria-label="Instagram"><svg class="icon" aria-hidden="true"><use href="#i-instagram"/></svg></a>
+          <a class="footer-social-icon" href="https://wa.me/573046736241" target="_blank" rel="noopener" aria-label="WhatsApp"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg></a>
         </div>
       </div>
     </div>
   </footer>
 
-  <!-- WhatsApp Float -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto ampliada">
+    <button type="button" aria-label="Cerrar">✕</button>
+    <img alt="">
+    <p></p>
+  </div>
 
   <!-- ═══════════════════ SCRIPTS ═══════════════════ -->
   <script src="webgl-fluid.js"></script>
@@ -1709,6 +1847,32 @@
       fluidCanvas.dispatchEvent(evt);
     }, { passive: true });
 
+    /* Gallery lightbox */
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = lightbox.querySelector('img');
+    const lightboxCaption = lightbox.querySelector('p');
+    const openLightbox = (tile) => {
+      const bg = getComputedStyle(tile.querySelector('.gallery-item-bg')).backgroundImage;
+      const url = (bg.match(/url\(["']?(.*?)["']?\)/) || [])[1];
+      if (!url) return;
+      const title = tile.querySelector('h4').textContent;
+      lightboxImg.src = url;
+      lightboxImg.alt = title;
+      lightboxCaption.textContent = title;
+      lightbox.classList.add('open');
+    };
+    const closeLightbox = () => lightbox.classList.remove('open');
+    document.querySelectorAll('.gallery-item').forEach(tile => {
+      tile.tabIndex = 0;
+      tile.setAttribute('role', 'button');
+      tile.addEventListener('click', () => openLightbox(tile));
+      tile.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(tile); }
+      });
+    });
+    lightbox.addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
     /* FAQ accordion */
     document.querySelectorAll('.faq-q').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -1725,7 +1889,7 @@
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      {"@type":"Question","name":"¿Dónde está ubicado Delventto?","acceptedAnswer":{"@type":"Answer","text":"En Pozos Colorados, Santa Marta, Colombia — a 5 minutos caminando de la playa Cabo Tortuga y a 15 minutos en carro del aeropuerto internacional."}},
+      {"@type":"Question","name":"¿Dónde está ubicado Delventto?","acceptedAnswer":{"@type":"Answer","text":"En Pozos Colorados, Santa Marta, Colombia, a 5 minutos caminando de la playa Cabo Tortuga y a 15 minutos en carro del aeropuerto internacional."}},
       {"@type":"Question","name":"¿Qué amenidades tiene Delventto?","acceptedAnswer":{"@type":"Answer","text":"Piscina infinita en azotea, jacuzzi, sauna, gimnasio completamente equipado, zona BBQ, rooftop, piscina en primer piso, piscina para niños, piscina climatizada, campo de squash, coworking y sala de descanso."}},
       {"@type":"Question","name":"¿Cómo puedo reservar una estadía en Delventto?","acceptedAnswer":{"@type":"Answer","text":"Puedes reservar a través de Airbnb, Booking.com, Despegar o Expedia."}},
       {"@type":"Question","name":"¿Delventto tiene parqueadero?","acceptedAnswer":{"@type":"Answer","text":"Sí, Delventto cuenta con parqueadero gratuito y seguro para los huéspedes."}},
@@ -1743,7 +1907,7 @@
     "name": "Delventto",
     "description": "Edificio premium de uso mixto en Pozos Colorados, Santa Marta, Colombia.",
     "url": "https://delventto.cloud",
-    "image": "https://delventto.cloud/Images/Delventto1.jpg",
+    "image": "https://delventto.cloud/Images/web/InfinityPool.jpg",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Pozos Colorados",
