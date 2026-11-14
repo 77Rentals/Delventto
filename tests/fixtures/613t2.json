@@ -21,10 +21,9 @@
   "checkout": "11:00",
   "lock": {
     "steps": [
-      {"es": "Al llegar al Edificio Delventto, dirígete a la recepción.", "en": "When you arrive at the Delventto Building, head to reception."},
-      {"es": "Presenta los documentos de identidad de todos los huéspedes y tu confirmación de reserva para el Apto 613T2.", "en": "Present ID for all guests along with your booking confirmation for Apt 613T2."},
-      {"es": "Te enviaremos la clave digital de la cerradura por WhatsApp.", "en": "We'll send your digital lock code via WhatsApp."},
-      {"es": "Para abrir: presiona el botón Yale, ingresa tu código y confirma con el chulito.", "en": "To open: press the Yale button, enter your code and confirm with the checkmark."}
+      {"title": {"es": "Registro", "en": "Registration"}, "text": {"es": "Al llegar al Edificio Delventto, dirígete a la recepción.", "en": "When you arrive at the Delventto Building, head to reception."}},
+      {"title": {"es": "Identificación", "en": "ID"}, "text": {"es": "Presenta los documentos de identidad de todos los huéspedes y tu confirmación de reserva para el Apto 613T2.", "en": "Present ID for all guests along with your booking confirmation for Apt 613T2."}},
+      {"title": {"es": "Acceso", "en": "Access"}, "text": {"es": "Te enviaremos la clave digital de la cerradura por WhatsApp. Para abrir: presiona el botón Yale, ingresa tu código y confirma con el chulito.", "en": "We'll send your digital lock code via WhatsApp. To open: press the Yale button, enter your code and confirm with the checkmark."}}
     ]
   },
   "ac": {

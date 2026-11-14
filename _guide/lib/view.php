@@ -190,10 +190,19 @@ function title_html(array $T, string $emph): string
     }
     [$esA, $esB] = explode($emph, $T['es'], 2);
     [$enA, $enB] = explode($emph, $T['en'], 2);
-    $out = t(['es' => rtrim($esA), 'en' => rtrim($enA)]);
-    $out .= ($out !== '' ? ' ' : '') . '<em>' . h($emph) . '</em>';
-    $after = t(['es' => ltrim($esB), 'en' => ltrim($enB)]);
-    return $out . ($after !== '' ? ' ' . $after : '');
+    // The parts around the emphasis differ per language ("Edificio |Delventto|" vs
+    // "|Delventto| Building"), so each side keeps its own, possibly empty, text and
+    // its spacing; t() would copy one language into the other.
+    return title_part($esA, $enA) . '<em>' . h($emph) . '</em>' . title_part($esB, $enB);
+}
+
+/** A language span that may be empty in one language; nothing when empty in both. */
+function title_part(string $es, string $en): string
+{
+    if (trim($es) === '' && trim($en) === '') {
+        return '';
+    }
+    return '<span data-es="' . h($es) . '" data-en="' . h($en) . '">' . h($es) . '</span>';
 }
 
 /** /_guide/assets/<file> with a cache-busting version from its modification time. */

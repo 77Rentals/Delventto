@@ -308,6 +308,8 @@ test('gate: same look, posts name and code, shows no guide data', function () {
         ok(strpos($html, $leak) === false, "gate leaks $leak");
     }
     rt_no_dashes($html, 'gate');
+    ok(strpos($html, '<span data-es="Edificio " data-en="">Edificio </span><em>Delventto</em><span data-es="" data-en=" Building"></span>') !== false, 'title halves per language: ' . $html);
+    ok(strpos($html, 'Delventto Building"') === false && strpos($html, 'Edificio Delventto Building') === false, 'no ES and EN concatenation');
     $err = render_gate($g, rt_building(), true, 'Ana <b>');
     ok(strpos($err, 'gate-error show') !== false, 'error state');
     ok(strpos($err, 'Ana &lt;b&gt;') !== false, 'posted name escaped back');
@@ -514,4 +516,36 @@ test('photo.php: 403 without the gate, served with it, 404 when missing', functi
         eq($r['raw'], rt_jpeg());
         eq(at_http($ctx, 'GET', '/apto-1204/photo/zz.jpg', '', rt_cookie('apto-1204'))['status'], 404, 'missing photo');
     });
+});
+
+test('render: title_html keeps each language to itself', function () {
+    eq(title_html(['es' => 'Edificio Delventto', 'en' => 'Delventto Building'], 'Delventto'),
+        '<span data-es="Edificio " data-en="">Edificio </span><em>Delventto</em><span data-es="" data-en=" Building"></span>');
+    eq(title_html(['es' => 'Apartasuite 613T2', 'en' => 'Apartasuite 613T2'], '613T2'),
+        '<span data-es="Apartasuite " data-en="Apartasuite ">Apartasuite </span><em>613T2</em>');
+});
+
+test('render: lock step titles render like 613T2, plain steps without one', function () {
+    $html = rt_render(rt_fixture('613t2'));
+    foreach ([['Registro', 'Registration'], ['Identificación', 'ID'], ['Acceso', 'Access']] as [$es, $en]) {
+        ok(strpos($html, '<strong><span data-es="' . h($es) . '" data-en="' . $en . '">') !== false, "title $es");
+    }
+    ok(preg_match('#<div class="step-num">5</div><div>\s*<strong>WiFi</strong>#', $html) === 1, '613T2 numbering: WiFi is step 5');
+    $min = rt_render(rt_fixture('minimal'));
+    ok(preg_match('#<div class="step-num">1</div><div>\s*<p class="step-text">#', $min) === 1, 'plain T step has no title');
+});
+
+test('render: places follow places.building then places.own, whatever the card type', function () {
+    $g = rt_fixture('613t2');
+    $g['places']['building'] = ['playa-del-ritmo', 'zazue', 'pizza-el-vomito', 'centro-historico', 'quinta-san-pedro', 'harrys', 'cambiante', 'holguer', 'la-samaria', 'crepes-carulla', 'el-rodadero', 'tayrona'];
+    $html = rt_render($g);
+    $pos = fn (string $needle) => strpos($html, $needle);
+    ok($pos('<h3><span data-es="Holguer Pizza"') < $pos('<h3><span data-es="Arepas de Huevo y Jugos Naturales &quot;La Samaria&quot;"') && $pos('<h3><span data-es="Arepas de Huevo y Jugos Naturales &quot;La Samaria&quot;"') < $pos('<h3><span data-es="Crepes &amp; Waffles'), 'La Samaria between Holguer and Crepes & Waffles');
+    ok($pos('<h3><span data-es="Crepes &amp; Waffles') < $pos('<h3><span data-es="El Rodadero"') && $pos('<h3><span data-es="El Rodadero"') < $pos('Excursiones de un día'), 'day trips after the nearby cards');
+    // own places come after the building picks
+    ok($pos('Arepas de Huevo y Jugos Naturales La Samaria') > $pos('<h3><span data-es="El Rodadero"'), 'own places last');
+    // three grids before the day trips: photo cards, the La Samaria text card, photo cards again
+    $nearby = substr($html, $pos('id="places"'), $pos('Excursiones de un día') - $pos('id="places"'));
+    eq(preg_match_all('#<div class="(cards-photo|cards cards-text)">#', $nearby, $m), 4);
+    eq($m[1], ['cards-photo', 'cards cards-text', 'cards-photo', 'cards cards-text']);
 });

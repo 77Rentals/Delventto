@@ -70,7 +70,15 @@ function validate_guide(array $g, array $building, string $slug): array
     if (!is_array($lock)) {
         guide_problem($p, 'lock', 'Faltan los pasos para abrir la puerta');
     } else {
+        // A step is a T, or {title?: T [..40], text: T} when it has a bold title (613T2 style).
         guide_check_list($p, $lock['steps'] ?? null, 'lock.steps', 'los pasos para abrir la puerta', 1, 6, function ($item, $f) use (&$p) {
+            if (is_array($item) && (array_key_exists('title', $item) || array_key_exists('text', $item))) {
+                guide_check_t($p, $item['text'] ?? null, "$f.text", 'el texto del paso', null);
+                if (array_key_exists('title', $item)) {
+                    guide_check_t($p, $item['title'], "$f.title", 'el título del paso', 40);
+                }
+                return;
+            }
             guide_check_t($p, $item, $f, 'el paso', null);
         });
         guide_check_optional_string($p, $lock, 'photo', 'lock.photo', 'la foto de la cerradura');

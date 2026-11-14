@@ -88,12 +88,12 @@ test('validate: en dash is caught too', function () {
 
 test('validate: door code in lock step is caught', function () {
     $g = vt_fixture('613t2');
-    $g['lock']['steps'][0]['es'] = 'Clave de la puerta: 4821';
+    $g['lock']['steps'][0]['text']['es'] = 'Clave de la puerta: 4821';
     $p = vt_run($g);
-    ok(vt_has($p, 'lock.steps.0.es'));
+    ok(vt_has($p, 'lock.steps.0.text.es'));
     $msg = '';
     foreach ($p as $x) {
-        if ($x['field'] === 'lock.steps.0.es' && strpos($x['message'], 'código de puerta') !== false) {
+        if ($x['field'] === 'lock.steps.0.text.es' && strpos($x['message'], 'código de puerta') !== false) {
             $msg = $x['message'];
         }
     }
@@ -102,8 +102,8 @@ test('validate: door code in lock step is caught', function () {
 
 test('validate: standalone number in lock step is caught even without a keyword', function () {
     $g = vt_fixture('613t2');
-    $g['lock']['steps'][1]['en'] = 'Type 482913 and press the button';
-    ok(vt_has(vt_run($g), 'lock.steps.1.en'));
+    $g['lock']['steps'][1]['text']['en'] = 'Type 482913 and press the button';
+    ok(vt_has(vt_run($g), 'lock.steps.1.text.en'));
 });
 
 test('validate: door code keyword in welcome, rules and hosts is caught', function () {
@@ -120,7 +120,7 @@ test('validate: door code keyword in welcome, rules and hosts is caught', functi
 
 test('validate: lock step without a number is fine', function () {
     $g = vt_fixture('613t2');
-    $g['lock']['steps'][0]['es'] = 'Pulsa el botón Yale y luego tu código';
+    $g['lock']['steps'][0]['text']['es'] = 'Pulsa el botón Yale y luego tu código';
     eq(vt_run($g), []);
 });
 
@@ -291,10 +291,10 @@ test('validate: wrong types do not crash', function () {
 test('validate: unit number in a lock step is not a door code', function () {
     $g = vt_fixture('613t2');
     $g['unit'] = '1204';
-    $g['lock']['steps'][0]['es'] = 'Sube al piso 12, apartamento 1204';
+    $g['lock']['steps'][0]['text']['es'] = 'Sube al piso 12, apartamento 1204';
     eq(vt_run($g), []);
     $g = vt_fixture('613t2');
-    $g['lock']['steps'][0]['es'] = 'Apartamento 613T2, tu código llega por WhatsApp';
+    $g['lock']['steps'][0]['text']['es'] = 'Apartamento 613T2, tu código llega por WhatsApp';
     eq(vt_run($g), []);
 });
 
@@ -310,8 +310,8 @@ test('validate: keywords match whole words only', function () {
 
 test('validate: digits before the keyword are caught', function () {
     $g = vt_fixture('613t2');
-    $g['lock']['steps'][0]['es'] = '4821 es tu código';
-    ok(vt_has(vt_run($g), 'lock.steps.0.es'));
+    $g['lock']['steps'][0]['text']['es'] = '4821 es tu código';
+    ok(vt_has(vt_run($g), 'lock.steps.0.text.es'));
     $g = vt_fixture('613t2');
     $g['welcome']['en'] = 'Use 4821 as your PIN';
     ok(vt_has(vt_run($g), 'welcome.en'));
@@ -319,6 +319,32 @@ test('validate: digits before the keyword are caught', function () {
 
 test('validate: keyword plus code still caught after the fix', function () {
     $g = vt_fixture('613t2');
+    $g['lock']['steps'][0]['text']['es'] = 'Clave de la puerta: 4821';
+    ok(vt_has(vt_run($g), 'lock.steps.0.text.es'));
+});
+
+test('validate: lock steps accept plain T and {title, text}', function () {
+    $g = vt_fixture('613t2');
+    eq($g['lock']['steps'][0]['title']['es'], 'Registro', 'fixture carries the 613T2 titles');
+    $g['lock']['steps'][] = ['es' => 'Paso sin título', 'en' => 'Step with no title'];
+    $g['lock']['steps'][] = ['text' => ['es' => 'Solo texto', 'en' => 'Text only']];
+    eq(vt_run($g), [], 'mixed shapes');
+    $g = vt_fixture('613t2');
+    $g['lock']['steps'][0] = ['title' => ['es' => 'Acceso', 'en' => 'Access']];
+    eq(vt_fields(vt_run($g)), ['lock.steps.0.text'], 'title without text');
+    $g = vt_fixture('613t2');
+    $g['lock']['steps'][0]['title']['en'] = str_repeat('a', 41);
+    eq(vt_fields(vt_run($g)), ['lock.steps.0.title.en'], 'title over 40');
+    $g = vt_fixture('613t2');
+    $g['lock']['steps'][0]['title']['es'] = 'Clave 4821';
+    ok(vt_has(vt_run($g), 'lock.steps.0.title.es'), 'door code in a title');
+    $g = vt_fixture('613t2');
+    $g['lock']['steps'][0]['title']['es'] = 'Acceso <b>';
+    ok(vt_has(vt_run($g), 'lock.steps.0.title.es'), 'HTML in a title');
+});
+
+test('validate: door code in a plain T lock step is still caught', function () {
+    $g = vt_fixture('minimal');
     $g['lock']['steps'][0]['es'] = 'Clave de la puerta: 4821';
     ok(vt_has(vt_run($g), 'lock.steps.0.es'));
 });

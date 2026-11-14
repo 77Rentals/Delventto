@@ -21,7 +21,15 @@ foreach (lval($g['photos'] ?? null) as $p) {
     }
 }
 
-$lockSteps = array_values(array_filter(array_map('tval', lval($g['lock']['steps'] ?? null))));
+// A lock step is a T or {title?: T, text: T}; normalized to ['title' => ?T, 'text' => T].
+$lockSteps = [];
+foreach (lval($g['lock']['steps'] ?? null) as $ls) {
+    $isObj = is_array($ls) && (array_key_exists('title', $ls) || array_key_exists('text', $ls));
+    $text = tval($isObj ? ($ls['text'] ?? null) : $ls);
+    if ($text !== null) {
+        $lockSteps[] = ['title' => $isObj ? tval($ls['title'] ?? null) : null, 'text' => $text];
+    }
+}
 $lockPhoto = sval($g['lock']['photo'] ?? null);
 $ac = is_array($g['ac'] ?? null) ? $g['ac'] : null;
 $wifi = is_array($g['wifi'] ?? null) && sval($g['wifi']['ssid'] ?? null) !== '' ? $g['wifi'] : null;
@@ -42,10 +50,10 @@ if ($beforeLeaving === []) {
     $beforeLeaving = $iconList($b['beforeLeaving'] ?? null);
 }
 
-// Places: the building cards the guide picked (nearby with a photo, nearby without
-// one, day trips), plus the owner's own recommendations.
+// Places: the building cards the guide picked, in the guide's order, then the owner's
+// own recommendations; day trips go under their own subtitle as in 613T2.
 $bPlaces = is_array($b['places'] ?? null) ? $b['places'] : [];
-$nearbyPhoto = $nearbyText = $dayTrips = [];
+$nearby = $dayTrips = [];
 foreach (lval($g['places']['building'] ?? null) as $key) {
     $pl = is_string($key) ? ($bPlaces[$key] ?? null) : null;
     if (!is_array($pl) || tval($pl['name'] ?? null) === null) {
@@ -53,14 +61,16 @@ foreach (lval($g['places']['building'] ?? null) as $key) {
     }
     if (($pl['group'] ?? '') === 'daytrip') {
         $dayTrips[] = $pl;
-    } elseif (safe_url($pl['photo'] ?? null) !== null) {
-        $nearbyPhoto[] = $pl;
     } else {
-        $nearbyText[] = $pl;
+        $nearby[] = ['building', $pl];
     }
 }
-$ownPlaces = array_values(array_filter(lval($g['places']['own'] ?? null), fn ($p) => is_array($p) && sval($p['name'] ?? null) !== ''));
-$hasPlaces = $nearbyPhoto || $nearbyText || $dayTrips || $ownPlaces;
+foreach (lval($g['places']['own'] ?? null) as $op) {
+    if (is_array($op) && sval($op['name'] ?? null) !== '') {
+        $nearby[] = ['own', $op];
+    }
+}
+$hasPlaces = $nearby || $dayTrips;
 
 $hosts = is_array($g['hosts'] ?? null) ? $g['hosts'] : [];
 $hostNames = sval($hosts['names'] ?? null);
@@ -120,6 +130,32 @@ $galItem = function (string $src, ?array $cap): string {
     $o = '<div class="gal-item" data-lb="' . h($src) . '" role="button" tabindex="0">';
     $o .= '<img src="' . h($src) . '" alt="' . h($alt) . '" data-alt-es="' . h($alt) . '" data-alt-en="' . h($cap['en'] ?? '') . '" loading="lazy">';
     return $o . ($cap ? '<div class="gal-item-label">' . t($cap) . '</div>' : '') . '</div>';
+};
+// Card HTML for a building place (photo card when it has a photo) or an own place (text card).
+$placeCard = function (string $kind, array $pl) use ($photoCard, $textCard, $placeLinks): array {
+    if ($kind === 'own') {
+        $q = sval($pl['mapsQuery'] ?? null);
+        $links = $q !== '' ? $placeLinks([['type' => 'map', 'url' => maps_search_url($q)]]) : '';
+        return ['text', $textCard(['es' => sval($pl['name']), 'en' => sval($pl['name'])], tval($pl['tag'] ?? null), tval($pl['distance'] ?? null), tval($pl['text'] ?? null), 'tag-food', $links)];
+    }
+    if (safe_url($pl['photo'] ?? null) !== null) {
+        return ['photo', $photoCard($pl)];
+    }
+    $cls = ($pl['tagType'] ?? '') === 'food' ? 'tag-food' : 'tag-fun';
+    return ['text', $textCard(tval($pl['name']), tval($pl['tag'] ?? null), tval($pl['distance'] ?? null), tval($pl['text'] ?? null), $cls, $placeLinks(lval($pl['links'] ?? null)))];
+};
+// Consecutive cards of the same kind share a grid: [[kind, [html, ...]], ...].
+$placeRuns = function (array $items) use ($placeCard): array {
+    $runs = [];
+    foreach ($items as [$kind, $pl]) {
+        [$type, $html] = $placeCard($kind, $pl);
+        if ($runs && $runs[count($runs) - 1][0] === $type) {
+            $runs[count($runs) - 1][1][] = $html;
+        } else {
+            $runs[] = [$type, [$html]];
+        }
+    }
+    return $runs;
 };
 $ruleCard = function (array $r): string {
     return '<div class="rule-card"><span class="rc-icon">' . h(sval($r['icon'] ?? null)) . '</span>' . t(tval($r['text'])) . '</div>';
@@ -225,7 +261,8 @@ $step = 0;
   <div class="steps">
     <?php foreach ($lockSteps as $i => $ls): $step++; ?>
     <div class="step"><div class="step-num"><?= $step ?></div><div>
-      <p class="step-text"><?= t($ls) ?></p>
+      <?php if ($ls['title'] !== null): ?><strong><?= t($ls['title']) ?></strong><?php endif; ?>
+      <p class="step-text"><?= t($ls['text']) ?></p>
       <?php if ($i === 0 && sval($b['address'] ?? null) !== ''): ?><p class="step-sub"><?= h($b['address']) ?></p><?php endif; ?>
       <?php if ($i === count($lockSteps) - 1 && $lockPhoto !== ''): ?>
       <p class="thumb-row"><?= $thumb(photo_url($slug, $lockPhoto), ['es' => 'Toca la imagen para ver la cerradura.', 'en' => 'Tap the image to see the lock.'], 'Cerradura') ?></p>
@@ -385,24 +422,16 @@ $step = 0;
 <section id="places">
   <span class="sec-eyebrow"><?= tx('Recomendaciones de tus anfitriones', "Your hosts' picks") ?></span>
   <h2 class="sec-title"><?= tx('Cosas por', 'Things to') ?> <em><?= tx('hacer y ver', 'do and see') ?></em></h2>
-  <?php if ($nearbyPhoto): ?>
-  <div class="cards-photo">
-    <?php foreach ($nearbyPhoto as $pl): ?><?= $photoCard($pl) ?>
+  <?php foreach ($placeRuns($nearby) as [$type, $cards]): ?>
+  <div class="<?= $type === 'photo' ? 'cards-photo' : 'cards cards-text' ?>">
+    <?php foreach ($cards as $card): ?><?= $card ?>
     <?php endforeach; ?>
   </div>
-  <?php endif; ?>
-  <?php if ($nearbyText || $ownPlaces): ?>
-  <div class="cards cards-text">
-    <?php foreach ($nearbyText as $pl): ?><?= $textCard(tval($pl['name']), tval($pl['tag'] ?? null), tval($pl['distance'] ?? null), tval($pl['text'] ?? null), ($pl['tagType'] ?? '') === 'food' ? 'tag-food' : 'tag-fun', $placeLinks(lval($pl['links'] ?? null))) ?>
-    <?php endforeach; ?>
-    <?php foreach ($ownPlaces as $op): $q = sval($op['mapsQuery'] ?? null); ?><?= $textCard(['es' => sval($op['name']), 'en' => sval($op['name'])], tval($op['tag'] ?? null), tval($op['distance'] ?? null), tval($op['text'] ?? null), 'tag-food', $q !== '' ? $placeLinks([['type' => 'map', 'url' => maps_search_url($q)]]) : '') ?>
-    <?php endforeach; ?>
-  </div>
-  <?php endif; ?>
+  <?php endforeach; ?>
   <?php if ($dayTrips): ?>
   <h3 class="places-subtitle"><?= tx('Excursiones de un día', 'Full day trips') ?></h3>
   <div class="cards-photo">
-    <?php foreach ($dayTrips as $pl): ?><?= safe_url($pl['photo'] ?? null) !== null ? $photoCard($pl) : $textCard(tval($pl['name']), tval($pl['tag'] ?? null), tval($pl['distance'] ?? null), tval($pl['text'] ?? null), 'tag-fun', $placeLinks(lval($pl['links'] ?? null))) ?>
+    <?php foreach ($dayTrips as $pl): ?><?= $placeCard('building', $pl)[1] ?>
     <?php endforeach; ?>
   </div>
   <?php endif; ?>
