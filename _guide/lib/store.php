@@ -1,0 +1,458 @@
+<?php
+declare(strict_types=1);
+
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/slug.php';
+
+/*
+ * Guide store. Layout under guide_data_dir()/<slug>/:
+ *   draft.json                 the working copy the bot edits
+ *   published.json             {"version": id, "guide": {...}} (absent when unpublished)
+ *   versions/<id>.json         every published guide, id = UTC yyyymmddThhmmssZ[-n]
+ *   photos/<name>.<ext>        uploaded photos
+ *   .lock                      flock target; every read and write holds it
+ * Every file write goes to a temp file in the same folder and is renamed into place.
+ */
+
+const STORE_MAX_PHOTOS = 40;
+const STORE_PHOTO_EXTS = ['jpg', 'png', 'webp'];
+const STORE_VERSION_RE = '/^[0-9]{8}T[0-9]{6}Z(-[0-9]{1,4})?$/D';
+const STORE_PHOTO_RE = '/^[a-z0-9]+(-[a-z0-9]+)*\.(jpg|png|webp)$/D';
+
+/** A refusal the caller can show; the code is the matching HTTP status (404, 409). */
+final class GuideStoreError extends RuntimeException
+{
+}
+
+/** ['draft'=>?array, 'published'=>?array, 'versions'=>[['id','publishedAt']], 'current'=>?string] */
+function store_get(string $slug): array
+{
+    $dir = store_dir($slug);
+    $empty = ['draft' => null, 'published' => null, 'versions' => [], 'current' => null];
+    if (!is_dir($dir)) {
+        return $empty;
+    }
+    return store_locked($dir, LOCK_SH, function () use ($dir) {
+        $pub = store_read_published($dir);
+        return [
+            'draft' => store_read_json($dir . '/draft.json'),
+            'published' => $pub['guide'] ?? null,
+            'versions' => array_map(
+                fn (string $id) => ['id' => $id, 'publishedAt' => store_version_time($id)],
+                store_version_ids($dir)
+            ),
+            'current' => $pub['version'] ?? null,
+        ];
+    });
+}
+
+function store_put_draft(string $slug, array $g): void
+{
+    $dir = store_dir($slug);
+    store_mkdir($dir);
+    store_locked($dir, LOCK_EX, function () use ($dir, $g) {
+        store_write_json($dir . '/draft.json', $g);
+    });
+}
+
+/**
+ * Stores photo bytes under a sanitized name and returns the file name.
+ * $name's stem becomes lowercase [a-z0-9-]; collisions get -2, -3, ...
+ */
+function store_add_photo(string $slug, string $name, string $bytes, string $ext): string
+{
+    if (!in_array($ext, STORE_PHOTO_EXTS, true)) {
+        throw new InvalidArgumentException('Unsupported photo extension');
+    }
+    $dir = store_dir($slug);
+    store_mkdir($dir . '/photos');
+    return store_locked($dir, LOCK_EX, function () use ($dir, $name, $bytes, $ext) {
+        $photos = $dir . '/photos';
+        $count = 0;
+        foreach (scandir($photos) ?: [] as $f) {
+            if (preg_match(STORE_PHOTO_RE, $f) === 1) {
+                $count++;
+            }
+        }
+        if ($count >= STORE_MAX_PHOTOS) {
+            throw new GuideStoreError('Ya hay ' . STORE_MAX_PHOTOS . ' fotos, que es el máximo por guía', 409);
+        }
+        $stem = store_photo_stem($name);
+        $file = $stem . '.' . $ext;
+        for ($n = 2; file_exists($photos . '/' . $file); $n++) {
+            $file = $stem . '-' . $n . '.' . $ext;
+        }
+        store_write_atomic($photos . '/' . $file, $bytes);
+        return $file;
+    });
+}
+
+/**
+ * Copies the draft to published.json and keeps it as a new version; returns the version id.
+ * With $expected, refuses (409) unless the draft is still exactly that guide, so a
+ * caller can validate first and publish only what it validated.
+ */
+function store_publish(string $slug, ?array $expected = null): string
+{
+    $dir = store_dir($slug);
+    if (!is_dir($dir)) {
+        throw new GuideStoreError('Todavía no hay borrador para publicar', 409);
+    }
+    return store_locked($dir, LOCK_EX, function () use ($dir, $expected) {
+        $draft = store_read_json($dir . '/draft.json');
+        if ($draft === null) {
+            throw new GuideStoreError('Todavía no hay borrador para publicar', 409);
+        }
+        if ($expected !== null && $draft !== $expected) {
+            throw new GuideStoreError('El borrador cambió mientras se revisaba, intenta publicar otra vez', 409);
+        }
+        store_mkdir($dir . '/versions');
+        $base = gmdate('Ymd\THis\Z');
+        $id = $base;
+        for ($n = 2; file_exists($dir . '/versions/' . $id . '.json'); $n++) {
+            $id = $base . '-' . $n;
+        }
+        // Version first: a crash before published.json leaves the old guide live, never a half state.
+        store_write_json($dir . '/versions/' . $id . '.json', $draft);
+        store_write_json($dir . '/published.json', ['version' => $id, 'guide' => $draft]);
+        return $id;
+    });
+}
+
+/**
+ * Republishes a kept version and returns its id. With no $version: the version before
+ * the current one, or the latest one when nothing is published. The draft is reset to the
+ * restored version too (an unpublished draft is discarded).
+ */
+function store_rollback(string $slug, ?string $version): string
+{
+    $dir = store_dir($slug);
+    if (!is_dir($dir)) {
+        throw new GuideStoreError('Esta guía no tiene versiones publicadas', 409);
+    }
+    return store_locked($dir, LOCK_EX, function () use ($dir, $version) {
+        $ids = store_version_ids($dir);
+        if ($ids === []) {
+            throw new GuideStoreError('Esta guía no tiene versiones publicadas', 409);
+        }
+        if ($version !== null) {
+            if (preg_match(STORE_VERSION_RE, $version) !== 1 || !in_array($version, $ids, true)) {
+                throw new GuideStoreError('Esa versión no existe', 404);
+            }
+            $target = $version;
+        } else {
+            $current = store_read_published($dir)['version'] ?? null;
+            $idx = is_string($current) ? array_search($current, $ids, true) : false;
+            if ($idx === false) {
+                $target = $ids[count($ids) - 1];
+            } elseif ($idx === 0) {
+                throw new GuideStoreError('No hay una versión anterior a la actual', 409);
+            } else {
+                $target = $ids[$idx - 1];
+            }
+        }
+        $guide = store_read_json($dir . '/versions/' . $target . '.json');
+        if ($guide === null) {
+            throw new RuntimeException('Version file vanished');
+        }
+        // The draft follows the restored guide, so the next edit and publish does not bring
+        // back what the rollback removed. Draft first: if published.json then fails, the live
+        // guide is unchanged and a retried rollback still targets the same version.
+        store_write_json($dir . '/draft.json', $guide);
+        store_write_json($dir . '/published.json', ['version' => $target, 'guide' => $guide]);
+        return $target;
+    });
+}
+
+/** Takes the guide offline. Draft, photos and versions stay. Safe to repeat. */
+function store_unpublish(string $slug): void
+{
+    $dir = store_dir($slug);
+    if (!is_dir($dir)) {
+        return;
+    }
+    store_locked($dir, LOCK_EX, function () use ($dir) {
+        $file = $dir . '/published.json';
+        if (is_file($file) && !unlink($file)) {
+            throw new RuntimeException('Could not unpublish');
+        }
+    });
+}
+
+/**
+ * Deletes a stored photo. Refuses with 404 when the name is malformed or the file is
+ * missing, and with 409 when the published guide or the current draft still uses it.
+ * The check and the delete happen under one lock, so a draft saved meanwhile cannot slip in.
+ */
+function store_delete_photo(string $slug, string $file): void
+{
+    $missing = 'Esa foto no existe';
+    if (!slug_valid($slug) || preg_match(STORE_PHOTO_RE, $file) !== 1) {
+        throw new GuideStoreError($missing, 404);
+    }
+    $dir = store_dir($slug);
+    if (!is_file($dir . '/photos/' . $file)) {
+        throw new GuideStoreError($missing, 404);
+    }
+    store_locked($dir, LOCK_EX, function () use ($dir, $file, $missing) {
+        $path = $dir . '/photos/' . $file;
+        if (!is_file($path)) {
+            throw new GuideStoreError($missing, 404);
+        }
+        $guides = [store_read_json($dir . '/draft.json'), store_read_published($dir)['guide'] ?? null];
+        foreach ($guides as $g) {
+            if (is_array($g) && in_array($file, array_column(guide_photo_refs($g), 1), true)) {
+                throw new GuideStoreError('Esa foto se usa en la guía publicada o en el borrador; quítala de la guía antes de borrarla', 409);
+            }
+        }
+        if (!unlink($path)) {
+            throw new RuntimeException('Could not delete the photo');
+        }
+    });
+}
+
+/**
+ * [[field, file]] for every photo file a guide references: photos[].file, lock.photo,
+ * hosts.photo and ac.photos[]. Only well typed, non-empty strings; the validator reports the rest.
+ */
+function guide_photo_refs(array $g): array
+{
+    $refs = [];
+    if (is_array($g['photos'] ?? null)) {
+        foreach ($g['photos'] as $i => $p) {
+            if (is_array($p) && is_string($p['file'] ?? null) && $p['file'] !== '') {
+                $refs[] = ["photos.$i.file", $p['file']];
+            }
+        }
+    }
+    if (is_array($g['lock'] ?? null) && is_string($g['lock']['photo'] ?? null) && $g['lock']['photo'] !== '') {
+        $refs[] = ['lock.photo', $g['lock']['photo']];
+    }
+    if (is_array($g['hosts'] ?? null) && is_string($g['hosts']['photo'] ?? null) && $g['hosts']['photo'] !== '') {
+        $refs[] = ['hosts.photo', $g['hosts']['photo']];
+    }
+    if (is_array($g['ac'] ?? null) && is_array($g['ac']['photos'] ?? null)) {
+        foreach ($g['ac']['photos'] as $i => $f) {
+            if (is_string($f) && $f !== '') {
+                $refs[] = ["ac.photos.$i", $f];
+            }
+        }
+    }
+    return $refs;
+}
+
+/** Absolute path of a stored photo, or null when the name is malformed or the file is missing. */
+function store_photo_path(string $slug, string $file): ?string
+{
+    if (!slug_valid($slug) || preg_match(STORE_PHOTO_RE, $file) !== 1) {
+        return null;
+    }
+    $path = store_dir($slug) . '/photos/' . $file;
+    return is_file($path) ? $path : null;
+}
+
+// ---- internals ----
+
+function store_dir(string $slug): string
+{
+    if (!slug_valid($slug)) {
+        throw new InvalidArgumentException('Invalid slug');
+    }
+    return rtrim(guide_data_dir(), '/\\') . '/' . $slug;
+}
+
+function store_mkdir(string $dir): void
+{
+    if (!is_dir($dir) && !@mkdir($dir, 0700, true) && !is_dir($dir)) {
+        throw new RuntimeException('Could not create a guide data folder');
+    }
+}
+
+/** Runs $fn while holding flock($mode) on <dir>/.lock. */
+function store_locked(string $dir, int $mode, callable $fn)
+{
+    $fh = fopen($dir . '/.lock', 'c');
+    if ($fh === false) {
+        throw new RuntimeException('Could not open the guide lock');
+    }
+    try {
+        if (!flock($fh, $mode)) {
+            throw new RuntimeException('Could not lock the guide');
+        }
+        return $fn();
+    } finally {
+        flock($fh, LOCK_UN);
+        fclose($fh);
+    }
+}
+
+function store_read_json(string $file): ?array
+{
+    if (!is_file($file)) {
+        return null;
+    }
+    $raw = file_get_contents($file);
+    $data = $raw === false ? null : json_decode($raw, true);
+    if (!is_array($data)) {
+        throw new RuntimeException('Corrupt guide data file: ' . basename($file));
+    }
+    return $data;
+}
+
+/** ['version'=>string, 'guide'=>array] or null when unpublished. */
+function store_read_published(string $dir): ?array
+{
+    $pub = store_read_json($dir . '/published.json');
+    if ($pub === null) {
+        return null;
+    }
+    if (!is_string($pub['version'] ?? null) || !is_array($pub['guide'] ?? null)) {
+        throw new RuntimeException('Corrupt published.json');
+    }
+    return $pub;
+}
+
+function store_write_json(string $file, array $data): void
+{
+    $json = json_encode($data, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    store_write_atomic($file, $json . "\n");
+}
+
+function store_write_atomic(string $file, string $bytes): void
+{
+    $tmp = $file . '.tmp-' . bin2hex(random_bytes(6));
+    if (file_put_contents($tmp, $bytes) !== strlen($bytes)) {
+        @unlink($tmp);
+        throw new RuntimeException('Could not write guide data');
+    }
+    @chmod($tmp, 0600);
+    if (!rename($tmp, $file)) {
+        @unlink($tmp);
+        throw new RuntimeException('Could not save guide data');
+    }
+}
+
+/** Version ids in publish order (base timestamp, then numeric suffix). */
+function store_version_ids(string $dir): array
+{
+    $ids = [];
+    if (!is_dir($dir . '/versions')) {
+        return $ids;
+    }
+    foreach (scandir($dir . '/versions') ?: [] as $f) {
+        if (substr($f, -5) === '.json' && preg_match(STORE_VERSION_RE, substr($f, 0, -5)) === 1) {
+            $ids[] = substr($f, 0, -5);
+        }
+    }
+    usort($ids, function (string $a, string $b): int {
+        [$ba, $na] = array_pad(explode('-', $a, 2), 2, '1');
+        [$bb, $nb] = array_pad(explode('-', $b, 2), 2, '1');
+        return [$ba, (int) $na] <=> [$bb, (int) $nb];
+    });
+    return $ids;
+}
+
+/** "20261114T101010Z" (optionally "-2") to "2026-11-14T10:10:10Z". */
+function store_version_time(string $id): string
+{
+    return substr($id, 0, 4) . '-' . substr($id, 4, 2) . '-' . substr($id, 6, 2) . 'T'
+        . substr($id, 9, 2) . ':' . substr($id, 11, 2) . ':' . substr($id, 13, 2) . 'Z';
+}
+
+function store_photo_stem(string $name): string
+{
+    $s = mb_strtolower($name, 'UTF-8');
+    $s = strtr($s, ['á' => 'a', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u', 'ü' => 'u', 'ñ' => 'n']);
+    $s = (string) preg_replace('/\.[a-z0-9]{1,5}$/D', '', $s);
+    $s = trim((string) preg_replace('/[^a-z0-9]+/', '-', $s), '-');
+    $s = trim(substr($s, 0, 60), '-');
+    return $s === '' ? 'foto' : $s;
+}
+
+// ---- chunked photo uploads ----
+// Parts live in <slug>/.uploads/<upload>/ (part-N files plus meta.json). That folder is never
+// under photos/, so store_photo_path and photo.php cannot reach it.
+
+const STORE_UPLOAD_ID_RE = '/^[a-z0-9]{8,40}$/D';
+const STORE_UPLOAD_MAX_PARTS = 16;
+const STORE_UPLOAD_STALE_SECONDS = 3600;
+
+/**
+ * Records one part of a chunked photo upload, in order, under the guide's lock.
+ * Returns ['received'=>int,'expected'=>int] for a stored part or an idempotent resend of the
+ * last one, ['expected'=>int,'outOfOrder'=>true] for a part out of order, ['mismatch'=>true]
+ * when name/type/parts differ from the first part, ['tooBig'=>true] when the assembled photo
+ * is over $maxBytes, or ['done'=>true,'bytes'=>..] after the last part (the upload folder is
+ * already deleted; the caller validates and stores the photo).
+ */
+function store_upload_part(string $slug, string $upload, int $part, int $parts, string $name, string $type, string $chunk, int $maxBytes): array
+{
+    if (preg_match(STORE_UPLOAD_ID_RE, $upload) !== 1) {
+        throw new InvalidArgumentException('Invalid upload id');
+    }
+    $dir = store_dir($slug);
+    $root = $dir . '/.uploads';
+    store_mkdir($root);
+    return store_locked($dir, LOCK_EX, function () use ($root, $upload, $part, $parts, $name, $type, $chunk, $maxBytes) {
+        $up = $root . '/' . $upload;
+        $meta = store_read_json($up . '/meta.json');
+        if ($meta === null) {
+            if ($part !== 1) {
+                return ['expected' => 1, 'outOfOrder' => true];
+            }
+            store_sweep_uploads($root);
+            store_mkdir($up);
+            $meta = ['name' => $name, 'type' => $type, 'parts' => $parts, 'next' => 1, 'created' => time()];
+        } elseif ($meta['parts'] !== $parts || $meta['name'] !== $name || $meta['type'] !== $type) {
+            return ['mismatch' => true];
+        }
+        $next = (int) $meta['next'];
+        if ($part === $next - 1 && $part >= 1) {
+            return ['received' => $part, 'expected' => $next];
+        }
+        if ($part !== $next) {
+            return ['expected' => $next, 'outOfOrder' => true];
+        }
+        store_write_atomic($up . '/part-' . $part, $chunk);
+        if ($part < $parts) {
+            $meta['next'] = $part + 1;
+            store_write_json($up . '/meta.json', $meta);
+            return ['received' => $part, 'expected' => $part + 1];
+        }
+        $bytes = '';
+        for ($i = 1; $i <= $parts; $i++) {
+            $bytes .= (string) file_get_contents($up . '/part-' . $i);
+        }
+        store_rmdir($up);
+        if (strlen($bytes) > $maxBytes) {
+            return ['tooBig' => true];
+        }
+        return ['done' => true, 'bytes' => $bytes];
+    });
+}
+
+/** Deletes upload folders older than an hour (by meta created time, else the folder mtime). */
+function store_sweep_uploads(string $root): void
+{
+    foreach (scandir($root) ?: [] as $e) {
+        $p = $root . '/' . $e;
+        if ($e === '.' || $e === '..' || !is_dir($p)) {
+            continue;
+        }
+        $meta = is_file($p . '/meta.json') ? json_decode((string) file_get_contents($p . '/meta.json'), true) : null;
+        $t = is_array($meta) && is_int($meta['created'] ?? null) ? $meta['created'] : (int) filemtime($p);
+        if ($t < time() - STORE_UPLOAD_STALE_SECONDS) {
+            store_rmdir($p);
+        }
+    }
+}
+
+function store_rmdir(string $dir): void
+{
+    foreach (scandir($dir) ?: [] as $e) {
+        if ($e !== '.' && $e !== '..') {
+            @unlink($dir . '/' . $e);
+        }
+    }
+    @rmdir($dir);
+}
