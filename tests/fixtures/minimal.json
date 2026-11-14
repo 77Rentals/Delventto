@@ -1,0 +1,31 @@
+{
+  "slug": "apto-1204",
+  "building": "delventto",
+  "gateCode": "1204",
+  "unit": "1204",
+  "name": {"es": "Apto 1204", "en": "Apt 1204"},
+  "tagline": {"es": "Un apartamento tranquilo cerca de la playa.", "en": "A quiet apartment near the beach."},
+  "highlights": [],
+  "welcome": {"es": "Bienvenido a tu apartamento. Esperamos que descanses mucho.", "en": "Welcome to your apartment. We hope you rest well."},
+  "checkin": "15:00",
+  "checkout": "11:00",
+  "lock": {
+    "steps": [
+      {"es": "Presiona el botón de la cerradura y usa el código que te enviamos por WhatsApp.", "en": "Press the lock button and use the code we sent you on WhatsApp."}
+    ]
+  },
+  "features": [],
+  "rules": [],
+  "beforeLeaving": [],
+  "places": {"building": [], "own": []},
+  "photos": [
+    {"file": "a1.jpg", "caption": {"es": "Foto 1", "en": "Photo 1"}},
+    {"file": "a2.jpg", "caption": {"es": "Foto 2", "en": "Photo 2"}},
+    {"file": "a3.jpg", "caption": {"es": "Foto 3", "en": "Photo 3"}}
+  ],
+  "hosts": {
+    "names": "Ana y Luis",
+    "about": {"es": "Somos Ana y Luis, tus anfitriones.", "en": "We are Ana and Luis, your hosts."},
+    "whatsapp": "+570000000000"
+  }
+}
