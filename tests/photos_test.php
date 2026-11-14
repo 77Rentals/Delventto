@@ -173,3 +173,53 @@ test('photo_accept downscales to 1600 px when GD is loaded', function () {
     eq($info[0], 1600);
     eq($info[1], 800);
 });
+
+// ---- orientation ----
+
+function fx_exif_orient(int $o, bool $withGps = true, string $order = 'MM'): string
+{
+    $tiff = $order === 'MM'
+        ? "MM\x00*\x00\x00\x00\x08\x00\x01\x01\x12\x00\x03\x00\x00\x00\x01" . pack('n', $o) . "\x00\x00\x00\x00\x00\x00"
+        : "II*\x00\x08\x00\x00\x00\x01\x00\x12\x01\x03\x00\x01\x00\x00\x00" . pack('v', $o) . "\x00\x00\x00\x00\x00\x00";
+    $payload = "Exif\x00\x00" . $tiff . ($withGps ? 'GPS 4.5N 75.5W' : '');
+    return "\xFF\xE1" . pack('n', strlen($payload) + 2) . $payload;
+}
+
+function fx_read_orientation(string $jpeg): ?int
+{
+    if (substr($jpeg, 2, 2) !== "\xFF\xE1") {
+        return null;
+    }
+    $o = photo_jpeg_orientation($jpeg);
+    return $o;
+}
+
+test('orientation 6 survives, GPS does not', function () {
+    foreach (['MM', 'II'] as $order) {
+        $r = photo_accept(fx_jpeg(fx_exif_orient(6, true, $order)), 'image/jpeg');
+        ok($r['ok']);
+        eq(substr($r['bytes'], 2, 2), "\xFF\xE1", 'APP1 right after SOI');
+        eq(fx_read_orientation($r['bytes']), 6);
+        ok(!str_contains($r['bytes'], 'GPS'));
+        eq(substr($r['bytes'], 0, 2), "\xFF\xD8");
+        eq(substr($r['bytes'], -2), "\xFF\xD9");
+    }
+});
+
+test('orientation 1 or absent gives no APP1', function () {
+    $r = photo_accept(fx_jpeg(fx_exif_orient(1)), 'image/jpeg');
+    ok($r['ok']);
+    ok(!str_contains($r['bytes'], "\xFF\xE1"));
+    $r = photo_accept(fx_jpeg(fx_exif_segment()), 'image/jpeg');
+    ok($r['ok']);
+    ok(!str_contains($r['bytes'], "\xFF\xE1"));
+});
+
+test('malformed Exif block gives no APP1 and does not refuse', function () {
+    $payload = "Exif\x00\x00MM\x00*\xFF\xFF\xFF\xFFGPS";
+    $bad = "\xFF\xE1" . pack('n', strlen($payload) + 2) . $payload;
+    $r = photo_accept(fx_jpeg($bad), 'image/jpeg');
+    ok($r['ok']);
+    ok(!str_contains($r['bytes'], "\xFF\xE1"));
+    ok(!str_contains($r['bytes'], 'GPS'));
+});

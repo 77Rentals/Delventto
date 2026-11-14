@@ -30,6 +30,8 @@ function photo_accept(string $bytes, string $declaredType): array
         return photo_fail('El tipo de archivo no coincide con la foto, prueba enviarla otra vez');
     }
 
+    $orientation = $ext === 'jpg' ? photo_jpeg_orientation($bytes) : 1;
+
     $stripped = match ($ext) {
         'jpg' => photo_strip_jpeg($bytes),
         'png' => photo_strip_png($bytes),
@@ -41,7 +43,10 @@ function photo_accept(string $bytes, string $declaredType): array
 
     // GD availability is checked at runtime, not assumed.
     if (extension_loaded('gd')) {
-        $stripped = photo_gd_downscale($stripped, $ext);
+        $stripped = photo_gd_downscale($stripped, $ext, $orientation);
+    } elseif ($ext === 'jpg' && $orientation >= 2 && $orientation <= 8) {
+        // Without GD the pixels stay as sent, so keep only the orientation tag.
+        $stripped = "\xFF\xD8" . photo_orientation_app1($orientation) . substr($stripped, 2);
     }
 
     return ['ok' => true, 'bytes' => $stripped, 'ext' => $ext];
@@ -179,7 +184,7 @@ function photo_strip_webp(string $b): ?string
 }
 
 /** Downscales to PHOTO_MAX_SIDE and re-encodes. Falls back to the input bytes on any failure. */
-function photo_gd_downscale(string $bytes, string $ext): string
+function photo_gd_downscale(string $bytes, string $ext, int $orientation = 1): string
 {
     if (!extension_loaded('gd')) {
         return $bytes;
@@ -187,6 +192,9 @@ function photo_gd_downscale(string $bytes, string $ext): string
     $src = @imagecreatefromstring($bytes);
     if ($src === false) {
         return $bytes;
+    }
+    if ($ext === 'jpg' && $orientation >= 2 && $orientation <= 8) {
+        $src = photo_gd_orient($src, $orientation);
     }
     $w = imagesx($src);
     $h = imagesy($src);
@@ -207,4 +215,89 @@ function photo_gd_downscale(string $bytes, string $ext): string
     };
     $out = (string) ob_get_clean();
     return ($done && $out !== '') ? $out : $bytes;
+}
+
+/** Applies an EXIF orientation (2..8) to the pixels so no EXIF is needed. */
+function photo_gd_orient(GdImage $img, int $o): GdImage
+{
+    $rot = static fn (GdImage $i, int $deg): GdImage => imagerotate($i, $deg, 0) ?: $i;
+    switch ($o) {
+        case 2: imageflip($img, IMG_FLIP_HORIZONTAL); return $img;
+        case 3: return $rot($img, 180);
+        case 4: imageflip($img, IMG_FLIP_VERTICAL); return $img;
+        case 5: $img = $rot($img, 270); imageflip($img, IMG_FLIP_HORIZONTAL); return $img;
+        case 6: return $rot($img, 270);
+        case 7: $img = $rot($img, 270); imageflip($img, IMG_FLIP_VERTICAL); return $img;
+        case 8: return $rot($img, 90);
+    }
+    return $img;
+}
+
+/** EXIF Orientation (1..8) from the first Exif APP1 of a JPEG; 1 on any problem. */
+function photo_jpeg_orientation(string $b): int
+{
+    $len = strlen($b);
+    $pos = 2;
+    while ($pos + 4 <= $len && $b[$pos] === "\xFF") {
+        $marker = ord($b[$pos + 1]);
+        if ($marker === 0xDA || $marker === 0xD9) {
+            return 1;
+        }
+        if ($marker === 0xFF) {
+            $pos++;
+            continue;
+        }
+        $segLen = (ord($b[$pos + 2]) << 8) | ord($b[$pos + 3]);
+        if ($segLen < 2 || $pos + 2 + $segLen > $len) {
+            return 1;
+        }
+        if ($marker === 0xE1 && substr($b, $pos + 4, 6) === "Exif\x00\x00") {
+            return photo_tiff_orientation(substr($b, $pos + 10, $segLen - 8));
+        }
+        $pos += 2 + $segLen;
+    }
+    return 1;
+}
+
+function photo_tiff_orientation(string $t): int
+{
+    if (strlen($t) < 8) {
+        return 1;
+    }
+    $order = substr($t, 0, 2);
+    if ($order !== 'II' && $order !== 'MM') {
+        return 1;
+    }
+    $s = $order === 'II' ? 'v' : 'n';
+    $l = $order === 'II' ? 'V' : 'N';
+    if (unpack($s, substr($t, 2, 2))[1] !== 42) {
+        return 1;
+    }
+    $off = unpack($l, substr($t, 4, 4))[1];
+    if ($off + 2 > strlen($t)) {
+        return 1;
+    }
+    $n = unpack($s, substr($t, $off, 2))[1];
+    for ($i = 0; $i < $n; $i++) {
+        $e = $off + 2 + $i * 12;
+        if ($e + 12 > strlen($t)) {
+            return 1;
+        }
+        if (unpack($s, substr($t, $e, 2))[1] === 0x0112) {
+            if (unpack($s, substr($t, $e + 2, 2))[1] !== 3 || unpack($l, substr($t, $e + 4, 4))[1] !== 1) {
+                return 1;
+            }
+            $v = unpack($s, substr($t, $e + 8, 2))[1];
+            return ($v >= 1 && $v <= 8) ? $v : 1;
+        }
+    }
+    return 1;
+}
+
+/** A minimal APP1 holding only an Exif IFD0 with the Orientation entry. */
+function photo_orientation_app1(int $o): string
+{
+    $tiff = "MM\x00*\x00\x00\x00\x08" . "\x00\x01" . "\x01\x12\x00\x03\x00\x00\x00\x01" . pack('n', $o) . "\x00\x00" . "\x00\x00\x00\x00";
+    $payload = "Exif\x00\x00" . $tiff;
+    return "\xFF\xE1" . pack('n', strlen($payload) + 2) . $payload;
 }
