@@ -264,6 +264,115 @@ function store_photo_path(string $slug, string $file): ?string
     return is_file($path) ? $path : null;
 }
 
+// ---- review queue ----
+// Reviews live in <slug>/reviews/<version>.json: {slug, version, at, summary, findings}.
+
+const STORE_REVIEW_QUEUE_MAX = 5;
+const STORE_REVIEWS_MAX = 20;
+
+/** Slugs under the data dir that have a published guide. */
+function store_published_slugs(): array
+{
+    $root = rtrim(guide_data_dir(), '/' . chr(92));
+    $slugs = [];
+    foreach (is_dir($root) ? (scandir($root) ?: []) : [] as $name) {
+        if (slug_valid($name) && is_file($root . '/' . $name . '/published.json')) {
+            $slugs[] = $name;
+        }
+    }
+    return $slugs;
+}
+
+/** Sort key of a version id: [base timestamp, numeric suffix]. */
+function store_version_key(string $id): array
+{
+    [$base, $n] = array_pad(explode('-', $id, 2), 2, '1');
+    return [$base, (int) $n];
+}
+
+/**
+ * Up to $limit published guides whose current version has no review yet, oldest first:
+ * [['slug','version','guide','previous'=>?array]].
+ */
+function store_review_queue(int $limit = STORE_REVIEW_QUEUE_MAX): array
+{
+    $items = [];
+    foreach (store_published_slugs() as $slug) {
+        $dir = store_dir($slug);
+        $item = store_locked($dir, LOCK_SH, function () use ($dir, $slug) {
+            $pub = store_read_published($dir);
+            if ($pub === null || is_file($dir . '/reviews/' . $pub['version'] . '.json')) {
+                return null;
+            }
+            $ids = store_version_ids($dir);
+            $idx = array_search($pub['version'], $ids, true);
+            $previous = is_int($idx) && $idx > 0 ? store_read_json($dir . '/versions/' . $ids[$idx - 1] . '.json') : null;
+            return ['slug' => $slug, 'version' => $pub['version'], 'guide' => $pub['guide'], 'previous' => $previous];
+        });
+        if ($item !== null) {
+            $items[] = $item;
+        }
+    }
+    usort($items, fn (array $a, array $b): int => [store_version_key($a['version']), $a['slug']] <=> [store_version_key($b['version']), $b['slug']]);
+    return array_slice($items, 0, $limit);
+}
+
+/**
+ * Stores a review for the guide's current version. Refuses (409) when $version is not the
+ * current published one or that version already has a review. Returns the stored review.
+ */
+function store_review_put(string $slug, string $version, string $summary, array $findings): array
+{
+    $dir = store_dir($slug);
+    if (!is_dir($dir)) {
+        throw new GuideStoreError('Esa guía no está publicada', 409);
+    }
+    return store_locked($dir, LOCK_EX, function () use ($dir, $slug, $version, $summary, $findings) {
+        $current = store_read_published($dir)['version'] ?? null;
+        if ($current !== $version) {
+            throw new GuideStoreError('Esa no es la versión publicada de la guía, pide la cola otra vez', 409);
+        }
+        $file = $dir . '/reviews/' . $version . '.json';
+        if (is_file($file)) {
+            throw new GuideStoreError('Esa versión ya tiene una revisión', 409);
+        }
+        store_mkdir($dir . '/reviews');
+        $review = ['slug' => $slug, 'version' => $version, 'at' => gmdate('Y-m-d\TH:i:s\Z'), 'summary' => $summary, 'findings' => array_values($findings)];
+        store_write_json($file, $review);
+        return $review;
+    });
+}
+
+/** Reviews written after $since (all when null), oldest first, at most $limit. */
+function store_reviews_since(?DateTimeImmutable $since, int $limit = STORE_REVIEWS_MAX): array
+{
+    $root = rtrim(guide_data_dir(), '/' . chr(92));
+    $out = [];
+    foreach (is_dir($root) ? (scandir($root) ?: []) : [] as $name) {
+        if (!slug_valid($name) || !is_dir($root . '/' . $name . '/reviews')) {
+            continue;
+        }
+        $dir = store_dir($name);
+        $reviews = store_locked($dir, LOCK_SH, function () use ($dir) {
+            $list = [];
+            foreach (scandir($dir . '/reviews') ?: [] as $f) {
+                if (substr($f, -5) === '.json' && preg_match(STORE_VERSION_RE, substr($f, 0, -5)) === 1) {
+                    $list[] = store_read_json($dir . '/reviews/' . $f);
+                }
+            }
+            return $list;
+        });
+        foreach ($reviews as $r) {
+            $at = is_array($r) && is_string($r['at'] ?? null) ? date_create_immutable($r['at']) : false;
+            if ($at !== false && ($since === null || $at > $since)) {
+                $out[] = $r;
+            }
+        }
+    }
+    usort($out, fn (array $a, array $b): int => [$a['at'], $a['slug']] <=> [$b['at'], $b['slug']]);
+    return array_slice($out, 0, $limit);
+}
+
 // ---- internals ----
 
 function store_dir(string $slug): string

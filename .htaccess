@@ -7,6 +7,7 @@ DirectoryIndex index.html index.php
 # Repo and tooling folders must never be served, even if a deploy leaves them behind.
 RedirectMatch 404 ^/\.git
 RedirectMatch 404 ^/tests/
+RedirectMatch 404 ^/docs/
 RedirectMatch 404 ^/\.superpowers
 RedirectMatch 404 ^/\.github
 RedirectMatch 404 ^/\.claude
@@ -24,8 +25,11 @@ RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteCond %{REQUEST_URI} !^/_guide/assets/
 RewriteRule ^_guide(/|$) - [R=404,L]
 
-# 2. API: /api/guides/<slug>[/action] (api.php reads the path from REQUEST_URI).
-RewriteRule ^api/guides/(.+)$ _guide/api.php [QSA,L]
+# 2. API: /api/guides/<slug>[/action], /api/buildings/<id> (api.php reads the path from REQUEST_URI).
+# The review routine sends a bearer token; some PHP setups drop the Authorization header, so pass it along.
+RewriteCond %{HTTP:Authorization} .
+RewriteRule ^api/ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteRule ^api/(guides|buildings|review|reviews)(/.*)?$ _guide/api.php [QSA,L]
 
 # 3. Photos: /<slug>/photo/<file>, unless a real file sits at that path.
 RewriteCond %{REQUEST_FILENAME} !-f

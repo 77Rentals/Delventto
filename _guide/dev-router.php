@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 // Local router that mimics the planned .htaccess:
 //   php -S 127.0.0.1:8765 -t . _guide/dev-router.php   (from the repo root)
-// /api/guides/... -> api.php, /<slug>/photo/<file> -> photo.php,
+// /api/(guides|buildings|review|reviews)/... -> api.php, /<slug>/photo/<file> -> photo.php,
 // /<slug>/ -> render.php when no real file or folder has that name, else the static file.
 // /_guide/assets/... (guide.css, guide.js) are served as static files.
 
@@ -15,7 +15,7 @@ if (preg_match('#^/(\.git|tests)(/|$)#i', $path) === 1) {
     return true;
 }
 
-if (strncmp($path, '/api/guides/', 12) === 0) {
+if (preg_match('#^/api/(guides|buildings|review|reviews)(/|$)#', $path) === 1) {
     require __DIR__ . '/api.php';
     return true;
 }

@@ -34,7 +34,7 @@ test('htaccess exists with the basics', function () {
 
 test('htaccess hides git, tests and tooling folders with 404', function () {
     $t = htaccess_text();
-    foreach (['\.git', '/tests/', '\.superpowers', '\.github', '\.claude'] as $needle) {
+    foreach (['\.git', '/tests/', '/docs/', '\.superpowers', '\.github', '\.claude'] as $needle) {
         ok(preg_match('/RedirectMatch 404 .*' . preg_quote($needle, '/') . '/', $t) === 1, "no 404 rule for $needle");
     }
 });
@@ -48,7 +48,7 @@ test('htaccess blocks direct /_guide/ except assets', function () {
 
 test('htaccess routes the API with QSA', function () {
     $t = htaccess_text();
-    ok(preg_match('#RewriteRule \^api/guides/\(\.\+\)\$ _guide/api\.php \[[^\]]*QSA[^\]]*L[^\]]*\]#', $t) === 1, 'api rule');
+    ok(preg_match('#RewriteRule \^api/\(guides\|buildings\|review\|reviews\)\(/\.\*\)\?\$ _guide/api\.php \[[^\]]*QSA[^\]]*L[^\]]*\]#', $t) === 1, 'api rule');
 });
 
 test('htaccess routes photos and guides behind file/dir guards', function () {
@@ -120,7 +120,7 @@ function deploy_steps(): array
 test('deploy: checkout keeps no git credentials and SCP skips tooling folders', function () {
     $t = deploy_text();
     ok(preg_match('/uses: actions\/checkout@v4\s+with:\s+persist-credentials: false/', $t) === 1, 'persist-credentials: false');
-    ok(strpos($t, 'source: "./*,!.git,!.github,!tests,!.superpowers"') !== false, 'SCP source exclusions');
+    ok(strpos($t, 'source: "./*,!.git,!.github,!tests,!docs,!.superpowers"') !== false, 'SCP source exclusions');
     eq(substr_count($t, 'appleboy/scp-action@v0.1.7'), 1, 'one SCP step: ./* already ships .htaccess and .user.ini');
     ok(strpos($t, '~/') === false, 'absolute /home/rentals77 paths only');
 });
