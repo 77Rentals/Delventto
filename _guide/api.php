@@ -268,7 +268,7 @@ function api_rollback(string $slug, string $body): array
         }
         $version = $v;
     }
-    $id = store_rollback($slug, $version);
+    $id = store_rollback($slug, $version, true);
     return [200, ['ok' => true, 'url' => api_guide_url($slug), 'version' => $id]];
 }
 

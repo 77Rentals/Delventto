@@ -194,6 +194,29 @@ test('store: rollback resets the draft, so the next edit and publish builds on t
     });
 });
 
+test('store: rollback to a version whose photo was deleted is refused and changes nothing', function () {
+    st_with_store(function () {
+        $old = store_add_photo('apto-1204', 'sala', 'x', 'jpg');
+        $g1 = st_guide('uno');
+        $g1['photos'] = [['file' => $old, 'caption' => ['es' => 'Sala', 'en' => 'Living room']]];
+        store_put_draft('apto-1204', $g1);
+        $v1 = store_publish('apto-1204');
+        store_put_draft('apto-1204', st_guide('dos'));
+        $v2 = store_publish('apto-1204');
+        store_delete_photo('apto-1204', $old);
+
+        st_throws(fn () => store_rollback('apto-1204', $v1, true), 409, 'restoring a missing photo');
+        st_throws(fn () => store_rollback('apto-1204', null, true), 409, 'default target is the same version');
+        $s = store_get('apto-1204');
+        eq($s['current'], $v2, 'live guide unchanged');
+        eq($s['draft']['tagline']['es'], 'dos', 'draft unchanged');
+
+        // Sending the photo again under the same name makes the old version restorable.
+        eq(store_add_photo('apto-1204', 'sala', 'x', 'jpg'), $old);
+        eq(store_rollback('apto-1204', $v1, true), $v1);
+    });
+});
+
 test('store: rollback with nothing published is refused', function () {
     st_with_store(function () {
         st_throws(fn () => store_rollback('apto-1204', null), 409, 'no versions');

@@ -123,14 +123,16 @@ function store_publish(string $slug, ?array $expected = null): string
  * Republishes a kept version and returns its id. With no $version: the version before
  * the current one, or the latest one when nothing is published. The draft is reset to the
  * restored version too (an unpublished draft is discarded).
+ * With $requirePhotos (the API always asks for it), a version that uses a photo deleted
+ * since is refused (409) and nothing changes, so a rollback never shows broken photos.
  */
-function store_rollback(string $slug, ?string $version): string
+function store_rollback(string $slug, ?string $version, bool $requirePhotos = false): string
 {
     $dir = store_dir($slug);
     if (!is_dir($dir)) {
         throw new GuideStoreError('Esta guía no tiene versiones publicadas', 409);
     }
-    return store_locked($dir, LOCK_EX, function () use ($dir, $version) {
+    return store_locked($dir, LOCK_EX, function () use ($dir, $version, $requirePhotos) {
         $ids = store_version_ids($dir);
         if ($ids === []) {
             throw new GuideStoreError('Esta guía no tiene versiones publicadas', 409);
@@ -154,6 +156,17 @@ function store_rollback(string $slug, ?string $version): string
         $guide = store_read_json($dir . '/versions/' . $target . '.json');
         if ($guide === null) {
             throw new RuntimeException('Version file vanished');
+        }
+        if ($requirePhotos) {
+            $gone = [];
+            foreach (guide_photo_refs($guide) as [, $file]) {
+                if (!is_file($dir . '/photos/' . $file)) {
+                    $gone[] = $file;
+                }
+            }
+            if ($gone !== []) {
+                throw new GuideStoreError('Esa versión usa fotos que ya se borraron (' . implode(', ', array_unique($gone)) . '). Envíalas otra vez con el mismo nombre o escoge otra versión', 409);
+            }
         }
         // The draft follows the restored guide, so the next edit and publish does not bring
         // back what the rollback removed. Draft first: if published.json then fails, the live
