@@ -24,8 +24,8 @@ RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteCond %{REQUEST_URI} !^/_guide/assets/
 RewriteRule ^_guide(/|$) - [R=404,L]
 
-# 2. API: /api/guides/<slug>[/action] (api.php reads the path from REQUEST_URI).
-RewriteRule ^api/guides/(.+)$ _guide/api.php [QSA,L]
+# 2. API: /api/guides/<slug>[/action], /api/buildings/<id> (api.php reads the path from REQUEST_URI).
+RewriteRule ^api/(guides|buildings|review|reviews)(/.*)?$ _guide/api.php [QSA,L]
 
 # 3. Photos: /<slug>/photo/<file>, unless a real file sits at that path.
 RewriteCond %{REQUEST_FILENAME} !-f

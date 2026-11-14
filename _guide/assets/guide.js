@@ -50,20 +50,33 @@
   function rnd(a, b) { return a + Math.random() * (b - a); }
   function pick(list) { return list[Math.floor(Math.random() * list.length)]; }
 
-  /* Floating creatures in a container: n items, size range, vertical spread, durations. */
-  function populate(id, n, sMin, sMax, topMin, topMax, delayMax, durMin, durMax) {
-    var wrap = document.getElementById(id);
-    if (!wrap || !motion) { return; }
+  /* Floating creatures in a wrapper element: m is a CREATURES entry, n items, size range, vertical spread, durations. */
+  function fill(wrap, m, n, sMin, sMax, topMin, topMax, delayMax, durMin, durMax) {
+    if (!wrap || !m) { return; }
     for (var i = 0; i < n; i++) {
       var d = document.createElement('div');
-      d.className = 'bf' + (motion.kind !== 'float' ? ' m-' + motion.kind : '');
+      d.className = 'bf' + (m.kind !== 'float' ? ' m-' + m.kind : '');
       var s = rnd(sMin, sMax);
       d.style.cssText = 'width:' + s + 'px;height:' + s + 'px;left:' + rnd(0, 94) + '%;top:' + rnd(topMin, topMax) + '%;' +
         'animation-delay:-' + rnd(0, delayMax) + 's;animation-duration:' + rnd(durMin, durMax) + 's;';
-      d.innerHTML = pick(motion.svgs);
+      d.innerHTML = pick(m.svgs);
       wrap.appendChild(d);
     }
   }
+
+  /* Floating creatures in a container of the page: n items, size range, vertical spread, durations. */
+  function populate(id, n, sMin, sMax, topMin, topMax, delayMax, durMin, durMax) {
+    fill(document.getElementById(id), motion, n, sMin, sMax, topMin, topMax, delayMax, durMin, durMax);
+  }
+
+  /* The themes page (/temas/) plays any motion in a small box. */
+  window.GuideMotion = {
+    play: function (box, key) {
+      box.innerHTML = '';
+      var m = CREATURES[key] || null;
+      if (m) { fill(box, m, 9, 16, 28, 5, 75, 8, 7, 12); }
+    }
+  };
 
   /* ───── Gate ───── */
   var gateForm = document.getElementById('gate-form');

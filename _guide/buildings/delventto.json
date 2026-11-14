@@ -14,6 +14,11 @@
   "quietHoursDefault": {"from": "22:00", "to": "08:00"},
   "arrivalNote": {"es": "Un ambiente familiar y tranquilo, con vigilancia 24/7.", "en": "A quiet, family-friendly building with 24/7 security."},
   "checkoutNote": {"es": "Al salir, asegura la puerta e informa en el lobby.", "en": "When you leave, lock the door and let the lobby know."},
+  "standardArrival": [
+    {"title": {"es": "Registro", "en": "Registration"}, "text": {"es": "Al llegar al Edificio Delventto, dirígete a la recepción.", "en": "When you arrive at the Delventto Building, head to reception."}},
+    {"title": {"es": "Identificación", "en": "ID"}, "text": {"es": "Presenta los documentos de identidad de todos los huéspedes y tu confirmación de reserva.", "en": "Present ID for all guests along with your booking confirmation."}},
+    {"title": {"es": "Acceso", "en": "Access"}, "text": {"es": "Te enviaremos la clave digital de la cerradura por WhatsApp. Para abrir: presiona el botón Yale, ingresa tu código y confirma con el chulito.", "en": "We'll send your digital lock code via WhatsApp. To open: press the Yale button, enter your code and confirm with the checkmark."}}
+  ],
   "reception": {
     "whatsapp": "+573117548493",
     "phoneDisplay": "+57 311 754 8493",

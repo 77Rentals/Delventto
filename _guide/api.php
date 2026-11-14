@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 // Signed guide API for the WhatsApp bot. Contract: GET /api/guides/{slug},
 // PUT .../draft, POST .../photos?name=, DELETE .../photos/{file}, POST .../publish,
-// .../rollback, .../unpublish.
+// .../rollback, .../unpublish. Also GET /api/buildings/{id} (the building file, for the bot).
 // Order per request: size limit, signature (401, nothing touched), slug (400), route.
 
 // PHP errors go to the server log, never into a response (they would leak paths and break the JSON).
@@ -21,6 +21,7 @@ require_once __DIR__ . '/lib/store.php';
 require_once __DIR__ . '/lib/building.php';
 
 const API_PREFIX = '/api/guides/';
+const API_BUILDINGS_PREFIX = '/api/buildings/';
 const API_MAX_JSON_BYTES = 1024 * 1024;
 /** Largest decoded piece per request: the host alters bodies above about 2.6 MB. */
 const PHOTO_PART_MAX_BYTES = 1048576;
@@ -58,10 +59,11 @@ function api_main(): void
 /** Returns [status, data] or [status, data, extraHeaders]. */
 function api_handle(string $method, string $path): array
 {
-    if (strncmp($path, API_PREFIX, strlen(API_PREFIX)) !== 0) {
+    $isBuilding = strncmp($path, API_BUILDINGS_PREFIX, strlen(API_BUILDINGS_PREFIX)) === 0;
+    if (!$isBuilding && strncmp($path, API_PREFIX, strlen(API_PREFIX)) !== 0) {
         return [404, api_error('No existe')];
     }
-    $parts = explode('/', substr($path, strlen(API_PREFIX)));
+    $parts = explode('/', substr($path, strlen($isBuilding ? API_BUILDINGS_PREFIX : API_PREFIX)));
     $slug = $parts[0];
     $action = $parts[1] ?? '';
 
@@ -85,6 +87,9 @@ function api_handle(string $method, string $path): array
         return [401, api_error('Firma inválida o vencida')];
     }
 
+    if ($isBuilding) {
+        return api_building($method, $parts);
+    }
     if (!slug_valid($slug) || slug_reserved($slug)) {
         return [400, api_error('Esa dirección de guía no es válida o ya está en uso')];
     }
@@ -118,6 +123,19 @@ function api_handle(string $method, string $path): array
             store_unpublish($slug);
             return [200, ['ok' => true]];
     }
+}
+
+/** GET /api/buildings/{id}: the building JSON, or 404 when the id is unknown. */
+function api_building(string $method, array $parts): array
+{
+    $building = count($parts) === 1 ? guide_building($parts[0]) : null;
+    if ($building === null) {
+        return [404, api_error('No existe ese edificio')];
+    }
+    if ($method !== 'GET') {
+        return [405, api_error('Método no permitido'), ['Allow' => 'GET']];
+    }
+    return [200, ['ok' => true, 'building' => $building]];
 }
 
 function api_get(string $slug): array

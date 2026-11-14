@@ -48,7 +48,7 @@ test('htaccess blocks direct /_guide/ except assets', function () {
 
 test('htaccess routes the API with QSA', function () {
     $t = htaccess_text();
-    ok(preg_match('#RewriteRule \^api/guides/\(\.\+\)\$ _guide/api\.php \[[^\]]*QSA[^\]]*L[^\]]*\]#', $t) === 1, 'api rule');
+    ok(preg_match('#RewriteRule \^api/\(guides\|buildings\|review\|reviews\)\(/\.\*\)\?\$ _guide/api\.php \[[^\]]*QSA[^\]]*L[^\]]*\]#', $t) === 1, 'api rule');
 });
 
 test('htaccess routes photos and guides behind file/dir guards', function () {
