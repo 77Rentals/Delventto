@@ -595,3 +595,52 @@ test('photo.php: nothing served when the guide is unpublished, preview still wor
         eq(at_http($ctx, 'GET', '/apto-1204/photo/a1.jpg?preview=1', '', $c)['status'], 200, 'draft preview still works');
     });
 });
+
+// Building facts and per-apartment options decided by the owner on 2026-11-14.
+
+test('render: airport and emergency numbers follow the Macondo guide', function () {
+    $html = rt_render(rt_fixture('minimal'));
+    ok(strpos($html, '10-12 minutos en carro') !== false, 'airport 10-12 minutes');
+    ok(strpos($html, '$20-25 mil COP') !== false, 'taxi price');
+    foreach (['tel:123', 'tel:125', 'tel:119'] as $tel) {
+        ok(strpos($html, 'href="' . $tel . '"') !== false, "emergency link $tel");
+    }
+    ok(strpos($html, '318 876 3338') === false, 'old fire number gone');
+    ok(strpos($html, 'Clínica Avidanti') !== false, 'clinic kept');
+    eq(rt_building()['places']['centro-historico']['distance']['es'], '15-20 MIN EN CARRO');
+    eq(rt_building()['places']['zazue']['distance']['es'] ?? null, '5 MIN EN CARRO');
+});
+
+test('render: quiet hours default to 10 p.m. to 8 a.m. and the owner can change them', function () {
+    $html = rt_render(rt_fixture('minimal'));
+    ok(strpos($html, 'Horario de silencio: 10:00 p.m. a 8:00 a.m.') !== false, 'default quiet hours');
+    $g = rt_fixture('minimal');
+    $g['quietHours'] = ['from' => '23:00', 'to' => '07:30'];
+    $html = rt_render($g);
+    ok(strpos($html, 'Horario de silencio: 11:00 p.m. a 7:30 a.m.') !== false, 'owner quiet hours');
+    ok(strpos($html, 'Quiet hours: 11:00 p.m. to 7:30 a.m.') !== false, 'owner quiet hours in English');
+    ok(strpos($html, '10:00 p.m. a 8:00 a.m.') === false, 'default replaced');
+});
+
+test('render: the pets rule appears only as the owner chose', function () {
+    ok(stripos(rt_render(rt_fixture('minimal')), 'mascotas') === false, 'no pets rule unless chosen');
+    $cases = ['no' => 'No se admiten mascotas', 'approval' => 'No se admiten mascotas sin aprobación previa', 'yes' => 'Se admiten mascotas'];
+    foreach ($cases as $choice => $text) {
+        $g = rt_fixture('minimal');
+        $g['pets'] = $choice;
+        ok(strpos(rt_render($g), $text) !== false, "pets $choice");
+    }
+});
+
+test('render: pool rules and the energy saver guide only when the guide includes them', function () {
+    $g = rt_fixture('613t2');
+    unset($g['include']);
+    $html = rt_render($g);
+    ok(strpos($html, 'class="pool-rule') === false, 'no pool rules by default');
+    ok(strpos($html, 'energy-guide-v3.jpg') === false, 'no energy guide by default');
+    ok(strpos($html, 'ac-steps') !== false, 'the A/C steps still show');
+    $g['include'] = ['poolRules' => true, 'energy' => true];
+    $html = rt_render($g);
+    ok(strpos($html, 'class="pool-rule') !== false, 'pool rules when included');
+    ok(strpos($html, 'energy-guide-v3.jpg') !== false, 'energy guide when included');
+});

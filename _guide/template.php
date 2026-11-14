@@ -46,7 +46,25 @@ $waste = tval($g['waste'] ?? null);
 $iconList = function ($list): array {
     return array_values(array_filter(lval($list), fn ($r) => is_array($r) && tval($r['text'] ?? null) !== null));
 };
-$rules = array_merge($iconList($b['rules'] ?? null), $iconList($g['rules'] ?? null));
+// Quiet hours and pets are each apartment's call (owner, 2026-11-14): quiet hours default
+// to the building's general hours; the pets rule shows only when the owner chose one.
+$quiet = is_array($g['quietHours'] ?? null) ? $g['quietHours'] : (is_array($b['quietHoursDefault'] ?? null) ? $b['quietHoursDefault'] : []);
+$apartmentRules = [];
+if (sval($quiet['from'] ?? null) !== '' && sval($quiet['to'] ?? null) !== '') {
+    $qf = fmt_time_ampm(sval($quiet['from']));
+    $qt = fmt_time_ampm(sval($quiet['to']));
+    $apartmentRules[] = ['icon' => '🤫', 'text' => ['es' => "Horario de silencio: $qf a $qt", 'en' => "Quiet hours: $qf to $qt"]];
+}
+$petRules = [
+    'no' => ['es' => 'No se admiten mascotas', 'en' => 'No pets allowed'],
+    'approval' => ['es' => 'No se admiten mascotas sin aprobación previa', 'en' => 'No pets without prior approval'],
+    'yes' => ['es' => 'Se admiten mascotas', 'en' => 'Pets allowed'],
+];
+$pets = sval($g['pets'] ?? null);
+if (isset($petRules[$pets])) {
+    $apartmentRules[] = ['icon' => '🐾', 'text' => $petRules[$pets]];
+}
+$rules = array_merge($apartmentRules, $iconList($b['rules'] ?? null), $iconList($g['rules'] ?? null));
 $beforeLeaving = $iconList($g['beforeLeaving'] ?? null);
 if ($beforeLeaving === []) {
     $beforeLeaving = $iconList($b['beforeLeaving'] ?? null);
@@ -165,11 +183,14 @@ $ruleCard = function (array $r): string {
 
 $checkin = sval($g['checkin'] ?? null);
 $checkout = sval($g['checkout'] ?? null);
-$airport = (int) ($b['airportMinutes'] ?? 0);
-$arrival = trim(($airport > 0 ? "Desde el aeropuerto estás a solo $airport minutos en carro. " : '') . (tval($b['arrivalNote'] ?? null)['es'] ?? ''));
-$arrivalEn = trim(($airport > 0 ? "The airport is just a $airport-minute drive away. " : '') . (tval($b['arrivalNote'] ?? null)['en'] ?? ''));
+$airport = tval($b['airport'] ?? null);
+$arrival = trim(($airport['es'] ?? '') . ' ' . (tval($b['arrivalNote'] ?? null)['es'] ?? ''));
+$arrivalEn = trim(($airport['en'] ?? '') . ' ' . (tval($b['arrivalNote'] ?? null)['en'] ?? ''));
 $reception = is_array($b['reception'] ?? null) ? $b['reception'] : [];
-$energy = is_array($b['energy'] ?? null) ? $b['energy'] : [];
+// Pool rules and the energy saver guide are the building's, but each owner decides
+// whether they apply to their apartment (owner, 2026-11-14): off unless included.
+$include = is_array($g['include'] ?? null) ? $g['include'] : [];
+$energy = ($include['energy'] ?? false) === true && is_array($b['energy'] ?? null) ? $b['energy'] : [];
 $step = 0;
 ?><!DOCTYPE html>
 <html lang="es" data-palette="<?= h($theme['palette']) ?>" data-motion="<?= h($theme['motion']) ?>">
@@ -366,7 +387,7 @@ $step = 0;
   </div>
   <?php endif; ?>
   <?php $hours = array_values(array_filter(lval($b['hours'] ?? null), fn ($x) => is_array($x) && tval($x['label'] ?? null) && tval($x['time'] ?? null))); ?>
-  <?php $poolRules = array_values(array_filter(array_map('tval', lval($b['poolRules'] ?? null)))); ?>
+  <?php $poolRules = ($include['poolRules'] ?? false) === true ? array_values(array_filter(array_map('tval', lval($b['poolRules'] ?? null)))) : []; ?>
   <?php if ($hours || $poolRules): ?>
   <div class="amen-fee">
     <span class="amen-fee-icon">🕐</span>
@@ -390,6 +411,17 @@ $step = 0;
     <div class="video-wrap">
       <video controls playsinline preload="metadata">
         <source src="<?= h($amenVideo) ?>" type="video/mp4">
+      </video>
+    </div>
+  </div>
+  <?php endif; ?>
+  <?php $buildingVideo = safe_url($b['buildingVideo'] ?? null); ?>
+  <?php if ($buildingVideo !== null): ?>
+  <div class="amen-video">
+    <p class="amen-video-title"><?= tx('Conoce el edificio', 'See the building') ?></p>
+    <div class="video-wrap">
+      <video controls playsinline preload="metadata">
+        <source src="<?= h($buildingVideo) ?>" type="video/mp4">
       </video>
     </div>
   </div>

@@ -116,5 +116,8 @@
     },
     "whatsapp": "+570000000000"
   },
-  "theme": {"palette": "caribe", "motion": "marino"}
+  "theme": {"palette": "caribe", "motion": "marino"},
+  "quietHours": {"from": "23:00", "to": "08:00"},
+  "pets": "no",
+  "include": {"poolRules": true, "energy": true}
 }

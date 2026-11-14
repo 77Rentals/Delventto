@@ -219,6 +219,37 @@ function validate_guide(array $g, array $building, string $slug): array
         }
     }
 
+    // quietHours, pets, include (optional, each apartment's own choice)
+    if (array_key_exists('quietHours', $g)) {
+        $q = $g['quietHours'];
+        if (!is_array($q)) {
+            guide_problem($p, 'quietHours', 'El horario de silencio debe tener hora de inicio y de fin, por ejemplo de 22:00 a 08:00');
+        } else {
+            foreach (['from' => 'de inicio', 'to' => 'de fin'] as $k => $label) {
+                if (!is_string($q[$k] ?? null) || preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]$/D', $q[$k]) !== 1) {
+                    guide_problem($p, "quietHours.$k", "La hora $label del horario de silencio debe tener formato HH:MM, por ejemplo 22:00");
+                }
+            }
+        }
+    }
+    if (array_key_exists('pets', $g) && !in_array($g['pets'], ['no', 'approval', 'yes'], true)) {
+        guide_problem($p, 'pets', 'Las mascotas deben ser "no", "approval" (con aprobación previa) o "yes"');
+    }
+    if (array_key_exists('include', $g)) {
+        $inc = $g['include'];
+        if (!is_array($inc)) {
+            guide_problem($p, 'include', 'include debe decir qué partes del edificio aplican, por ejemplo {"poolRules": true}');
+        } else {
+            foreach ($inc as $k => $v) {
+                if (!in_array($k, ['poolRules', 'energy'], true)) {
+                    guide_problem($p, "include.$k", 'Solo se pueden incluir poolRules y energy');
+                } elseif (!is_bool($v)) {
+                    guide_problem($p, "include.$k", 'Debe ser true o false');
+                }
+            }
+        }
+    }
+
     // content checks over every string
     $known = guide_known_numbers($g);
     foreach (guide_strings($g, '') as [$path, $str]) {

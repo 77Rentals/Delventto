@@ -416,3 +416,19 @@ test('validate: links with backslashes or control characters are refused, not dr
         eq(guide_url_ok($u), safe_url($u) !== null, 'validator and renderer agree on ' . json_encode($u));
     }
 });
+
+test('validate: quiet hours, pets and include options', function () {
+    $g = vt_fixture('minimal');
+    $g['quietHours'] = ['from' => '22:00', 'to' => '08:00'];
+    $g['pets'] = 'approval';
+    $g['include'] = ['poolRules' => true, 'energy' => false];
+    eq(vt_run($g), [], 'valid options');
+    $g['quietHours'] = ['from' => '10pm', 'to' => '08:00'];
+    $g['pets'] = 'maybe';
+    $g['include'] = ['energy' => 'si', 'other' => true];
+    $p = vt_run($g);
+    ok(vt_has($p, 'quietHours.from'), 'bad quiet hours time');
+    ok(vt_has($p, 'pets'), 'bad pets choice');
+    ok(vt_has($p, 'include.energy'), 'include must be true or false');
+    ok(vt_has($p, 'include.other'), 'unknown include key');
+});

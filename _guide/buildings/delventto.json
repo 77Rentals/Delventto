@@ -10,7 +10,8 @@
   "timezone": "America/Bogota",
   "timezoneLabel": "Santa Marta (GMT-5)",
   "address": "Carrera 4C #70-75 · Cabo Tortuga, Pozos Colorados, Santa Marta",
-  "airportMinutes": 10,
+  "airport": {"es": "Desde el aeropuerto estás a solo 10-12 minutos en carro. Un taxi te costará entre $20-25 mil COP hasta Delventto.", "en": "The airport is just a 10-12 minute drive away. A taxi costs about $20-25k COP to Delventto."},
+  "quietHoursDefault": {"from": "22:00", "to": "08:00"},
   "arrivalNote": {"es": "Un ambiente familiar y tranquilo, con vigilancia 24/7.", "en": "A quiet, family-friendly building with 24/7 security."},
   "checkoutNote": {"es": "Al salir, asegura la puerta e informa en el lobby.", "en": "When you leave, lock the door and let the lobby know."},
   "reception": {
@@ -51,6 +52,7 @@
     }
   ],
   "amenitiesVideo": "/apartasuite-613t2/amenities-tour.mp4",
+  "buildingVideo": "/serenasuite/video_vento.mp4",
   "amenityPhotos": [
     {"src": "/apartasuite-613t2/amen_lobby.jpg", "caption": {"es": "Recepción", "en": "Lobby & Reception"}},
     {"src": "/apartasuite-613t2/amen_gym.jpg", "caption": {"es": "Gimnasio", "en": "Gym"}},
@@ -60,6 +62,10 @@
     {"src": "/apartasuite-613t2/amen_terrace2.jpg", "caption": {"es": "Zona BBQ", "en": "BBQ Area"}},
     {"src": "/apartasuite-613t2/amen_pool4.jpg", "caption": {"es": "", "en": ""}},
     {"src": "/apartasuite-613t2/amen_pool7.jpg", "caption": {"es": "", "en": ""}},
+    {"src": "/apartasuite-613t2/amen_pool2.jpg", "caption": {"es": "Piscina infinita", "en": "Infinity Pool"}},
+    {"src": "/apartasuite-613t2/amen_pool3.jpg", "caption": {"es": "Piscina y vista", "en": "Pool & Views"}},
+    {"src": "/apartasuite-613t2/amen_pool5.jpg", "caption": {"es": "", "en": ""}},
+    {"src": "/apartasuite-613t2/amen_pool6.jpg", "caption": {"es": "", "en": ""}},
     {"src": "/apartasuite-613t2/amen_building-night.jpg", "caption": {"es": "Edificio Delventto de noche", "en": "Delventto Building at Night"}},
     {"src": "/apartasuite-613t2/amen_jacuzzi.jpg", "caption": {"es": "Jacuzzi", "en": "Jacuzzi"}},
     {"src": "/apartasuite-613t2/amen_pools-night.jpg", "caption": {"es": "Piscinas de noche", "en": "Pools at Night"}},
@@ -119,7 +125,7 @@
       "tagType": "fun",
       "name": {"es": "Centro Histórico y Parque de los Novios", "en": "Historic Center & Parque de los Novios"},
       "tag": {"es": "Cultura y vida nocturna", "en": "Culture & nightlife"},
-      "distance": {"es": "20 MIN EN CARRO", "en": "20 MIN BY CAR"},
+      "distance": {"es": "15-20 MIN EN CARRO", "en": "15-20 MIN BY CAR"},
       "text": {"es": "El corazón vibrante de la ciudad: casas coloniales, arte urbano y música en vivo en las plazas.", "en": "The vibrant heart of the city: colonial houses, street art, and live music in the plazas."},
       "links": [{"type": "map", "url": "https://www.google.com/maps/search/?api=1&query=Parque%20de%20los%20Novios%20Centro%20Historico%20Santa%20Marta%20Colombia"}]
     },
@@ -251,11 +257,9 @@
     }
   },
   "rules": [
-    {"icon": "🤫", "text": {"es": "Horario de silencio: 11:00 p.m. a 8:00 a.m.", "en": "Quiet hours: 11:00 p.m. to 8:00 a.m."}},
     {"icon": "👥", "text": {"es": "Máximo de huéspedes según lo reservado, sin visitantes no registrados", "en": "Max occupancy as booked, no unregistered guests"}},
     {"icon": "🎉", "text": {"es": "No se permiten fiestas ni eventos", "en": "No parties or events"}},
     {"icon": "🚭", "text": {"es": "No fumar dentro del apartamento", "en": "No smoking inside the apartment"}},
-    {"icon": "🐾", "text": {"es": "No se admiten mascotas", "en": "No pets allowed"}},
     {"icon": "🪪", "text": {"es": "Identificación válida requerida al check-in para todos los huéspedes", "en": "Valid ID required at check-in for all registered guests"}},
     {"icon": "🎟", "text": {"es": "El uso de las amenidades del edificio requiere la manilla indicada en la sección de Amenidades", "en": "Using the building amenities requires the wristband noted in the Amenities section"}},
     {"icon": "🛠", "text": {"es": "El huésped es responsable por cualquier daño causado al apartamento o sus bienes durante la estadía", "en": "The guest is liable for any damage caused to the apartment or its contents during the stay"}}
@@ -286,7 +290,9 @@
     "quickGuide": {"src": "/apartasuite-613t2/energy-guide-old-2-bilingual.jpg", "label": {"es": "📋 Guía rápida", "en": "📋 Quick guide"}}
   },
   "sos": [
-    {"icon": "🚨", "color": "danger", "title": {"es": "Línea de emergencias", "en": "Emergency line"}, "number": "123", "href": "tel:123", "note": {"es": "Policía 112 · Bomberos 318 876 3338", "en": "Police 112 · Fire Dept. 318 876 3338"}},
+    {"icon": "🚔", "color": "danger", "title": {"es": "Policía Nacional", "en": "National Police"}, "number": "123", "href": "tel:123", "note": {"es": "Emergencias de seguridad", "en": "Security emergencies"}},
+    {"icon": "🚑", "color": "danger", "title": {"es": "Ambulancias / Emergencias médicas", "en": "Ambulance / Medical emergencies"}, "number": "125", "href": "tel:125", "note": {"es": "Servicio nacional", "en": "National service"}},
+    {"icon": "🚒", "color": "danger", "title": {"es": "Bomberos", "en": "Fire department"}, "number": "119", "href": "tel:119", "note": {"es": "Incendios y rescate", "en": "Fire & rescue"}},
     {"icon": "🏥", "color": "deep", "title": {"es": "Clínica Avidanti", "en": "Clínica Avidanti"}, "number": "(605) 421 9999", "href": "tel:+576054219999", "note": {"es": "Bello Horizonte, cerca de Pozos Colorados", "en": "Bello Horizonte, near Pozos Colorados"}},
     {"icon": "💊", "color": "brand", "title": {"es": "Droguería Andina", "en": "Droguería Andina"}, "number": "316 744 9954", "href": "tel:+573167449954", "note": {"es": "Zazué Plaza, muy cerca", "en": "Zazué Plaza, very close"}}
   ],

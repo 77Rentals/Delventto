@@ -103,6 +103,17 @@ function fmt_time(string $hhmm): string
     return $hr12 . ':' . $m[2] . ' ' . $suffix;
 }
 
+/** "22:00" to "10:00 p.m." (how 613T2 writes rule times, in both languages). */
+function fmt_time_ampm(string $hhmm): string
+{
+    if (preg_match('/^([01][0-9]|2[0-3]):([0-5][0-9])$/D', $hhmm, $m) !== 1) {
+        return $hhmm;
+    }
+    $hr = (int) $m[1];
+    $hr12 = $hr % 12 === 0 ? 12 : $hr % 12;
+    return $hr12 . ':' . $m[2] . ($hr < 12 ? ' a.m.' : ' p.m.');
+}
+
 /**
  * A link that is safe to put in href/src: https:// with a host, or a same-site path
  * ("/x", never "//x" or "/\x"), no whitespace or backslashes. Null otherwise.
