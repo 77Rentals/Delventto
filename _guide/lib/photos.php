@@ -42,10 +42,11 @@ function photo_accept(string $bytes, string $declaredType): array
     }
 
     // GD availability is checked at runtime, not assumed.
-    if (extension_loaded('gd')) {
-        $stripped = photo_gd_downscale($stripped, $ext, $orientation);
+    $resized = extension_loaded('gd') ? photo_gd_downscale($stripped, $ext, $orientation) : null;
+    if ($resized !== null) {
+        $stripped = $resized;
     } elseif ($ext === 'jpg' && $orientation >= 2 && $orientation <= 8) {
-        // Without GD the pixels stay as sent, so keep only the orientation tag.
+        // No GD, or GD failed: pixels stay as sent, so keep only the orientation tag.
         $stripped = "\xFF\xD8" . photo_orientation_app1($orientation) . substr($stripped, 2);
     }
 
@@ -91,8 +92,13 @@ function photo_strip_jpeg(string $b): ?string
             $pos++;
             continue;
         }
-        if ($marker === 0xDA || $marker === 0xD9) { // SOS or early EOI: rest is verbatim
-            return $out . substr($b, $pos);
+        if ($marker === 0xD9) {        // EOI before any scan: no image
+            return null;
+        }
+        if ($marker === 0xDA) {        // SOS: scan data verbatim, cut after the last EOI
+            $rest = substr($b, $pos);
+            $end = strrpos($rest, "\xFF\xD9");
+            return $end === false ? null : $out . substr($rest, 0, $end + 2);
         }
         if ($marker === 0x01 || ($marker >= 0xD0 && $marker <= 0xD8) || $marker === 0x00) {
             if ($marker === 0x00 || $marker === 0xD8) {
@@ -183,15 +189,15 @@ function photo_strip_webp(string $b): ?string
     return 'RIFF' . pack('V', strlen($body)) . $body;
 }
 
-/** Downscales to PHOTO_MAX_SIDE and re-encodes. Falls back to the input bytes on any failure. */
-function photo_gd_downscale(string $bytes, string $ext, int $orientation = 1): string
+/** Downscales to PHOTO_MAX_SIDE and re-encodes. Returns null on any failure so the caller falls back. */
+function photo_gd_downscale(string $bytes, string $ext, int $orientation = 1): ?string
 {
     if (!extension_loaded('gd')) {
-        return $bytes;
+        return null;
     }
     $src = @imagecreatefromstring($bytes);
     if ($src === false) {
-        return $bytes;
+        return null;
     }
     if ($ext === 'jpg' && $orientation >= 2 && $orientation <= 8) {
         $src = photo_gd_orient($src, $orientation);
@@ -214,7 +220,7 @@ function photo_gd_downscale(string $bytes, string $ext, int $orientation = 1): s
         default => false,
     };
     $out = (string) ob_get_clean();
-    return ($done && $out !== '') ? $out : $bytes;
+    return ($done && $out !== '') ? $out : null;
 }
 
 /** Applies an EXIF orientation (2..8) to the pixels so no EXIF is needed. */

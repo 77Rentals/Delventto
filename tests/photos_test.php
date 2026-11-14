@@ -223,3 +223,24 @@ test('malformed Exif block gives no APP1 and does not refuse', function () {
     ok(!str_contains($r['bytes'], "\xFF\xE1"));
     ok(!str_contains($r['bytes'], 'GPS'));
 });
+
+// ---- trailers ----
+
+test('photo_accept drops data after the final EOI', function () {
+    $r = photo_accept(fx_jpeg() . "Exif\x00\x00GPS 4.5N", 'image/jpeg');
+    ok($r['ok']);
+    ok(!str_contains($r['bytes'], 'GPS'));
+    eq($r['bytes'], fx_jpeg());
+});
+
+test('photo_accept refuses JPEG with EOI before any scan', function () {
+    $in = "\xFF\xD8\xFF\xD9\xFF\xE1\x00\x0EExif\x00\x00GPS";
+    $r = photo_accept($in, 'image/jpeg');
+    ok(!$r['ok']);
+});
+
+test('photo_accept refuses JPEG scan with no EOI', function () {
+    $in = substr(fx_jpeg(), 0, -2);
+    $r = photo_accept($in, 'image/jpeg');
+    ok(!$r['ok']);
+});
