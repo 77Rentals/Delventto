@@ -2,12 +2,14 @@
 declare(strict_types=1);
 
 // Signed guide API for the WhatsApp bot. Contract: GET /api/guides/{slug},
-// PUT .../draft, POST .../photos?name=, .../publish, .../rollback, .../unpublish.
+// PUT .../draft, POST .../photos?name=, DELETE .../photos/{file}, POST .../publish,
+// .../rollback, .../unpublish.
 // Order per request: size limit, signature (401, nothing touched), slug (400), route.
 
 // PHP errors go to the server log, never into a response (they would leak paths and break the JSON).
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
+header_remove('X-Powered-By');
 ob_start();
 
 require_once __DIR__ . '/lib/config.php';
@@ -80,6 +82,14 @@ function api_handle(string $method, string $path): array
 
     if (!slug_valid($slug) || slug_reserved($slug)) {
         return [400, api_error('Esa dirección de guía no es válida o ya está en uso')];
+    }
+    // DELETE /api/guides/{slug}/photos/{file}
+    if ($action === 'photos' && count($parts) === 3) {
+        if ($method !== 'DELETE') {
+            return [405, api_error('Método no permitido'), ['Allow' => 'DELETE']];
+        }
+        store_delete_photo($slug, $parts[2]);
+        return [200, ['ok' => true]];
     }
     if (count($parts) > 2 || !array_key_exists($action, API_ROUTES)) {
         return [404, api_error('No existe')];
@@ -155,7 +165,7 @@ function api_publish(string $slug): array
         return [409, ['ok' => false, 'problems' => [['field' => 'draft', 'message' => 'Todavía no hay borrador para publicar']]]];
     }
     $problems = validate_guide($draft, api_building_for($draft), $slug);
-    foreach (api_photo_refs($draft) as [$field, $file]) {
+    foreach (guide_photo_refs($draft) as [$field, $file]) {
         if (store_photo_path($slug, $file) === null) {
             $problems[] = ['field' => $field, 'message' => "No encuentro la foto $file, envíala otra vez"];
         }
@@ -186,33 +196,6 @@ function api_rollback(string $slug, string $body): array
 }
 
 // ---- helpers ----
-
-/** [[field, file]] for every photo file the guide references (only well typed ones; the validator reports the rest). */
-function api_photo_refs(array $g): array
-{
-    $refs = [];
-    if (is_array($g['photos'] ?? null)) {
-        foreach ($g['photos'] as $i => $p) {
-            if (is_array($p) && is_string($p['file'] ?? null) && $p['file'] !== '') {
-                $refs[] = ["photos.$i.file", $p['file']];
-            }
-        }
-    }
-    if (is_array($g['lock'] ?? null) && is_string($g['lock']['photo'] ?? null) && $g['lock']['photo'] !== '') {
-        $refs[] = ['lock.photo', $g['lock']['photo']];
-    }
-    if (is_array($g['hosts'] ?? null) && is_string($g['hosts']['photo'] ?? null) && $g['hosts']['photo'] !== '') {
-        $refs[] = ['hosts.photo', $g['hosts']['photo']];
-    }
-    if (is_array($g['ac'] ?? null) && is_array($g['ac']['photos'] ?? null)) {
-        foreach ($g['ac']['photos'] as $i => $f) {
-            if (is_string($f) && $f !== '') {
-                $refs[] = ["ac.photos.$i", $f];
-            }
-        }
-    }
-    return $refs;
-}
 
 function api_building_for(array $g): array
 {

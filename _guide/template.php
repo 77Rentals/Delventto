@@ -12,12 +12,14 @@ $slug = sval($g['slug'] ?? null);
 $unit = sval($g['unit'] ?? null);
 $name = tval($g['name'] ?? null) ?? ['es' => $unit, 'en' => $unit];
 $city = tval($b['city'] ?? null) ?? ['es' => '', 'en' => ''];
+// In preview, photo URLs carry ?preview=1 so photo.php serves the draft's photos.
+$pv = $mode === 'preview';
 
 // Photos of the apartment (gallery), served through the gate.
 $photos = [];
 foreach (lval($g['photos'] ?? null) as $p) {
     if (is_array($p) && sval($p['file'] ?? null) !== '') {
-        $photos[] = ['src' => photo_url($slug, $p['file']), 'caption' => tval($p['caption'] ?? null)];
+        $photos[] = ['src' => photo_url($slug, $p['file'], $pv), 'caption' => tval($p['caption'] ?? null)];
     }
 }
 
@@ -265,7 +267,7 @@ $step = 0;
       <p class="step-text"><?= t($ls['text']) ?></p>
       <?php if ($i === 0 && sval($b['address'] ?? null) !== ''): ?><p class="step-sub"><?= h($b['address']) ?></p><?php endif; ?>
       <?php if ($i === count($lockSteps) - 1 && $lockPhoto !== ''): ?>
-      <p class="thumb-row"><?= $thumb(photo_url($slug, $lockPhoto), ['es' => 'Toca la imagen para ver la cerradura.', 'en' => 'Tap the image to see the lock.'], 'Cerradura') ?></p>
+      <p class="thumb-row"><?= $thumb(photo_url($slug, $lockPhoto, $pv), ['es' => 'Toca la imagen para ver la cerradura.', 'en' => 'Tap the image to see the lock.'], 'Cerradura') ?></p>
       <?php endif; ?>
     </div></div>
     <?php endforeach; ?>
@@ -285,7 +287,7 @@ $step = 0;
         <?= $thumb($src, tval($img['label'] ?? null), tval($img['label'] ?? null)['es'] ?? '') ?>
         <?php endforeach; ?>
         <?php foreach (lval($ac['photos'] ?? null) as $f): if (sval($f) === '') { continue; } ?>
-        <?= $thumb(photo_url($slug, $f), null, 'Aire acondicionado') ?>
+        <?= $thumb(photo_url($slug, $f, $pv), null, 'Aire acondicionado') ?>
         <?php endforeach; ?>
         <?php $qg = $energy['quickGuide'] ?? null; $qgSrc = is_array($qg) ? safe_url($qg['src'] ?? null) : null; ?>
         <?php if ($qgSrc !== null): ?><a class="quick-btn" data-lb="<?= h($qgSrc) ?>" role="button" tabindex="0"><?= t(tval($qg['label'] ?? null) ?? ['es' => 'Guía rápida', 'en' => 'Quick guide']) ?></a><?php endif; ?>
@@ -524,7 +526,7 @@ $step = 0;
 <!-- HOSTS -->
 <section id="hosts-sec">
   <div class="hosts<?= $hostPhoto === '' ? ' hosts-nophoto' : '' ?>">
-    <?php if ($hostPhoto !== ''): ?><div class="host-photo"><img src="<?= h(photo_url($slug, $hostPhoto)) ?>" alt="<?= h($hostNames) ?>"></div><?php endif; ?>
+    <?php if ($hostPhoto !== ''): ?><div class="host-photo"><img src="<?= h(photo_url($slug, $hostPhoto, $pv)) ?>" alt="<?= h($hostNames) ?>"></div><?php endif; ?>
     <div>
       <h2><?= tx('Sobre nosotros', 'About us') ?></h2>
       <?php if ($hostAbout): ?><p class="pre"><?= t($hostAbout) ?></p><?php endif; ?>

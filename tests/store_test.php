@@ -283,3 +283,45 @@ test('store: invalid slug is refused for writes', function () {
         eq(array_values(array_diff(scandir($dir) ?: [], ['.', '..'])), [], 'nothing written');
     });
 });
+
+test('store: guide_photo_refs lists every photo the guide uses', function () {
+    $g = st_guide();
+    $g['lock']['photo'] = 'cerradura.jpg';
+    $g['hosts']['photo'] = 'anfitriones.png';
+    $g['ac'] = ['steps' => [], 'photos' => ['aire-1.jpg', 'aire-2.webp']];
+    eq(guide_photo_refs($g), [
+        ['photos.0.file', 'a1.jpg'], ['photos.1.file', 'a2.jpg'], ['photos.2.file', 'a3.jpg'],
+        ['lock.photo', 'cerradura.jpg'], ['hosts.photo', 'anfitriones.png'],
+        ['ac.photos.0', 'aire-1.jpg'], ['ac.photos.1', 'aire-2.webp'],
+    ]);
+    eq(guide_photo_refs(['photos' => 'x', 'lock' => 5]), [], 'wrong types give nothing');
+});
+
+test('store: delete photo removes an unused file, 404 when missing or malformed', function () {
+    st_with_store(function ($dir) {
+        $f = store_add_photo('apto-1204', 'candado', 'b', 'jpg');
+        store_delete_photo('apto-1204', $f);
+        ok(!file_exists($dir . '/apto-1204/photos/' . $f), 'file gone');
+        st_throws(fn () => store_delete_photo('apto-1204', $f), 404, 'already gone');
+        st_throws(fn () => store_delete_photo('apto-1204', '../draft.json'), 404, 'malformed');
+        st_throws(fn () => store_delete_photo('apto-5555', 'x.jpg'), 404, 'unknown guide');
+        ok(!file_exists($dir . '/apto-5555'), 'unknown guide creates nothing');
+    });
+});
+
+test('store: delete photo refuses files the draft or the published guide uses', function () {
+    st_with_store(function ($dir) {
+        foreach (['a1', 'a2', 'a3', 'b1'] as $n) {
+            store_add_photo('apto-1204', $n, 'b', 'jpg');
+        }
+        store_put_draft('apto-1204', st_guide());
+        st_throws(fn () => store_delete_photo('apto-1204', 'a1.jpg'), 409, 'used by the draft');
+        store_publish('apto-1204');
+        $g = st_guide();
+        $g['photos'][0]['file'] = 'b1.jpg';
+        store_put_draft('apto-1204', $g);
+        st_throws(fn () => store_delete_photo('apto-1204', 'a1.jpg'), 409, 'used by the published guide only');
+        st_throws(fn () => store_delete_photo('apto-1204', 'b1.jpg'), 409, 'used by the draft only');
+        ok(is_file($dir . '/apto-1204/photos/a1.jpg') && is_file($dir . '/apto-1204/photos/b1.jpg'), 'files kept');
+    });
+});

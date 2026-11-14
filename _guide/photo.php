@@ -1,11 +1,14 @@
 <?php
 declare(strict_types=1);
 
-// Guide photo for /<slug>/photo/<file>: only for guests who passed that guide's gate.
+// Guide photo for /<slug>/photo/<file>: only for guests who passed that guide's gate,
+// and only files the published guide uses (the draft's, with ?preview=1). A photo the
+// bot received but no guide uses (a lockbox shot with a code, say) is never served.
 
 // PHP errors go to the server log, never into the response (they would print paths).
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
+header_remove('X-Powered-By');
 
 require_once __DIR__ . '/lib/config.php';
 require_once __DIR__ . '/lib/slug.php';
@@ -32,7 +35,10 @@ function photo_main(): void
             photo_status(403);
             return;
         }
-        $full = store_photo_path($slug, $file);
+        $st = store_get($slug);
+        $guide = ($_GET['preview'] ?? null) === '1' ? $st['draft'] : $st['published'];
+        $used = is_array($guide) && in_array($file, array_column(guide_photo_refs($guide), 1), true);
+        $full = $used ? store_photo_path($slug, $file) : null;
         $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
         if ($full === null || !isset(PHOTO_TYPES[$ext])) {
             photo_status(404);

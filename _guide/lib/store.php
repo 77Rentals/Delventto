@@ -179,6 +179,68 @@ function store_unpublish(string $slug): void
     });
 }
 
+/**
+ * Deletes a stored photo. Refuses with 404 when the name is malformed or the file is
+ * missing, and with 409 when the published guide or the current draft still uses it.
+ * The check and the delete happen under one lock, so a draft saved meanwhile cannot slip in.
+ */
+function store_delete_photo(string $slug, string $file): void
+{
+    $missing = 'Esa foto no existe';
+    if (!slug_valid($slug) || preg_match(STORE_PHOTO_RE, $file) !== 1) {
+        throw new GuideStoreError($missing, 404);
+    }
+    $dir = store_dir($slug);
+    if (!is_file($dir . '/photos/' . $file)) {
+        throw new GuideStoreError($missing, 404);
+    }
+    store_locked($dir, LOCK_EX, function () use ($dir, $file, $missing) {
+        $path = $dir . '/photos/' . $file;
+        if (!is_file($path)) {
+            throw new GuideStoreError($missing, 404);
+        }
+        $guides = [store_read_json($dir . '/draft.json'), store_read_published($dir)['guide'] ?? null];
+        foreach ($guides as $g) {
+            if (is_array($g) && in_array($file, array_column(guide_photo_refs($g), 1), true)) {
+                throw new GuideStoreError('Esa foto se usa en la guía publicada o en el borrador; quítala de la guía antes de borrarla', 409);
+            }
+        }
+        if (!unlink($path)) {
+            throw new RuntimeException('Could not delete the photo');
+        }
+    });
+}
+
+/**
+ * [[field, file]] for every photo file a guide references: photos[].file, lock.photo,
+ * hosts.photo and ac.photos[]. Only well typed, non-empty strings; the validator reports the rest.
+ */
+function guide_photo_refs(array $g): array
+{
+    $refs = [];
+    if (is_array($g['photos'] ?? null)) {
+        foreach ($g['photos'] as $i => $p) {
+            if (is_array($p) && is_string($p['file'] ?? null) && $p['file'] !== '') {
+                $refs[] = ["photos.$i.file", $p['file']];
+            }
+        }
+    }
+    if (is_array($g['lock'] ?? null) && is_string($g['lock']['photo'] ?? null) && $g['lock']['photo'] !== '') {
+        $refs[] = ['lock.photo', $g['lock']['photo']];
+    }
+    if (is_array($g['hosts'] ?? null) && is_string($g['hosts']['photo'] ?? null) && $g['hosts']['photo'] !== '') {
+        $refs[] = ['hosts.photo', $g['hosts']['photo']];
+    }
+    if (is_array($g['ac'] ?? null) && is_array($g['ac']['photos'] ?? null)) {
+        foreach ($g['ac']['photos'] as $i => $f) {
+            if (is_string($f) && $f !== '') {
+                $refs[] = ["ac.photos.$i", $f];
+            }
+        }
+    }
+    return $refs;
+}
+
 /** Absolute path of a stored photo, or null when the name is malformed or the file is missing. */
 function store_photo_path(string $slug, string $file): ?string
 {

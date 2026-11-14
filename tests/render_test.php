@@ -549,3 +549,49 @@ test('render: places follow places.building then places.own, whatever the card t
     eq(preg_match_all('#<div class="(cards-photo|cards cards-text)">#', $nearby, $m), 4);
     eq($m[1], ['cards-photo', 'cards cards-text', 'cards-photo', 'cards cards-text']);
 });
+
+test('render: preview photo URLs carry ?preview=1, published ones do not', function () {
+    $g = rt_fixture('613t2');
+    $pv = rt_render($g, 'preview');
+    $pub = rt_render($g, 'published');
+    $slug = $g['slug'];
+    $files = array_map(fn ($ref) => $ref[1], guide_photo_refs($g));
+    ok($files !== [], 'fixture has photos');
+    foreach ($files as $f) {
+        ok(strpos($pv, '/' . $slug . '/photo/' . $f . '?preview=1') !== false, "preview URL for $f");
+        ok(strpos($pub, '/' . $slug . '/photo/' . $f . '"') !== false, "published URL for $f");
+    }
+    ok(strpos($pub, '?preview=1') === false, 'no preview URLs when published');
+});
+
+test('photo.php: serves only photos the guide uses; draft photos only with ?preview=1', function () {
+    rt_with_server(function () {
+        rt_publish('apto-1204');
+        store_add_photo('apto-1204', 'lockbox', rt_jpeg(), 'jpg');
+        store_add_photo('apto-1204', 'nueva', rt_jpeg(), 'jpg');
+        $g = store_get('apto-1204')['draft'];
+        $g['photos'][0]['file'] = 'nueva.jpg';
+        store_put_draft('apto-1204', $g);
+    }, function ($ctx) {
+        $c = rt_cookie('apto-1204');
+        eq(at_http($ctx, 'GET', '/apto-1204/photo/lockbox.jpg')['status'], 403, 'gate first');
+        eq(at_http($ctx, 'GET', '/apto-1204/photo/lockbox.jpg', '', $c)['status'], 404, 'stored but unused');
+        eq(at_http($ctx, 'GET', '/apto-1204/photo/lockbox.jpg?preview=1', '', $c)['status'], 404, 'unused in the draft too');
+        eq(at_http($ctx, 'GET', '/apto-1204/photo/a1.jpg', '', $c)['status'], 200, 'published photo');
+        eq(at_http($ctx, 'GET', '/apto-1204/photo/nueva.jpg', '', $c)['status'], 404, 'draft only photo without preview');
+        eq(at_http($ctx, 'GET', '/apto-1204/photo/nueva.jpg?preview=1', '', $c)['status'], 200, 'draft photo in preview');
+        eq(at_http($ctx, 'GET', '/apto-1204/photo/a1.jpg?preview=1', '', $c)['status'], 404, 'published only photo in preview');
+        eq(at_http($ctx, 'GET', '/apto-1204/photo/a2.jpg?preview=1', '', $c)['status'], 200, 'photo in both');
+    });
+});
+
+test('photo.php: nothing served when the guide is unpublished, preview still works', function () {
+    rt_with_server(function () {
+        rt_publish('apto-1204');
+        store_unpublish('apto-1204');
+    }, function ($ctx) {
+        $c = rt_cookie('apto-1204');
+        eq(at_http($ctx, 'GET', '/apto-1204/photo/a1.jpg', '', $c)['status'], 404, 'unpublished');
+        eq(at_http($ctx, 'GET', '/apto-1204/photo/a1.jpg?preview=1', '', $c)['status'], 200, 'draft preview still works');
+    });
+});

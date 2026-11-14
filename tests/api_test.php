@@ -375,3 +375,54 @@ test('api: a filesystem failure with display_errors on is a clean JSON 500 with 
         }
     }, '1');
 });
+
+test('api: DELETE photo removes unused files and refuses used ones', function () {
+    at_with_server(function ($ctx) {
+        eq(at_signed($ctx, 'PUT', '/api/guides/apto-1204/draft', at_json(at_guide()))['status'], 200);
+        foreach (['a1.jpg', 'a2.jpg', 'a3.jpg', 'candado.jpg'] as $name) {
+            eq(at_upload($ctx, 'apto-1204', $name)['status'], 200);
+        }
+        $photos = $ctx['data'] . '/apto-1204/photos';
+
+        eq(at_http($ctx, 'DELETE', '/api/guides/apto-1204/photos/candado.jpg')['status'], 401, 'unsigned');
+        ok(is_file($photos . '/candado.jpg'), 'unsigned deletes nothing');
+
+        $r = at_signed($ctx, 'DELETE', '/api/guides/apto-1204/photos/candado.jpg');
+        eq($r['status'], 200, $r['raw']);
+        eq($r['json'], ['ok' => true]);
+        ok(!file_exists($photos . '/candado.jpg'), 'file gone');
+        eq(at_signed($ctx, 'DELETE', '/api/guides/apto-1204/photos/candado.jpg')['status'], 404, 'already gone');
+        eq(at_signed($ctx, 'DELETE', '/api/guides/apto-1204/photos/Mal..jpg')['status'], 404, 'malformed name');
+
+        $r = at_signed($ctx, 'DELETE', '/api/guides/apto-1204/photos/a1.jpg');
+        eq($r['status'], 409, 'used by the draft');
+        ok(is_string($r['json']['error'] ?? null) && strpos($r['json']['error'], 'guía') !== false, 'Spanish message: ' . $r['raw']);
+        ok(is_file($photos . '/a1.jpg'), 'used file kept');
+
+        $r = at_signed($ctx, 'POST', '/api/guides/apto-1204/photos/a1.jpg');
+        eq($r['status'], 405, 'POST on a photo');
+        eq($r['headers']['allow'] ?? null, 'DELETE');
+        eq(at_signed($ctx, 'DELETE', '/api/guides/apto-1204/photos')['status'], 405, 'DELETE on the collection');
+        eq(at_signed($ctx, 'DELETE', '/api/guides/apto-1204/draft/x.jpg')['status'], 404, 'no file under draft');
+        eq(at_signed($ctx, 'DELETE', '/api/guides/apto-1204/photos/a1.jpg/x')['status'], 404, 'too deep');
+    });
+});
+
+test('api: rollback answers with the restored guide also in the draft', function () {
+    at_with_server(function ($ctx) {
+        $g = at_guide();
+        eq(at_signed($ctx, 'PUT', '/api/guides/apto-1204/draft', at_json($g))['status'], 200);
+        foreach (['a1.jpg', 'a2.jpg', 'a3.jpg'] as $name) {
+            at_upload($ctx, 'apto-1204', $name);
+        }
+        $v1 = at_signed($ctx, 'POST', '/api/guides/apto-1204/publish')['json']['version'];
+        $g2 = $g;
+        $g2['tagline']['es'] = 'Versión dos.';
+        at_signed($ctx, 'PUT', '/api/guides/apto-1204/draft', at_json($g2));
+        at_signed($ctx, 'POST', '/api/guides/apto-1204/publish');
+        eq(at_signed($ctx, 'POST', '/api/guides/apto-1204/rollback')['json']['version'], $v1);
+        $s = at_signed($ctx, 'GET', '/api/guides/apto-1204')['json'];
+        eq($s['draft'], $g, 'draft reset');
+        eq($s['published'], $g);
+    });
+});

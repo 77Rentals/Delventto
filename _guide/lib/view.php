@@ -121,10 +121,13 @@ function safe_url($u): ?string
     return null;
 }
 
-/** Same-site URL of a guide photo, served by photo.php behind the gate. */
-function photo_url(string $slug, string $file): string
+/**
+ * Same-site URL of a guide photo, served by photo.php behind the gate. In preview the
+ * URL carries ?preview=1 so photo.php checks the file against the draft, not the published guide.
+ */
+function photo_url(string $slug, string $file, bool $preview = false): string
 {
-    return '/' . rawurlencode($slug) . '/photo/' . rawurlencode($file);
+    return '/' . rawurlencode($slug) . '/photo/' . rawurlencode($file) . ($preview ? '?preview=1' : '');
 }
 
 function maps_search_url(string $query): string
