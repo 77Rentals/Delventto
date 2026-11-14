@@ -53,6 +53,13 @@ test('missing or bad headers fail', function () {
     ok(!verify_request(AUTH_SECRET, ['x-guide-timestamp' => '1e9', 'x-guide-signature' => $sig], 'GET', '/p', '', $ts), 'float form');
 });
 
+test('timestamp with a trailing newline fails', function () {
+    $sig = sign_request(AUTH_SECRET, 123, 'GET', '/p', '');
+    ok(verify_request(AUTH_SECRET, auth_headers(123, $sig), 'GET', '/p', '', 123), 'plain 123 passes');
+    $h = ['x-guide-timestamp' => "123\n", 'x-guide-signature' => $sig];
+    ok(!verify_request(AUTH_SECRET, $h, 'GET', '/p', '', 123), '"123\n" must fail');
+});
+
 test('gate cookie name and token', function () {
     eq(gate_cookie_name('apto-1204'), 'g_apto-1204');
     $key = hash_hmac('sha256', 'gate-key', AUTH_SECRET);

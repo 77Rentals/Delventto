@@ -19,7 +19,7 @@ function verify_request(string $secret, array $headers, string $method, string $
     if (!is_string($tsRaw) || !is_string($sig) || $sig === '') {
         return false;
     }
-    if (!preg_match('/^[0-9]{1,12}$/', $tsRaw)) {
+    if (!preg_match('/\A[0-9]{1,12}\z/', $tsRaw)) {
         return false;
     }
     $ts = (int) $tsRaw;
