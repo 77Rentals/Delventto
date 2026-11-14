@@ -35,8 +35,11 @@ function at_port_open(int $port): bool
     return true;
 }
 
-/** Starts the dev server, runs $fn(ctx), always stops it and deletes the temp dirs. */
-function at_with_server(callable $fn): void
+/**
+ * Starts the dev server, runs $fn(ctx), always stops it and deletes the temp dirs.
+ * $displayErrors is the server's display_errors setting ('0' unless a test needs PHP's default noisy mode).
+ */
+function at_with_server(callable $fn, string $displayErrors = '0'): void
 {
     $base = sys_get_temp_dir() . '/guide-api-test-' . bin2hex(random_bytes(6));
     $data = $base . '/data';
@@ -61,7 +64,7 @@ function at_with_server(callable $fn): void
     $env['GUIDE_DATA_DIR'] = $data;
     $env['GUIDE_BUILDINGS_DIR'] = $buildings;
     $webroot = dirname(__DIR__);
-    $cmd = [PHP_BINARY, '-d', 'display_errors=0', '-d', 'log_errors=1', '-S', '127.0.0.1:' . $port, '-t', $webroot, $webroot . '/_guide/dev-router.php'];
+    $cmd = [PHP_BINARY, '-d', 'display_errors=' . $displayErrors, '-d', 'log_errors=1', '-S', '127.0.0.1:' . $port, '-t', $webroot, $webroot . '/_guide/dev-router.php'];
     $log = $base . '/server.log';
     $proc = proc_open($cmd, [0 => ['pipe', 'r'], 1 => ['file', $log, 'a'], 2 => ['file', $log, 'a']], $pipes, $webroot, $env);
     if (!is_resource($proc)) {
@@ -353,4 +356,22 @@ test('api: wrong method is 405, unknown action 404', function () {
         eq(at_signed($ctx, 'POST', '/api/guides/apto-1204/rollback', '{"version":5}')['status'], 400, 'bad rollback body');
         eq(at_signed($ctx, 'POST', '/api/guides/apto-1204/rollback')['status'], 409, 'nothing to roll back');
     });
+});
+
+test('api: a filesystem failure with display_errors on is a clean JSON 500 with no paths', function () {
+    at_with_server(function ($ctx) {
+        // .lock is a folder, so fopen() in the store warns and fails.
+        mkdir($ctx['data'] . '/apto-1204/.lock', 0700, true);
+        $r = at_signed($ctx, 'PUT', '/api/guides/apto-1204/draft', at_json(at_guide()));
+        eq($r['status'], 500, 'status, body: ' . substr($r['raw'], 0, 300));
+        $json = json_decode($r['raw'], true);
+        ok(is_array($json), 'whole body is JSON: ' . substr($r['raw'], 0, 300));
+        eq($json['ok'], false);
+        eq($r['headers']['content-type'] ?? '', 'application/json; charset=utf-8');
+        $raw = str_replace('\\/', '/', $r['raw']);
+        $leaks = [$ctx['data'], str_replace('/', '\\', $ctx['data']), basename(dirname($ctx['data'])), 'store.php', 'Warning'];
+        foreach ($leaks as $leak) {
+            ok(stripos($raw, $leak) === false, 'body leaks ' . $leak);
+        }
+    }, '1');
 });

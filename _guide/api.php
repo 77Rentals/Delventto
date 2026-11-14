@@ -5,6 +5,11 @@ declare(strict_types=1);
 // PUT .../draft, POST .../photos?name=, .../publish, .../rollback, .../unpublish.
 // Order per request: size limit, signature (401, nothing touched), slug (400), route.
 
+// PHP errors go to the server log, never into a response (they would leak paths and break the JSON).
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+ob_start();
+
 require_once __DIR__ . '/lib/config.php';
 require_once __DIR__ . '/lib/slug.php';
 require_once __DIR__ . '/lib/auth.php';
@@ -257,6 +262,10 @@ function api_error(string $message): array
 
 function api_send(int $status, array $data, array $extra = []): void
 {
+    // Drop anything printed before this point so only the JSON goes out.
+    while (ob_get_level() > 0) {
+        ob_end_clean();
+    }
     http_response_code($status);
     header('Content-Type: application/json; charset=utf-8');
     header('Cache-Control: no-store');
