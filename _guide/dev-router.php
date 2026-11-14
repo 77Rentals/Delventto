@@ -5,7 +5,7 @@ declare(strict_types=1);
 //   php -S 127.0.0.1:8765 -t . _guide/dev-router.php   (from the repo root)
 // /api/guides/... -> api.php, /<slug>/photo/<file> -> photo.php,
 // /<slug>/ -> render.php when no real file or folder has that name, else the static file.
-// photo.php and render.php arrive in a later task; until then those routes are 404.
+// /_guide/assets/... (guide.css, guide.js) are served as static files.
 
 $webroot = dirname(__DIR__);
 $path = explode('?', (string) ($_SERVER['REQUEST_URI'] ?? '/'), 2)[0];

@@ -1,0 +1,295 @@
+{
+  "id": "delventto",
+  "confirmedBy": null,
+  "confirmedAt": null,
+  "source": "Copied from apartasuite-613t2/index.html on 2026-11-14; dashes rewritten as commas, colons or 'a'. Owner confirmation pending.",
+  "name": {"es": "Edificio Delventto", "en": "Delventto Building"},
+  "shortName": "Delventto",
+  "area": {"es": "Cabo Tortuga · Pozos Colorados · Santa Marta", "en": "Cabo Tortuga · Pozos Colorados · Santa Marta"},
+  "city": {"es": "Santa Marta", "en": "Santa Marta"},
+  "timezone": "America/Bogota",
+  "timezoneLabel": "Santa Marta (GMT-5)",
+  "address": "Carrera 4C #70-75 · Cabo Tortuga, Pozos Colorados, Santa Marta",
+  "airportMinutes": 10,
+  "arrivalNote": {"es": "Un ambiente familiar y tranquilo, con vigilancia 24/7.", "en": "A quiet, family-friendly building with 24/7 security."},
+  "checkoutNote": {"es": "Al salir, asegura la puerta e informa en el lobby.", "en": "When you leave, lock the door and let the lobby know."},
+  "reception": {
+    "whatsapp": "+573117548493",
+    "phoneDisplay": "+57 311 754 8493",
+    "intercom": "100",
+    "hours": {"es": "Atención 24 horas", "en": "24-hour service"}
+  },
+  "amenities": [
+    {"es": "Gimnasio", "en": "Gym"},
+    {"es": "Piscina para niños", "en": "Kids Pool"},
+    {"es": "Piscina", "en": "Pool"},
+    {"es": "Piscina infinita", "en": "Infinity Pool"},
+    {"es": "Piscina interior", "en": "Indoor Pool"},
+    {"es": "Squash", "en": "Squash"},
+    {"es": "Sauna", "en": "Sauna"},
+    {"es": "Zona BBQ", "en": "BBQ Zone"},
+    {"es": "Terraza", "en": "Terrace"},
+    {"es": "Sala de reuniones", "en": "Business Meeting Room"}
+  ],
+  "wristband": {
+    "es": "Costo de manilla: $25.000 COP por persona, incluye acceso a todas las amenidades del edificio. Niños menores de 5 años no pagan.",
+    "en": "Wristband fee: $25,000 COP per person, includes access to all building amenities. Children under 5 are free."
+  },
+  "hours": [
+    {"label": {"es": "🏊 Piscina piso 1:", "en": "🏊 Pool floor 1:"}, "time": {"es": "9:00 a.m. a 6:00 p.m.", "en": "9:00 a.m. to 6:00 p.m."}},
+    {"label": {"es": "♾️ Piscina infinita piso 16:", "en": "♾️ Infinity pool floor 16:"}, "time": {"es": "9:00 a.m. a 7:00 p.m.", "en": "9:00 a.m. to 7:00 p.m."}},
+    {"label": {"es": "🏋️ Gimnasio:", "en": "🏋️ Gym:"}, "time": {"es": "6:00 a.m. a 10:00 p.m.", "en": "6:00 a.m. to 10:00 p.m."}}
+  ],
+  "poolRules": [
+    {
+      "es": "Para conservar el buen estado de las instalaciones y dar cumplimiento al reglamento del edificio Delventto, solicitamos no transitar por los ascensores ni por las zonas comunes con el cuerpo o la ropa mojados, ni goteando agua después de utilizar la piscina.",
+      "en": "To preserve the building facilities and comply with Delventto's regulations, please do not walk through the elevators or common areas with wet bodies or clothing, or dripping water after using the pool."
+    },
+    {
+      "es": "La zona de piscinas cuenta con baños, duchas y espacios adecuados para secarse y cambiarse antes de regresar al apartamento. Agradecemos su colaboración.",
+      "en": "The pool area has bathrooms, showers, and spaces to dry off and change before returning to your apartment. Thank you for your cooperation."
+    }
+  ],
+  "amenitiesVideo": "/apartasuite-613t2/amenities-tour.mp4",
+  "amenityPhotos": [
+    {"src": "/apartasuite-613t2/amen_lobby.jpg", "caption": {"es": "Recepción", "en": "Lobby & Reception"}},
+    {"src": "/apartasuite-613t2/amen_gym.jpg", "caption": {"es": "Gimnasio", "en": "Gym"}},
+    {"src": "/apartasuite-613t2/amen_pool.jpg", "caption": {"es": "Piscina", "en": "Pool"}},
+    {"src": "/apartasuite-613t2/amen_dining.jpg", "caption": {"es": "Zona social", "en": "Social Area"}},
+    {"src": "/apartasuite-613t2/amen_terrace.jpg", "caption": {"es": "Terraza", "en": "Rooftop Terrace"}},
+    {"src": "/apartasuite-613t2/amen_terrace2.jpg", "caption": {"es": "Zona BBQ", "en": "BBQ Area"}},
+    {"src": "/apartasuite-613t2/amen_pool4.jpg", "caption": {"es": "", "en": ""}},
+    {"src": "/apartasuite-613t2/amen_pool7.jpg", "caption": {"es": "", "en": ""}},
+    {"src": "/apartasuite-613t2/amen_building-night.jpg", "caption": {"es": "Edificio Delventto de noche", "en": "Delventto Building at Night"}},
+    {"src": "/apartasuite-613t2/amen_jacuzzi.jpg", "caption": {"es": "Jacuzzi", "en": "Jacuzzi"}},
+    {"src": "/apartasuite-613t2/amen_pools-night.jpg", "caption": {"es": "Piscinas de noche", "en": "Pools at Night"}},
+    {"src": "/apartasuite-613t2/amen_indoor-pool.jpg", "caption": {"es": "Piscina interior", "en": "Indoor Pool"}},
+    {"src": "/apartasuite-613t2/amen_edificio.jpg", "caption": {"es": "Edificio Delventto", "en": "Delventto Building"}},
+    {"src": "/apartasuite-613t2/amen_bbq-pool.jpg", "caption": {"es": "Piscina y zona BBQ", "en": "Pool & BBQ Area"}},
+    {"src": "/apartasuite-613t2/amen_rooftop-dining.jpg", "caption": {"es": "Terraza gourmet piso 16", "en": "Rooftop Dining, Floor 16"}},
+    {"src": "/apartasuite-613t2/amen_rooftop-pool.jpg", "caption": {"es": "Piscina infinita piso 16", "en": "Infinity Pool, Floor 16"}},
+    {"src": "/apartasuite-613t2/amen_common-floor1.jpg", "caption": {"es": "Zona común primer piso", "en": "Common Area, Ground Floor"}},
+    {"src": "/apartasuite-613t2/amen_interior-view.jpg", "caption": {"es": "Vista interior", "en": "Interior View"}},
+    {"src": "/apartasuite-613t2/amen_beach3.jpg", "caption": {"es": "Atardecer: bote", "en": "Sunset: Boat"}},
+    {"src": "/apartasuite-613t2/amen_beach4.jpg", "caption": {"es": "Atardecer en la playa", "en": "Beach at Sunset"}}
+  ],
+  "map": {
+    "embed": "https://www.google.com/maps?q=Edificio+Delventto,+Santa+Marta&z=15&output=embed",
+    "beachVideo": "/apartasuite-613t2/beach-directions.mp4",
+    "links": [
+      {"icon": "🍽", "label": {"es": "Playa del Ritmo", "en": "Playa del Ritmo"}, "url": "https://www.google.com/maps/dir/?api=1&origin=11.1752557,-74.2335392&destination=11.1721217,-74.2343052"},
+      {"icon": "✈️", "label": {"es": "Aeropuerto Santa Marta", "en": "Santa Marta Airport"}, "url": "https://www.google.com/maps/dir/?api=1&origin=11.1752557,-74.2335392&destination=11.1178518,-74.2317948"},
+      {"icon": "🏠", "label": {"es": "Edificio Delventto", "en": "Delventto Building"}, "url": "https://www.google.com/maps?q=Edificio+Delventto,+Santa+Marta"}
+    ]
+  },
+  "places": {
+    "playa-del-ritmo": {
+      "group": "nearby",
+      "photo": "https://images.pexels.com/photos/18054762/pexels-photo-18054762.jpeg",
+      "tagType": "food",
+      "name": {"es": "Playa del Ritmo", "en": "Playa del Ritmo"},
+      "tag": {"es": "Comida y playa", "en": "Food & beach"},
+      "distance": {"es": "4 MIN CAMINANDO · DESDE $17K COP", "en": "4 MIN WALK · FROM $17K COP"},
+      "text": {"es": "Gran variedad de comida y platos del día, con playa y servicio de ducha.", "en": "Great variety of food and daily specials, with beach access and shower service."},
+      "links": [{"type": "map", "url": "https://www.google.com/maps/search/?api=1&query=Playa%20del%20Ritmo%20Santa%20Marta%20Colombia"}]
+    },
+    "zazue": {
+      "group": "nearby",
+      "photo": "https://images.pexels.com/photos/264507/pexels-photo-264507.jpeg",
+      "tagType": "food",
+      "name": {"es": "C.C. Zazué", "en": "C.C. Zazué"},
+      "tag": {"es": "Compras y comida", "en": "Shopping & food"},
+      "distance": {"es": "5 MIN EN CARRO", "en": "5 MIN BY CAR"},
+      "text": {"es": "El centro comercial del sector: restaurantes, tiendas y todo lo que necesites a la mano.", "en": "The neighborhood mall: restaurants, shops, and everything you need close at hand."},
+      "links": [{"type": "map", "url": "https://maps.app.goo.gl/whVPKEkP45BuzX7y5"}]
+    },
+    "pizza-el-vomito": {
+      "group": "nearby",
+      "photo": "https://images.pexels.com/photos/315755/pexels-photo-315755.jpeg",
+      "tagType": "food",
+      "name": {"es": "Pizza El Vómito", "en": "Pizza El Vómito"},
+      "tag": {"es": "Leyenda local", "en": "Local legend"},
+      "distance": {"es": "EL RODADERO / GAIRA", "en": "EL RODADERO / GAIRA"},
+      "text": {"es": "No dejes que el nombre te engañe. Es legendaria por la generosa (y caótica) cantidad de ingredientes y queso en cada porción.", "en": "Don't let the name fool you. It's legendary for the generous (and chaotic) amount of toppings and cheese on every slice."},
+      "links": [{"type": "map", "url": "https://www.google.com/maps/search/?api=1&query=Pizza%20El%20Vomito%20Santa%20Marta%20Colombia"}]
+    },
+    "centro-historico": {
+      "group": "nearby",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/d/d8/2019_Santa_Marta_-_Casa_azul_en_el_Parque_de_Los_Novios.jpg",
+      "tagType": "fun",
+      "name": {"es": "Centro Histórico y Parque de los Novios", "en": "Historic Center & Parque de los Novios"},
+      "tag": {"es": "Cultura y vida nocturna", "en": "Culture & nightlife"},
+      "distance": {"es": "20 MIN EN CARRO", "en": "20 MIN BY CAR"},
+      "text": {"es": "El corazón vibrante de la ciudad: casas coloniales, arte urbano y música en vivo en las plazas.", "en": "The vibrant heart of the city: colonial houses, street art, and live music in the plazas."},
+      "links": [{"type": "map", "url": "https://www.google.com/maps/search/?api=1&query=Parque%20de%20los%20Novios%20Centro%20Historico%20Santa%20Marta%20Colombia"}]
+    },
+    "quinta-san-pedro": {
+      "group": "nearby",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/a/aa/Quinta_San_Pedro_de_Alejandrino_%282%29.JPG",
+      "tagType": "fun",
+      "name": {"es": "Quinta de San Pedro Alejandrino", "en": "Quinta de San Pedro Alejandrino"},
+      "tag": {"es": "Historia", "en": "History"},
+      "distance": {"es": "HACIENDA DEL SIGLO XVII", "en": "17TH CENTURY HACIENDA"},
+      "text": {"es": "Rodeada de árboles centenarios, aquí murió Simón Bolívar. Un oasis de cultura, arte y jardines botánicos.", "en": "Surrounded by century-old trees, this is where Simón Bolívar died. An oasis of culture, art, and botanical gardens."},
+      "links": [{"type": "map", "url": "https://www.google.com/maps/search/?api=1&query=Quinta%20de%20San%20Pedro%20Alejandrino%20Santa%20Marta%20Colombia"}]
+    },
+    "harrys": {
+      "group": "nearby",
+      "photo": "https://images.pexels.com/photos/675951/pexels-photo-675951.jpeg",
+      "tagType": "food",
+      "name": {"es": "Harry's Steakhouse", "en": "Harry's Steakhouse"},
+      "tag": {"es": "Restaurante", "en": "Restaurant"},
+      "distance": {"es": "SANTA MARTA", "en": "SANTA MARTA"},
+      "text": {"es": "Cortes de carne de primera y ambiente sofisticado. Ideal para una cena especial.", "en": "Premium cuts and a sophisticated atmosphere. Perfect for a special dinner."},
+      "links": [
+        {"type": "menu", "url": "https://www.qodeup.com/harrye039ssteakhouse"},
+        {"type": "map", "url": "https://maps.app.goo.gl/oUi2Tstpj345js6A8"}
+      ]
+    },
+    "cambiante": {
+      "group": "nearby",
+      "photo": "https://images.pexels.com/photos/2120624/pexels-photo-2120624.jpeg",
+      "tagType": "food",
+      "name": {"es": "Cambiante", "en": "Cambiante"},
+      "tag": {"es": "Restaurante", "en": "Restaurant"},
+      "distance": {"es": "SANTA MARTA", "en": "SANTA MARTA"},
+      "text": {"es": "Cocina contemporánea frente al mar. Una experiencia gastronómica que cambia con la temporada.", "en": "Contemporary cuisine by the sea. A dining experience that changes with the season."},
+      "links": [
+        {"type": "menu", "url": "https://www.qodeup.com/cambiantealmar"},
+        {"type": "map", "url": "https://maps.app.goo.gl/1vAeazmEDfQ7PWwy5"}
+      ]
+    },
+    "holguer": {
+      "group": "nearby",
+      "photo": "https://images.pexels.com/photos/803290/pexels-photo-803290.jpeg",
+      "tagType": "food",
+      "name": {"es": "Holguer Pizza", "en": "Holguer Pizza"},
+      "tag": {"es": "Pizzería", "en": "Pizzeria"},
+      "distance": {"es": "SANTA MARTA", "en": "SANTA MARTA"},
+      "text": {"es": "Pizza artesanal con mucha personalidad. Uno de los favoritos locales.", "en": "Artisan pizza with a lot of personality. A local favorite."},
+      "links": [{"type": "ig", "url": "https://www.instagram.com/holguerpizza/?hl=es"}]
+    },
+    "la-samaria": {
+      "group": "nearby",
+      "photo": null,
+      "tagType": "food",
+      "name": {"es": "Arepas de Huevo y Jugos Naturales \"La Samaria\"", "en": "Egg Arepas & Fresh Juices \"La Samaria\""},
+      "tag": {"es": "Desayuno local", "en": "Local breakfast"},
+      "distance": {"es": "AL LADO DE SAMARIA · TODAS LAS MAÑANAS", "en": "NEXT TO SAMARIA · EVERY MORNING"},
+      "text": {"es": "Arepas de huevo y jugos naturales recién hechos, con domicilio hasta Delventto. Se debe encargar con un día de anticipación.", "en": "Freshly made egg arepas and natural juices, with delivery to Delventto. Orders must be placed one day in advance."},
+      "links": [{"type": "wa", "url": "https://wa.me/573243109020"}]
+    },
+    "crepes-carulla": {
+      "group": "nearby",
+      "photo": "/apartasuite-613t2/place_crepes-waffles.jpg",
+      "tagType": "food",
+      "name": {"es": "Crepes & Waffles · Carulla", "en": "Crepes & Waffles · Carulla"},
+      "tag": {"es": "Supermercado y restaurantes", "en": "Supermarket & dining"},
+      "distance": {"es": "C.C. ZAZUÉ · 5 MIN EN CARRO", "en": "ZAZUÉ MALL · 5 MIN BY CAR"},
+      "text": {"es": "Buena oferta gastronómica y supermercado a la mano, justo en el centro comercial Zazué.", "en": "Great dining options and a supermarket close by, right at the Zazué mall."},
+      "links": [{"type": "map", "url": "https://maps.app.goo.gl/whVPKEkP45BuzX7y5"}]
+    },
+    "el-rodadero": {
+      "group": "nearby",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/8/84/Beach_at_El_Rodadero_Colombia_-_panoramio_-_Lorne_Kelly.jpg",
+      "tagType": "fun",
+      "name": {"es": "El Rodadero", "en": "El Rodadero"},
+      "tag": {"es": "Playa y vida nocturna", "en": "Beach & nightlife"},
+      "distance": {"es": "10 MIN EN CARRO", "en": "10 MIN BY CAR"},
+      "text": {"es": "La zona turística más animada de Santa Marta: playa, restaurantes y vida nocturna.", "en": "Santa Marta's liveliest tourist strip: beach, restaurants, and nightlife."},
+      "links": [{"type": "map", "url": "https://www.google.com/maps/search/?api=1&query=El%20Rodadero%2C%20Santa%20Marta%2C%20Colombia"}]
+    },
+    "tayrona": {
+      "group": "daytrip",
+      "photo": "https://images.pexels.com/photos/12227830/pexels-photo-12227830.jpeg",
+      "tagType": "fun",
+      "name": {"es": "Parque Nacional Natural Tayrona", "en": "Parque Nacional Natural Tayrona"},
+      "tag": {"es": "Naturaleza", "en": "Nature"},
+      "distance": {"es": "~30-35 MIN EN CARRO", "en": "~30-35 MIN BY CAR"},
+      "text": {"es": "Selva tropical, montañas y playas de arena blanca bordeadas de palmeras, uno de los rincones más espectaculares del Caribe colombiano.", "en": "Tropical jungle, mountains, and white-sand beaches fringed with palms, one of the most spectacular corners of the Colombian Caribbean."},
+      "links": [{"type": "map", "url": "https://www.google.com/maps/search/?api=1&query=Parque%20Nacional%20Natural%20Tayrona%2C%20Santa%20Marta"}]
+    },
+    "playa-blanca": {
+      "group": "daytrip",
+      "photo": "https://images.pexels.com/photos/12858513/pexels-photo-12858513.jpeg",
+      "tagType": "fun",
+      "name": {"es": "Playa Blanca / Bahía Concha", "en": "Playa Blanca / Bahía Concha"},
+      "tag": {"es": "Playa tranquila", "en": "Quiet beach"},
+      "distance": {"es": "~15-25 MIN EN CARRO O LANCHA", "en": "~15-25 MIN BY CAR OR BOAT"},
+      "text": {"es": "Una alternativa más tranquila y menos concurrida que las playas del centro, con aguas cristalinas ideales para relajarte todo el día.", "en": "A calmer, less crowded alternative to the city beaches, with crystal-clear waters ideal for relaxing all day."},
+      "links": [{"type": "map", "url": "https://www.google.com/maps/search/?api=1&query=Bah%C3%ADa%20Concha%2C%20Santa%20Marta"}]
+    },
+    "minca": {
+      "group": "daytrip",
+      "photo": "https://images.pexels.com/photos/30717831/pexels-photo-30717831.jpeg",
+      "tagType": "fun",
+      "name": {"es": "Minca", "en": "Minca"},
+      "tag": {"es": "Montaña", "en": "Mountain"},
+      "distance": {"es": "~40-50 MIN EN CARRO", "en": "~40-50 MIN BY CAR"},
+      "text": {"es": "Pueblo de montaña en la Sierra Nevada, con cascadas, fincas cafeteras y muy buen avistamiento de aves. Un cambio de aire refrescante frente al calor de la playa.", "en": "A mountain town in the Sierra Nevada, with waterfalls, coffee farms, and great birdwatching. A refreshing change of pace from the beach heat."},
+      "links": [{"type": "map", "url": "https://www.google.com/maps/search/?api=1&query=Minca%2C%20Magdalena%2C%20Colombia"}]
+    },
+    "marina": {
+      "group": "daytrip",
+      "photo": "https://images.pexels.com/photos/13717490/pexels-photo-13717490.jpeg",
+      "tagType": "fun",
+      "name": {"es": "Marina de Santa Marta", "en": "Santa Marta Marina"},
+      "tag": {"es": "Atardecer", "en": "Sunset"},
+      "distance": {"es": "~20-25 MIN EN CARRO", "en": "~20-25 MIN BY CAR"},
+      "text": {"es": "Un paseo marítimo moderno junto al puerto histórico, perfecto para ver el atardecer con un cóctel mientras los yates se mecen en el agua.", "en": "A modern waterfront promenade beside the historic port, perfect for watching the sunset with a cocktail while yachts bob in the water."},
+      "links": [{"type": "map", "url": "https://www.google.com/maps/search/?api=1&query=Marina%20Santa%20Marta%2C%20Santa%20Marta"}]
+    },
+    "museo-oro": {
+      "group": "daytrip",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/a/ab/Casa_de_la_Aduana_Santa_Marta.jpg",
+      "tagType": "fun",
+      "name": {"es": "Museo del Oro Tairona", "en": "Museo del Oro Tairona"},
+      "tag": {"es": "Museo", "en": "Museum"},
+      "distance": {"es": "~15-20 MIN EN CARRO", "en": "~15-20 MIN BY CAR"},
+      "text": {"es": "Ubicado en la Casa de la Aduana (1751), este museo exhibe orfebrería y cerámica precolombina de la cultura Tairona, con entrada gratuita en pleno centro histórico.", "en": "Housed in the 1751 Casa de la Aduana, this museum displays pre-Columbian Tairona goldwork and ceramics, with free admission in the heart of the historic center."},
+      "links": [{"type": "map", "url": "https://www.google.com/maps/search/?api=1&query=Museo%20del%20Oro%20Tairona%2C%20Santa%20Marta"}]
+    }
+  },
+  "rules": [
+    {"icon": "🤫", "text": {"es": "Horario de silencio: 11:00 p.m. a 8:00 a.m.", "en": "Quiet hours: 11:00 p.m. to 8:00 a.m."}},
+    {"icon": "👥", "text": {"es": "Máximo de huéspedes según lo reservado, sin visitantes no registrados", "en": "Max occupancy as booked, no unregistered guests"}},
+    {"icon": "🎉", "text": {"es": "No se permiten fiestas ni eventos", "en": "No parties or events"}},
+    {"icon": "🚭", "text": {"es": "No fumar dentro del apartamento", "en": "No smoking inside the apartment"}},
+    {"icon": "🐾", "text": {"es": "No se admiten mascotas", "en": "No pets allowed"}},
+    {"icon": "🪪", "text": {"es": "Identificación válida requerida al check-in para todos los huéspedes", "en": "Valid ID required at check-in for all registered guests"}},
+    {"icon": "🎟", "text": {"es": "El uso de las amenidades del edificio requiere la manilla indicada en la sección de Amenidades", "en": "Using the building amenities requires the wristband noted in the Amenities section"}},
+    {"icon": "🛠", "text": {"es": "El huésped es responsable por cualquier daño causado al apartamento o sus bienes durante la estadía", "en": "The guest is liable for any damage caused to the apartment or its contents during the stay"}}
+  ],
+  "rulesLegal": {
+    "es": "Al reservar y/o hacer check-in, aceptas estas reglas de la casa. Los anfitriones no se hacen responsables por lesiones, pérdidas o robo de pertenencias personales, salvo negligencia comprobada del anfitrión, en la medida permitida por la ley aplicable. El incumplimiento de estas reglas (fiestas, fumar, huéspedes no registrados, daños a la propiedad) puede resultar en la terminación inmediata de la estadía sin reembolso, conforme a los términos de la plataforma de reserva (Airbnb / Booking.com). Cargos por daños o depósito de seguridad pueden tramitarse a través del Centro de Resolución de la plataforma correspondiente.",
+    "en": "By booking and/or checking in, you agree to these house rules. The hosts are not liable for guest injury, loss, or theft of personal belongings, except where caused by proven host negligence, to the extent permitted by applicable law. Violation of these rules (parties, smoking, unregistered guests, property damage) may result in immediate termination of the stay without refund, per the booking platform's terms (Airbnb / Booking.com). Damage charges or security deposit claims may be processed through the relevant platform's Resolution Center."
+  },
+  "beforeLeaving": [
+    {"icon": "❄️", "text": {"es": "Apaga el aire acondicionado", "en": "Turn off the air conditioning"}},
+    {"icon": "💡", "text": {"es": "Apaga las luces", "en": "Turn off the lights"}},
+    {"icon": "🔌", "text": {"es": "Desconecta equipos electrónicos personales", "en": "Unplug personal electronic devices"}},
+    {"icon": "🚪", "text": {"es": "Verifica que la puerta quede bien cerrada", "en": "Make sure the door is properly closed"}},
+    {"icon": "🌬", "text": {"es": "Cierra el balcón", "en": "Close the balcony"}},
+    {"icon": "🔥", "text": {"es": "Cierra la llave del gas", "en": "Turn off the gas valve"}}
+  ],
+  "escnna": {
+    "image": "/apartasuite-613t2/escnna-notice-v2.jpg",
+    "title": {"es": "Advertencia ESCNNA", "en": "ESCNNA Warning"},
+    "text": {"es": "Toca para ver el aviso completo sobre la prevención de la explotación sexual comercial de niños, niñas y adolescentes.", "en": "Tap to view the full notice on preventing the commercial sexual exploitation of children and adolescents."}
+  },
+  "energy": {
+    "title": {"es": "Aire acondicionado y ahorro de energía", "en": "A/C & Energy Savings"},
+    "images": [
+      {"src": "/apartasuite-613t2/breakers-v3.jpg", "label": {"es": "Tablero de breakers", "en": "Breaker panel"}},
+      {"src": "/apartasuite-613t2/energy-guide-v3.jpg", "label": {"es": "Uso del Aire Acondicionado y Sistema Ahorrador de Energía", "en": "Using the A/C & Energy-Saving System"}}
+    ],
+    "quickGuide": {"src": "/apartasuite-613t2/energy-guide-old-2-bilingual.jpg", "label": {"es": "📋 Guía rápida", "en": "📋 Quick guide"}}
+  },
+  "sos": [
+    {"icon": "🚨", "color": "danger", "title": {"es": "Línea de emergencias", "en": "Emergency line"}, "number": "123", "href": "tel:123", "note": {"es": "Policía 112 · Bomberos 318 876 3338", "en": "Police 112 · Fire Dept. 318 876 3338"}},
+    {"icon": "🏥", "color": "deep", "title": {"es": "Clínica Avidanti", "en": "Clínica Avidanti"}, "number": "(605) 421 9999", "href": "tel:+576054219999", "note": {"es": "Bello Horizonte, cerca de Pozos Colorados", "en": "Bello Horizonte, near Pozos Colorados"}},
+    {"icon": "💊", "color": "brand", "title": {"es": "Droguería Andina", "en": "Droguería Andina"}, "number": "316 744 9954", "href": "tel:+573167449954", "note": {"es": "Zazué Plaza, muy cerca", "en": "Zazué Plaza, very close"}}
+  ],
+  "weather": {"lat": 11.2008, "lon": -74.2247},
+  "footerAddress": {"es": "Carrera 4C #70-75, Edificio Delventto, Apto {unit} · Santa Marta", "en": "Carrera 4C #70-75, Delventto Building, Apt {unit} · Santa Marta"}
+}

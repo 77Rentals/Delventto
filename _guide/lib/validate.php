@@ -2,9 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/slug.php';
-
-const GUIDE_PALETTES = ['caribe', 'macondo', 'arena', 'selva'];
-const GUIDE_MOTIONS = ['marino', 'mariposas', 'aves', 'ninguno'];
+require_once __DIR__ . '/themes.php';
 
 const GUIDE_MSG_HTML = 'Sin HTML, por favor';
 const GUIDE_MSG_DASH = 'Cambia la raya por coma o punto';

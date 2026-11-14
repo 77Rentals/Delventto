@@ -200,6 +200,12 @@ test('validate: theme keys', function () {
     eq($p[0]['message'], 'Ese tema no existe');
     $g['theme'] = ['palette' => 'caribe', 'motion' => 'lluvia'];
     ok(vt_has(vt_run($g), 'theme.motion'));
+    $g['theme'] = ['palette' => 'tayrona', 'motion' => 'luciernagas'];
+    eq(vt_run($g), [], 'new theme keys are accepted');
+    $g['theme'] = ['palette' => 'nope', 'motion' => 'luciernagas'];
+    eq(vt_fields(vt_run($g)), ['theme.palette']);
+    $g['theme'] = ['palette' => 'tayrona', 'motion' => 'nope'];
+    eq(vt_fields(vt_run($g)), ['theme.motion']);
 });
 
 test('validate: T needs both languages and respects limits per language', function () {
