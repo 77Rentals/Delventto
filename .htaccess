@@ -1,0 +1,42 @@
+# delventto.cloud routing (Apache 2.4, mod_rewrite). Mirrors _guide/dev-router.php.
+# Do not put php_value/php_flag lines here (they cause a 500 under PHP-FPM); see .user.ini.
+
+Options -Indexes
+DirectoryIndex index.html index.php
+
+# Repo and tooling folders must never be served, even if a deploy leaves them behind.
+RedirectMatch 404 ^/\.git
+RedirectMatch 404 ^/tests/
+RedirectMatch 404 ^/\.superpowers
+RedirectMatch 404 ^/\.github
+RedirectMatch 404 ^/\.claude
+
+<Files ".user.ini">
+    Require all denied
+</Files>
+
+RewriteEngine On
+
+# 1. Direct requests to /_guide/ are 404, except /_guide/assets/ (css, js, qr library).
+#    REDIRECT_STATUS is empty on the first, external pass and set once Apache has
+#    internally redirected to api.php, render.php or photo.php, so those still work.
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{REQUEST_URI} !^/_guide/assets/
+RewriteRule ^_guide(/|$) - [R=404,L]
+
+# 2. API: /api/guides/<slug>[/action] (api.php reads the path from REQUEST_URI).
+RewriteRule ^api/guides/(.+)$ _guide/api.php [QSA,L]
+
+# 3. Photos: /<slug>/photo/<file>, unless a real file sits at that path.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([a-z0-9-]+)/photo/([a-z0-9.-]+)$ _guide/photo.php [QSA,L]
+
+# 4. Guides: /<slug>/ only when no real folder or file has that name (existing folders win).
+#    /<slug> without the slash is redirected to the slash form, keeping the query string.
+RewriteCond %{DOCUMENT_ROOT}/$1 !-d
+RewriteCond %{DOCUMENT_ROOT}/$1 !-f
+RewriteRule ^([a-z0-9-]+)$ /$1/ [R=301,L,QSA]
+
+RewriteCond %{DOCUMENT_ROOT}/$1 !-d
+RewriteCond %{DOCUMENT_ROOT}/$1 !-f
+RewriteRule ^([a-z0-9-]+)/?$ _guide/render.php [QSA,L]

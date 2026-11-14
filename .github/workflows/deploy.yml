@@ -21,3 +21,37 @@ jobs:
           source: "./*"
           target: /home/rentals77/delventto.cloud/
           rm: false
+
+      # "./*" may skip dotfiles; make sure the routing and PHP settings always ship.
+      - name: Deploy dotfiles via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 22
+          source: ".htaccess,.user.ini"
+          target: /home/rentals77/delventto.cloud/
+          rm: false
+
+      - name: Harden remote and write guide secret
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 22
+          envs: GUIDE_API_SECRET
+          script: |
+            set -e
+            rm -rf ~/delventto.cloud/.git ~/delventto.cloud/tests ~/delventto.cloud/.superpowers ~/delventto.cloud/.github
+            umask 077
+            mkdir -p ~/delventto-private ~/delventto-guides
+            if [ -n "$GUIDE_API_SECRET" ]; then
+              printf '<?php return ["secret" => "%s"];\n' "$GUIDE_API_SECRET" > ~/delventto-private/config.php
+              echo "Guide config written."
+            else
+              echo "No guide secret provided; existing config left untouched."
+            fi
+        env:
+          GUIDE_API_SECRET: ${{ secrets.GUIDE_API_SECRET }}
