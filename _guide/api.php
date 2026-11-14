@@ -22,6 +22,8 @@ require_once __DIR__ . '/lib/building.php';
 
 const API_PREFIX = '/api/guides/';
 const API_MAX_JSON_BYTES = 1024 * 1024;
+/** Largest decoded piece per request: the host alters bodies above about 2.6 MB. */
+const PHOTO_PART_MAX_BYTES = 1048576;
 const API_LOG_MAX_BYTES = 5 * 1024 * 1024;
 const API_ROUTES = [
     '' => 'GET',
@@ -176,11 +178,21 @@ function api_add_photo(string $slug, string $body, array $headers): array
         if ($raw === false || $raw === '') {
             return [400, api_error($badMessage)];
         }
-        if (strlen($raw) > PHOTO_MAX_BYTES) {
-            return [413, api_error('Esa foto pesa más de 8 MB')];
+        if (strlen($raw) > PHOTO_PART_MAX_BYTES) {
+            return [413, api_error('Cada envío puede pesar hasta 1 MB, manda la foto en partes')];
         }
         $name = $req['name'];
         $type = strtolower(trim($req['type']));
+        if (array_key_exists('upload', $req) || array_key_exists('part', $req) || array_key_exists('parts', $req)) {
+            if (!in_array($type, ['image/jpeg', 'image/png', 'image/webp'], true)) {
+                return [415, api_error('Manda la foto como JPG, PNG o WebP')];
+            }
+            $r = api_photo_part($slug, $req, $name, $type, $raw);
+            if (!isset($r['done'])) {
+                return $r;
+            }
+            $raw = $r['bytes'];
+        }
     } else {
         $raw = $body;
     }
@@ -193,6 +205,34 @@ function api_add_photo(string $slug, string $body, array $headers): array
     }
     $file = store_add_photo($slug, $name, $photo['bytes'], $photo['ext']);
     return [200, ['ok' => true, 'file' => $file]];
+}
+
+/** One part of a chunked upload. Returns a response, or ['done'=>true,'bytes'=>..] after the last part. */
+function api_photo_part(string $slug, array $req, string $name, string $type, string $chunk): array
+{
+    $upload = $req['upload'] ?? null;
+    $part = $req['part'] ?? null;
+    $parts = $req['parts'] ?? null;
+    if (!is_string($upload) || preg_match(STORE_UPLOAD_ID_RE, $upload) !== 1) {
+        return [400, api_error('El identificador del envío no es válido (8 a 40 letras minúsculas o números)')];
+    }
+    if (!is_int($parts) || $parts < 1 || $parts > STORE_UPLOAD_MAX_PARTS || !is_int($part) || $part < 1 || $part > $parts) {
+        return [400, api_error('part y parts deben ser números, con parts entre 1 y ' . STORE_UPLOAD_MAX_PARTS . ' y part entre 1 y parts')];
+    }
+    $r = store_upload_part($slug, $upload, $part, $parts, $name, $type, $chunk, PHOTO_MAX_BYTES);
+    if (isset($r['outOfOrder'])) {
+        return [409, ['ok' => false, 'error' => 'Parte fuera de orden', 'expected' => $r['expected']]];
+    }
+    if (isset($r['mismatch'])) {
+        return [400, api_error('El nombre, el tipo o el número de partes no coincide con la primera parte')];
+    }
+    if (isset($r['tooBig'])) {
+        return [413, api_error('Esa foto pesa más de 8 MB')];
+    }
+    if (isset($r['done'])) {
+        return $r;
+    }
+    return [200, ['ok' => true, 'received' => $r['received'], 'expected' => $r['expected']]];
 }
 
 function api_publish(string $slug): array
@@ -313,8 +353,8 @@ function api_log(string $method, string $path, int $status): void
     @file_put_contents($file, $line, FILE_APPEND | LOCK_EX);
 }
 
-/** Body cap for the JSON photo mode: hex of PHOTO_MAX_BYTES (2x, base64 fits inside) plus room for the JSON envelope. */
+/** Body cap for the JSON photo mode: hex of one part, PHOTO_PART_MAX_BYTES (2x, base64 fits inside) plus room for the JSON envelope. */
 function api_photo_json_limit(): int
 {
-    return 2 * PHOTO_MAX_BYTES + 4096;
+    return 2 * PHOTO_PART_MAX_BYTES + 8192;
 }

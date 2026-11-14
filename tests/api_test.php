@@ -474,10 +474,6 @@ test('api: JSON photo upload enforces 8 MB on the decoded bytes', function () {
         $big = str_repeat('A', 8 * 1024 * 1024 + 1);
         $r = at_upload_json($ctx, 'apto-1204', ['name' => 'big', 'type' => 'image/jpeg', 'data' => base64_encode($big)]);
         eq($r['status'], 413, substr($r['raw'], 0, 300));
-        // 8 MB of decoded bytes fits in the body cap (it then fails as not a photo, not as too large)
-        $ok = str_repeat('A', 8 * 1024 * 1024);
-        $r = at_upload_json($ctx, 'apto-1204', ['name' => 'big', 'type' => 'image/jpeg', 'data' => base64_encode($ok)]);
-        eq($r['status'], 400, 'exactly 8 MB passes the size gates ' . substr($r['raw'], 0, 300));
     });
 });
 
@@ -523,7 +519,120 @@ test('api: JSON hex photo upload enforces 8 MB on the decoded bytes', function (
     at_with_server(function ($ctx) {
         $r = at_upload_json($ctx, 'apto-1204', ['name' => 'big', 'type' => 'image/jpeg', 'encoding' => 'hex', 'data' => bin2hex(str_repeat('A', 8 * 1024 * 1024 + 1))]);
         eq($r['status'], 413, substr($r['raw'], 0, 300));
-        $r = at_upload_json($ctx, 'apto-1204', ['name' => 'big', 'type' => 'image/jpeg', 'encoding' => 'hex', 'data' => bin2hex(str_repeat('A', 8 * 1024 * 1024))]);
-        eq($r['status'], 400, 'exactly 8 MB passes the size gates ' . substr($r['raw'], 0, 300));
     });
+});
+
+// ---- chunked photo upload (the host alters request bodies above about 2.6 MB) ----
+
+function at_big_jpeg(int $pad): string
+{
+    $j = at_jpeg();
+    return substr($j, 0, -2) . str_repeat("\x12", $pad) . "\xFF\xD9";
+}
+
+function at_part(array $ctx, string $upload, int $part, int $parts, string $chunk, string $name = 'big', array $extra = [], array $opt = []): array
+{
+    return at_upload_json($ctx, 'apto-1204', ['name' => $name, 'type' => 'image/jpeg', 'encoding' => 'hex',
+        'upload' => $upload, 'part' => $part, 'parts' => $parts, 'data' => bin2hex($chunk)] + $extra, $opt);
+}
+
+test('api: 3 part upload of a photo over 2 MB assembles and stores it', function () {
+    at_with_server(function ($ctx) {
+        $img = at_big_jpeg(2300000);
+        $chunks = str_split($img, 1048576);
+        eq(count($chunks), 3);
+        $r = at_part($ctx, 'abcd1234ef', 1, 3, $chunks[0]);
+        eq([$r['status'], $r['json']], [200, ['ok' => true, 'received' => 1, 'expected' => 2]], $r['raw']);
+        $r = at_part($ctx, 'abcd1234ef', 2, 3, $chunks[1]);
+        eq($r['json'], ['ok' => true, 'received' => 2, 'expected' => 3]);
+        ok(is_dir($ctx['data'] . '/apto-1204/.uploads/abcd1234ef'), 'parts kept while uploading');
+        $r = at_part($ctx, 'abcd1234ef', 3, 3, $chunks[2]);
+        eq([$r['status'], $r['json']], [200, ['ok' => true, 'file' => 'big.jpg']], $r['raw']);
+        eq(strlen((string) file_get_contents($ctx['data'] . '/apto-1204/photos/big.jpg')), strlen($img), 'assembled bytes');
+        ok(!is_dir($ctx['data'] . '/apto-1204/.uploads/abcd1234ef'), 'upload dir deleted');
+    });
+});
+
+test('api: chunk order, resend and bad ids', function () {
+    at_with_server(function ($ctx) {
+        $c = str_repeat("\x12", 1000);
+        $r = at_part($ctx, 'abcd1234ef', 2, 3, $c);
+        eq([$r['status'], $r['json']['expected'] ?? null], [409, 1], 'part 2 first ' . $r['raw']);
+        eq(at_part($ctx, 'abcd1234ef', 1, 3, $c)['status'], 200);
+        $r = at_part($ctx, 'abcd1234ef', 3, 3, $c);
+        eq([$r['status'], $r['json']['expected'] ?? null, $r['json']['error'] ?? null], [409, 2, 'Parte fuera de orden'], 'skip ahead');
+        $r = at_part($ctx, 'abcd1234ef', 1, 3, $c);
+        eq([$r['status'], $r['json']], [200, ['ok' => true, 'received' => 1, 'expected' => 2]], 'resend last is idempotent');
+        eq(at_part($ctx, 'abcd1234ef', 2, 3, $c)['json']['expected'], 3);
+        $r = at_part($ctx, 'abcd1234ef', 2, 3, $c);
+        eq([$r['status'], $r['json']['expected']], [200, 3], 'resend 2');
+        eq(at_part($ctx, 'abcd1234ef', 1, 3, $c)['status'], 409, 'older than the last part');
+        foreach (['short', 'UPPERCASE12', 'has-dash-123', str_repeat('a', 41)] as $bad) {
+            eq(at_part($ctx, $bad, 1, 2, $c)['status'], 400, "bad id $bad");
+        }
+        eq(at_part($ctx, 'abcd1234ef', 1, 17, $c)['status'], 400, 'parts over 16');
+        eq(at_part($ctx, 'abcd1234ef', 0, 2, $c)['status'], 400, 'part 0');
+        eq(at_part($ctx, 'abcd1234ef', 3, 2, $c)['status'], 400, 'part over parts');
+    });
+});
+
+test('api: chunk size limits', function () {
+    at_with_server(function ($ctx) {
+        eq(at_part($ctx, 'abcd1234ef', 1, 2, str_repeat('A', 1048576 + 1))['status'], 413, 'part over 1 MB');
+        $r = at_upload_json($ctx, 'apto-1204', ['name' => 'x', 'type' => 'image/jpeg', 'data' => base64_encode(str_repeat('A', 1048576 + 1))]);
+        eq($r['status'], 413, 'single part over 1 MB');
+        // 9 parts are over the 8 MB assembled limit: the last one is refused
+        $mb = str_repeat('A', 1048576);
+        for ($i = 1; $i <= 8; $i++) {
+            eq(at_part($ctx, 'bbbb1234ef', $i, 9, $mb)['status'], 200, "part $i");
+        }
+        $r = at_part($ctx, 'bbbb1234ef', 9, 9, 'A');
+        eq($r['status'], 413, 'assembled over 8 MB ' . $r['raw']);
+        ok(!is_dir($ctx['data'] . '/apto-1204/.uploads/bbbb1234ef'), 'refused upload cleaned up');
+        ok(!is_dir($ctx['data'] . '/apto-1204/photos') || at_dir_entries($ctx['data'] . '/apto-1204/photos') === [], 'nothing stored');
+        // exactly 8 MB assembled passes the size gate (then fails as not a photo)
+        for ($i = 1; $i < 8; $i++) {
+            at_part($ctx, 'cccc1234ef', $i, 8, $mb);
+        }
+        eq(at_part($ctx, 'cccc1234ef', 8, 8, $mb)['status'], 400, 'exactly 8 MB reaches photo_accept');
+    });
+});
+
+test('api: unsigned chunk is 401 and writes nothing', function () {
+    at_with_server(function ($ctx) {
+        $body = json_encode(['name' => 'u', 'type' => 'image/jpeg', 'encoding' => 'hex', 'upload' => 'abcd1234ef', 'part' => 1, 'parts' => 2, 'data' => 'ffd8']);
+        eq(at_http($ctx, 'POST', '/api/guides/apto-1204/photos', $body, ['Content-Type' => 'application/json'])['status'], 401);
+        ok(!is_dir($ctx['data'] . '/apto-1204'), 'nothing written');
+    });
+});
+
+test('api: stale uploads are swept when a new upload starts', function () {
+    at_with_server(function ($ctx) {
+        $up = $ctx['data'] . '/apto-1204/.uploads';
+        mkdir($up . '/oldold1234', 0700, true);
+        file_put_contents($up . '/oldold1234/meta.json', json_encode(['name' => 'x', 'type' => 'image/jpeg', 'parts' => 2, 'next' => 2, 'created' => time() - 7200]));
+        mkdir($up . '/nometa1234', 0700, true);
+        touch($up . '/nometa1234', time() - 7200);
+        mkdir($up . '/fresh12345', 0700, true);
+        file_put_contents($up . '/fresh12345/meta.json', json_encode(['name' => 'x', 'type' => 'image/jpeg', 'parts' => 2, 'next' => 2, 'created' => time()]));
+        eq(at_part($ctx, 'abcd1234ef', 1, 2, str_repeat('A', 10))['status'], 200);
+        ok(!is_dir($up . '/oldold1234') && !is_dir($up . '/nometa1234'), 'old dirs removed');
+        ok(is_dir($up . '/fresh12345') && is_dir($up . '/abcd1234ef'), 'fresh ones kept');
+    });
+});
+
+test('store: .uploads never resolves as a photo', function () {
+    $dir = sys_get_temp_dir() . '/guide-up-test-' . bin2hex(random_bytes(6));
+    mkdir($dir . '/apto-1204/.uploads/abcd1234ef', 0700, true);
+    file_put_contents($dir . '/apto-1204/.uploads/abcd1234ef/part-1', 'x');
+    putenv('GUIDE_DATA_DIR=' . $dir);
+    try {
+        require_once __DIR__ . '/../_guide/lib/store.php';
+        foreach (['.uploads', '.uploads/abcd1234ef/part-1', '../.uploads/x.jpg', 'part-1'] as $f) {
+            eq(store_photo_path('apto-1204', $f), null, $f);
+        }
+    } finally {
+        putenv('GUIDE_DATA_DIR');
+        at_rrmdir($dir);
+    }
 });

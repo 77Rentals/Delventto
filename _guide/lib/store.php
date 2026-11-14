@@ -368,3 +368,91 @@ function store_photo_stem(string $name): string
     $s = trim(substr($s, 0, 60), '-');
     return $s === '' ? 'foto' : $s;
 }
+
+// ---- chunked photo uploads ----
+// Parts live in <slug>/.uploads/<upload>/ (part-N files plus meta.json). That folder is never
+// under photos/, so store_photo_path and photo.php cannot reach it.
+
+const STORE_UPLOAD_ID_RE = '/^[a-z0-9]{8,40}$/D';
+const STORE_UPLOAD_MAX_PARTS = 16;
+const STORE_UPLOAD_STALE_SECONDS = 3600;
+
+/**
+ * Records one part of a chunked photo upload, in order, under the guide's lock.
+ * Returns ['received'=>int,'expected'=>int] for a stored part or an idempotent resend of the
+ * last one, ['expected'=>int,'outOfOrder'=>true] for a part out of order, ['mismatch'=>true]
+ * when name/type/parts differ from the first part, ['tooBig'=>true] when the assembled photo
+ * is over $maxBytes, or ['done'=>true,'bytes'=>..] after the last part (the upload folder is
+ * already deleted; the caller validates and stores the photo).
+ */
+function store_upload_part(string $slug, string $upload, int $part, int $parts, string $name, string $type, string $chunk, int $maxBytes): array
+{
+    if (preg_match(STORE_UPLOAD_ID_RE, $upload) !== 1) {
+        throw new InvalidArgumentException('Invalid upload id');
+    }
+    $dir = store_dir($slug);
+    $root = $dir . '/.uploads';
+    store_mkdir($root);
+    return store_locked($dir, LOCK_EX, function () use ($root, $upload, $part, $parts, $name, $type, $chunk, $maxBytes) {
+        $up = $root . '/' . $upload;
+        $meta = store_read_json($up . '/meta.json');
+        if ($meta === null) {
+            if ($part !== 1) {
+                return ['expected' => 1, 'outOfOrder' => true];
+            }
+            store_sweep_uploads($root);
+            store_mkdir($up);
+            $meta = ['name' => $name, 'type' => $type, 'parts' => $parts, 'next' => 1, 'created' => time()];
+        } elseif ($meta['parts'] !== $parts || $meta['name'] !== $name || $meta['type'] !== $type) {
+            return ['mismatch' => true];
+        }
+        $next = (int) $meta['next'];
+        if ($part === $next - 1 && $part >= 1) {
+            return ['received' => $part, 'expected' => $next];
+        }
+        if ($part !== $next) {
+            return ['expected' => $next, 'outOfOrder' => true];
+        }
+        store_write_atomic($up . '/part-' . $part, $chunk);
+        if ($part < $parts) {
+            $meta['next'] = $part + 1;
+            store_write_json($up . '/meta.json', $meta);
+            return ['received' => $part, 'expected' => $part + 1];
+        }
+        $bytes = '';
+        for ($i = 1; $i <= $parts; $i++) {
+            $bytes .= (string) file_get_contents($up . '/part-' . $i);
+        }
+        store_rmdir($up);
+        if (strlen($bytes) > $maxBytes) {
+            return ['tooBig' => true];
+        }
+        return ['done' => true, 'bytes' => $bytes];
+    });
+}
+
+/** Deletes upload folders older than an hour (by meta created time, else the folder mtime). */
+function store_sweep_uploads(string $root): void
+{
+    foreach (scandir($root) ?: [] as $e) {
+        $p = $root . '/' . $e;
+        if ($e === '.' || $e === '..' || !is_dir($p)) {
+            continue;
+        }
+        $meta = is_file($p . '/meta.json') ? json_decode((string) file_get_contents($p . '/meta.json'), true) : null;
+        $t = is_array($meta) && is_int($meta['created'] ?? null) ? $meta['created'] : (int) filemtime($p);
+        if ($t < time() - STORE_UPLOAD_STALE_SECONDS) {
+            store_rmdir($p);
+        }
+    }
+}
+
+function store_rmdir(string $dir): void
+{
+    foreach (scandir($dir) ?: [] as $e) {
+        if ($e !== '.' && $e !== '..') {
+            @unlink($dir . '/' . $e);
+        }
+    }
+    @rmdir($dir);
+}

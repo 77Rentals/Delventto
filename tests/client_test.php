@@ -53,3 +53,24 @@ test('client upload signs a hex body by default and base64 on request', function
     eq(json_decode($b64['body'], true)['encoding'], 'base64');
     eq(json_decode($b64['body'], true)['data'], base64_encode($jpeg));
 });
+
+test('client splits an upload into signed 1 MB parts', function () {
+    $secret = 'fixed-secret-fixed-secret-fixed-secret-1234';
+    $ts = 1800000000;
+    $bytes = "\xFF\xD8\xFF\xE0" . str_repeat('z', 2500000);
+    $reqs = client_upload_requests($secret, $ts, 'apto-1', 'a1', $bytes, 'hex', 'abcd1234ef');
+    eq(count($reqs), 3);
+    $joined = '';
+    foreach ($reqs as $i => $req) {
+        $b = json_decode($req['body'], true);
+        eq([$b['upload'], $b['part'], $b['parts'], $b['encoding']], ['abcd1234ef', $i + 1, 3, 'hex']);
+        ok(strlen(hex2bin($b['data'])) <= 1048576, 'part within 1 MB');
+        $joined .= hex2bin($b['data']);
+        $lower = array_change_key_case($req['headers'], CASE_LOWER);
+        ok(verify_request($secret, $lower, 'POST', '/api/guides/apto-1/photos', $req['body'], $ts), "part $i signature");
+    }
+    eq($joined, $bytes);
+    eq(count(client_upload_requests($secret, $ts, 'apto-1', 'a1', "\xFF\xD8\xFF\xE0abc", 'hex', 'abcd1234ef')), 1);
+    eq(client_upload_requests($secret, $ts, 'apto-1', 'a1', 'not an image', 'hex', 'abcd1234ef'), []);
+    ok(preg_match('/^[a-z0-9]{8,40}$/D', client_upload_id()) === 1, 'random id shape');
+});
