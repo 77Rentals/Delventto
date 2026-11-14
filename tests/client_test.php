@@ -36,7 +36,20 @@ test('client upload mode builds a valid signed JSON base64 request', function ()
     $req = client_upload_request($secret, $ts, 'apto-1', 'a1', $jpeg);
     eq($req['path'], '/api/guides/apto-1/photos');
     eq($req['ctype'], 'application/json');
-    eq(json_decode($req['body'], true), ['name' => 'a1', 'type' => 'image/jpeg', 'data' => base64_encode($jpeg)]);
+    eq(json_decode($req['body'], true)['data'], bin2hex($jpeg));
     $lower = array_change_key_case($req['headers'], CASE_LOWER);
     ok(verify_request($secret, $lower, 'POST', '/api/guides/apto-1/photos', $req['body'], $ts), 'signature verifies');
+});
+
+test('client upload signs a hex body by default and base64 on request', function () {
+    $secret = 'fixed-secret-fixed-secret-fixed-secret-1234';
+    $ts = 1800000000;
+    $jpeg = "\xFF\xD8\xFF\xE0" . 'abc';
+    $hex = client_upload_request($secret, $ts, 'apto-1', 'a1', $jpeg);
+    eq(json_decode($hex['body'], true), ['name' => 'a1', 'type' => 'image/jpeg', 'encoding' => 'hex', 'data' => bin2hex($jpeg)]);
+    $lower = array_change_key_case($hex['headers'], CASE_LOWER);
+    ok(verify_request($secret, $lower, 'POST', '/api/guides/apto-1/photos', $hex['body'], $ts), 'hex signature verifies');
+    $b64 = client_upload_request($secret, $ts, 'apto-1', 'a1', $jpeg, 'base64');
+    eq(json_decode($b64['body'], true)['encoding'], 'base64');
+    eq(json_decode($b64['body'], true)['data'], base64_encode($jpeg));
 });

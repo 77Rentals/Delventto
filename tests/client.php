@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 // Signed CLI client for the live check.
 // Usage: php tests/client.php <METHOD> <path> [file-or-json] [content-type]
-//        php tests/client.php UPLOAD <slug> <name> <image-file>   (base64 JSON photo upload)
+//        php tests/client.php UPLOAD <slug> <name> <image-file> [--base64]   (hex JSON photo upload)
 // Env: GUIDE_BASE_URL (default https://delventto.cloud),
 //      GUIDE_SECRET_FILE (path to a file holding the secret; never passed on argv).
 
@@ -35,17 +35,17 @@ function client_image_type(string $bytes): ?string
 }
 
 /**
- * Signed base64 JSON photo upload (DreamHost rejects binary POST bodies).
+ * Signed JSON photo upload (hex by default, base64 on request) (DreamHost rejects binary POST bodies).
  * Returns ['path','body','ctype','headers'], or null when the bytes are not an image.
  */
-function client_upload_request(string $secret, int $ts, string $slug, string $name, string $bytes): ?array
+function client_upload_request(string $secret, int $ts, string $slug, string $name, string $bytes, string $encoding = 'hex'): ?array
 {
     $type = client_image_type($bytes);
     if ($type === null) {
         return null;
     }
     $path = '/api/guides/' . $slug . '/photos';
-    $body = json_encode(['name' => $name, 'type' => $type, 'data' => base64_encode($bytes)], JSON_UNESCAPED_SLASHES);
+    $body = json_encode(['name' => $name, 'type' => $type, 'encoding' => $encoding, 'data' => $encoding === 'hex' ? bin2hex($bytes) : base64_encode($bytes)], JSON_UNESCAPED_SLASHES);
     return [
         'path' => $path,
         'body' => $body,
@@ -56,9 +56,11 @@ function client_upload_request(string $secret, int $ts, string $slug, string $na
 
 function client_main(array $argv): int
 {
+    $b64 = in_array('--base64', $argv, true);
+    $argv = array_values(array_filter($argv, fn ($a) => $a !== '--base64'));
     $upload = strtoupper($argv[1] ?? '') === 'UPLOAD';
     if (count($argv) < 3 || ($upload && count($argv) < 5)) {
-        fwrite(STDERR, "Usage: php tests/client.php <METHOD> <path> [file-or-json] [content-type]\n       php tests/client.php UPLOAD <slug> <name> <image-file>\n");
+        fwrite(STDERR, "Usage: php tests/client.php <METHOD> <path> [file-or-json] [content-type]\n       php tests/client.php UPLOAD <slug> <name> <image-file> [--base64]\n");
         return 2;
     }
     $method = strtoupper($argv[1]);
@@ -83,7 +85,7 @@ function client_main(array $argv): int
     if ($upload) {
         $file = $argv[4];
         $bytes = is_file($file) ? (string) file_get_contents($file) : '';
-        $req = client_upload_request($secret, time(), $argv[2], $argv[3], $bytes);
+        $req = client_upload_request($secret, time(), $argv[2], $argv[3], $bytes, $b64 ? 'base64' : 'hex');
         if ($req === null) {
             fwrite(STDERR, "Not a readable JPG, PNG or WebP file: $file\n");
             return 2;

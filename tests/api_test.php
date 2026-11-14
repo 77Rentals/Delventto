@@ -493,3 +493,37 @@ test('api: unsigned JSON photo upload is 401 and writes nothing', function () {
         ok(!is_dir($ctx['data'] . '/apto-1204'), 'nothing written after tamper');
     });
 });
+
+test('api: JSON hex photo upload stores the photo', function () {
+    at_with_server(function ($ctx) {
+        $r = at_upload_json($ctx, 'apto-1204', ['name' => 'h1', 'type' => 'image/jpeg', 'encoding' => 'hex', 'data' => bin2hex(at_jpeg())]);
+        eq($r['status'], 200, $r['raw']);
+        eq($r['json'], ['ok' => true, 'file' => 'h1.jpg']);
+        ok(is_file($ctx['data'] . '/apto-1204/photos/h1.jpg'), 'stored');
+        $r = at_upload_json($ctx, 'apto-1204', ['name' => 'h2', 'type' => 'image/jpeg', 'encoding' => 'hex', 'data' => strtoupper(bin2hex(at_jpeg()))]);
+        eq($r['status'], 200, 'uppercase hex ' . $r['raw']);
+        eq(at_upload_json($ctx, 'apto-1204', ['name' => 'h3', 'type' => 'image/jpeg', 'encoding' => 'base64', 'data' => base64_encode(at_jpeg())])['status'], 200, 'explicit base64');
+    });
+});
+
+test('api: JSON hex photo upload rejects bad input', function () {
+    at_with_server(function ($ctx) {
+        $good = ['name' => 'x', 'type' => 'image/jpeg', 'encoding' => 'hex'];
+        foreach (['abc', 'zz11', 'ff d8', ''] as $bad) {
+            $r = at_upload_json($ctx, 'apto-1204', $good + ['data' => $bad]);
+            eq($r['status'], 400, "bad hex '$bad'");
+            ok(is_string($r['json']['error'] ?? null));
+        }
+        eq(at_upload_json($ctx, 'apto-1204', ['encoding' => 'rot13', 'data' => 'aa'] + $good)['status'], 400, 'unknown encoding');
+        ok(!is_dir($ctx['data'] . '/apto-1204/photos') || at_dir_entries($ctx['data'] . '/apto-1204/photos') === [], 'nothing stored');
+    });
+});
+
+test('api: JSON hex photo upload enforces 8 MB on the decoded bytes', function () {
+    at_with_server(function ($ctx) {
+        $r = at_upload_json($ctx, 'apto-1204', ['name' => 'big', 'type' => 'image/jpeg', 'encoding' => 'hex', 'data' => bin2hex(str_repeat('A', 8 * 1024 * 1024 + 1))]);
+        eq($r['status'], 413, substr($r['raw'], 0, 300));
+        $r = at_upload_json($ctx, 'apto-1204', ['name' => 'big', 'type' => 'image/jpeg', 'encoding' => 'hex', 'data' => bin2hex(str_repeat('A', 8 * 1024 * 1024))]);
+        eq($r['status'], 400, 'exactly 8 MB passes the size gates ' . substr($r['raw'], 0, 300));
+    });
+});

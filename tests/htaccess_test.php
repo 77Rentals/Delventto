@@ -70,8 +70,8 @@ test('.user.ini carries the PHP settings', function () {
     $v = userini_values();
     eq($v['display_errors'] ?? null, 'Off');
     eq($v['log_errors'] ?? null, 'On');
-    eq($v['post_max_size'] ?? null, '16M');
-    eq($v['upload_max_filesize'] ?? null, '16M');
+    eq($v['post_max_size'] ?? null, '20M');
+    eq($v['upload_max_filesize'] ?? null, '20M');
     // expose_php is PHP_INI_SYSTEM: it has no effect in .user.ini, so the scripts remove the header.
     ok(!array_key_exists('expose_php', $v), 'expose_php in .user.ini does nothing');
 });

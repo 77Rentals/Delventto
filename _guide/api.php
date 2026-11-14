@@ -157,14 +157,24 @@ function api_add_photo(string $slug, string $body, array $headers): array
     $name = $_GET['name'] ?? '';
     $name = is_string($name) ? $name : '';
     if ($type === 'application/json') {
-        // Base64 mode for hosts that reject binary POST bodies: {"name","type","data"}.
+        // Base64 mode for hosts that reject binary POST bodies: {"name","type","data","encoding": "base64"|"hex"}.
         $req = api_decode_object($body);
-        if ($req === null || !is_string($req['name'] ?? null) || !is_string($req['type'] ?? null) || !is_string($req['data'] ?? null)) {
+        if ($req === null || !is_string($req['name'] ?? null) || !is_string($req['type'] ?? null) || !is_string($req['data'] ?? null) || !is_string($req['encoding'] ?? '')) {
             return [400, api_error('Manda un JSON con name, type y data (la foto en base64)')];
         }
-        $raw = base64_decode($req['data'], true);
+        $encoding = $req['encoding'] ?? 'base64';
+        if ($encoding === 'hex') {
+            $d = $req['data'];
+            $raw = ($d !== '' && strlen($d) % 2 === 0 && ctype_xdigit($d)) ? hex2bin($d) : false;
+            $badMessage = 'La foto en hexadecimal no es válida';
+        } elseif ($encoding === 'base64') {
+            $raw = base64_decode($req['data'], true);
+            $badMessage = 'La foto en base64 no es válida';
+        } else {
+            return [400, api_error('El campo encoding debe ser base64 o hex')];
+        }
         if ($raw === false || $raw === '') {
-            return [400, api_error('La foto en base64 no es válida')];
+            return [400, api_error($badMessage)];
         }
         if (strlen($raw) > PHOTO_MAX_BYTES) {
             return [413, api_error('Esa foto pesa más de 8 MB')];
@@ -303,8 +313,8 @@ function api_log(string $method, string $path, int $status): void
     @file_put_contents($file, $line, FILE_APPEND | LOCK_EX);
 }
 
-/** Body cap for the base64 JSON photo mode: base64 of PHOTO_MAX_BYTES (4/3) plus room for the JSON envelope. */
+/** Body cap for the JSON photo mode: hex of PHOTO_MAX_BYTES (2x, base64 fits inside) plus room for the JSON envelope. */
 function api_photo_json_limit(): int
 {
-    return intdiv(PHOTO_MAX_BYTES + 2, 3) * 4 + 4096;
+    return 2 * PHOTO_MAX_BYTES + 4096;
 }
