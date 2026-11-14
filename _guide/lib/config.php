@@ -37,3 +37,24 @@ function guide_secret(): string
     }
     return $secret;
 }
+
+/**
+ * Bearer token for the review routine, or null when unset or shorter than 32 characters.
+ * Null turns every review route off (404). Private config key `review_token`, env GUIDE_REVIEW_TOKEN.
+ */
+function guide_review_token(): ?string
+{
+    $env = getenv('GUIDE_REVIEW_TOKEN');
+    if ($env !== false && $env !== '') {
+        $token = $env;
+    } else {
+        $file = dirname(WEBROOT) . '/delventto-private/config.php';
+        if (!is_file($file)) {
+            return null;
+        }
+        $cfg = require $file;
+        $token = is_array($cfg) && isset($cfg['review_token']) && is_string($cfg['review_token']) ? $cfg['review_token'] : '';
+    }
+    $token = trim($token);
+    return strlen($token) >= 32 ? $token : null;
+}

@@ -5,6 +5,9 @@ declare(strict_types=1);
 // PUT .../draft, POST .../photos?name=, DELETE .../photos/{file}, POST .../publish,
 // .../rollback, .../unpublish. Also GET /api/buildings/{id} (the building file, for the bot).
 // Order per request: size limit, signature (401, nothing touched), slug (400), route.
+// Review routes (for the Claude routine and the bot) answer 404 before anything else when no
+// review token is configured. GET /api/review/queue and POST /api/review/{slug} check the bearer
+// token instead of the signature; GET /api/reviews (the bot) uses the signature only.
 
 // PHP errors go to the server log, never into a response (they would leak paths and break the JSON).
 ini_set('display_errors', '0');
@@ -22,6 +25,11 @@ require_once __DIR__ . '/lib/building.php';
 
 const API_PREFIX = '/api/guides/';
 const API_BUILDINGS_PREFIX = '/api/buildings/';
+const API_REVIEW_PREFIX = '/api/review/';
+const API_REVIEWS_PATH = '/api/reviews';
+const API_REVIEW_SUMMARY_MAX = 600;
+const API_REVIEW_FINDINGS_MAX = 20;
+const API_REVIEW_FINDING_MAX = 400;
 const API_MAX_JSON_BYTES = 1024 * 1024;
 /** Largest decoded piece per request: the host alters bodies above about 2.6 MB. */
 const PHOTO_PART_MAX_BYTES = 1048576;
@@ -60,10 +68,20 @@ function api_main(): void
 function api_handle(string $method, string $path): array
 {
     $isBuilding = strncmp($path, API_BUILDINGS_PREFIX, strlen(API_BUILDINGS_PREFIX)) === 0;
-    if (!$isBuilding && strncmp($path, API_PREFIX, strlen(API_PREFIX)) !== 0) {
+    $isReview = strncmp($path, API_REVIEW_PREFIX, strlen(API_REVIEW_PREFIX)) === 0;
+    $isReviews = $path === API_REVIEWS_PATH;
+    if (!$isBuilding && !$isReview && !$isReviews && strncmp($path, API_PREFIX, strlen(API_PREFIX)) !== 0) {
         return [404, api_error('No existe')];
     }
-    $parts = explode('/', substr($path, strlen($isBuilding ? API_BUILDINGS_PREFIX : API_PREFIX)));
+    $reviewToken = null;
+    if ($isReview || $isReviews) {
+        $reviewToken = guide_review_token();
+        if ($reviewToken === null) {
+            return [404, api_error('No existe')];
+        }
+    }
+    $prefix = $isBuilding ? API_BUILDINGS_PREFIX : ($isReview ? API_REVIEW_PREFIX : API_PREFIX);
+    $parts = explode('/', substr($path, strlen($prefix)));
     $slug = $parts[0];
     $action = $parts[1] ?? '';
 
@@ -83,8 +101,17 @@ function api_handle(string $method, string $path): array
     }
 
     $headers = api_headers();
+    if ($isReview) {
+        if (!api_bearer_ok($reviewToken, $headers)) {
+            return [401, api_error('Token inválido')];
+        }
+        return api_review($method, $parts, $body);
+    }
     if (!verify_request(guide_secret(), $headers, $method, $path, $body, time())) {
         return [401, api_error('Firma inválida o vencida')];
+    }
+    if ($isReviews) {
+        return api_reviews($method);
     }
 
     if ($isBuilding) {
@@ -136,6 +163,116 @@ function api_building(string $method, array $parts): array
         return [405, api_error('Método no permitido'), ['Allow' => 'GET']];
     }
     return [200, ['ok' => true, 'building' => $building]];
+}
+
+/** True when the Authorization header is "Bearer <token>" with the configured review token. */
+function api_bearer_ok(string $token, array $headers): bool
+{
+    $h = $headers['authorization'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
+    if (!is_string($h) || preg_match('/\ABearer +(\S+)\z/i', trim($h), $m) !== 1) {
+        return false;
+    }
+    return hash_equals($token, $m[1]);
+}
+
+/** GET /api/review/queue and POST /api/review/{slug}, already authorized with the bearer token. */
+function api_review(string $method, array $parts, string $body): array
+{
+    if (count($parts) !== 1) {
+        return [404, api_error('No existe')];
+    }
+    if ($parts[0] === 'queue') {
+        if ($method !== 'GET') {
+            return [405, api_error('Método no permitido'), ['Allow' => 'GET']];
+        }
+        $items = [];
+        foreach (store_review_queue() as $q) {
+            $b = $q['guide']['building'] ?? null;
+            $items[] = [
+                'slug' => $q['slug'],
+                'version' => $q['version'],
+                'url' => api_guide_url($q['slug']),
+                'guide' => $q['guide'],
+                'previous' => $q['previous'],
+                'building' => is_string($b) ? guide_building($b) : null,
+            ];
+        }
+        return [200, ['ok' => true, 'items' => $items]];
+    }
+    $slug = $parts[0];
+    if (!slug_valid($slug) || slug_reserved($slug)) {
+        return [400, api_error('Esa dirección de guía no es válida o ya está en uso')];
+    }
+    if ($method !== 'POST') {
+        return [405, api_error('Método no permitido'), ['Allow' => 'POST']];
+    }
+    $req = api_decode_object($body);
+    $problem = $req === null ? 'El cuerpo debe ser un JSON con version, summary y findings' : api_review_problem($req);
+    if ($problem !== null) {
+        return [400, api_error($problem)];
+    }
+    store_review_put($slug, $req['version'], trim($req['summary']), array_map('trim', $req['findings']));
+    return [200, ['ok' => true]];
+}
+
+/** What is wrong with a review body, or null when it is fine. */
+function api_review_problem(array $req): ?string
+{
+    if (!is_string($req['version'] ?? null) || preg_match(STORE_VERSION_RE, $req['version']) !== 1) {
+        return 'version debe ser el identificador de una versión publicada';
+    }
+    $summary = $req['summary'] ?? null;
+    if (!is_string($summary) || trim($summary) === '' || mb_strlen(trim($summary), 'UTF-8') > API_REVIEW_SUMMARY_MAX) {
+        return 'summary debe ser un texto de 1 a ' . API_REVIEW_SUMMARY_MAX . ' caracteres';
+    }
+    $findings = $req['findings'] ?? null;
+    if (!is_array($findings) || !array_is_list($findings) || count($findings) > API_REVIEW_FINDINGS_MAX) {
+        return 'findings debe ser una lista de hasta ' . API_REVIEW_FINDINGS_MAX . ' textos';
+    }
+    $texts = ['summary' => $summary];
+    foreach ($findings as $i => $f) {
+        if (!is_string($f) || trim($f) === '' || mb_strlen(trim($f), 'UTF-8') > API_REVIEW_FINDING_MAX) {
+            return 'Cada hallazgo debe ser un texto de 1 a ' . API_REVIEW_FINDING_MAX . ' caracteres';
+        }
+        $texts['findings.' . $i] = $f;
+    }
+    foreach ($texts as $field => $t) {
+        if (preg_match('/[<>]/', $t) === 1) {
+            return "$field no puede llevar HTML";
+        }
+        if (preg_match('/[\x{2013}\x{2014}]/u', $t) === 1) {
+            return "$field no puede llevar rayas largas, usa comas, dos puntos o paréntesis";
+        }
+    }
+    return null;
+}
+
+/** GET /api/reviews?since=<ISO 8601>: reviews written after $since, oldest first, at most 20. */
+function api_reviews(string $method): array
+{
+    if ($method !== 'GET') {
+        return [405, api_error('Método no permitido'), ['Allow' => 'GET']];
+    }
+    $since = null;
+    if (array_key_exists('since', $_GET)) {
+        $raw = $_GET['since'];
+        $since = is_string($raw) && $raw !== '' ? date_create_immutable($raw) : false;
+        if ($since === false) {
+            return [400, api_error('since debe ser una fecha ISO 8601, por ejemplo 2026-11-14T10:00:00Z')];
+        }
+    }
+    $items = [];
+    foreach (store_reviews_since($since) as $r) {
+        $items[] = [
+            'slug' => $r['slug'],
+            'version' => $r['version'],
+            'at' => $r['at'],
+            'summary' => $r['summary'],
+            'findings' => $r['findings'],
+            'url' => api_guide_url($r['slug']),
+        ];
+    }
+    return [200, ['ok' => true, 'items' => $items]];
 }
 
 function api_get(string $slug): array

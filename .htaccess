@@ -25,6 +25,9 @@ RewriteCond %{REQUEST_URI} !^/_guide/assets/
 RewriteRule ^_guide(/|$) - [R=404,L]
 
 # 2. API: /api/guides/<slug>[/action], /api/buildings/<id> (api.php reads the path from REQUEST_URI).
+# The review routine sends a bearer token; some PHP setups drop the Authorization header, so pass it along.
+RewriteCond %{HTTP:Authorization} .
+RewriteRule ^api/ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 RewriteRule ^api/(guides|buildings|review|reviews)(/.*)?$ _guide/api.php [QSA,L]
 
 # 3. Photos: /<slug>/photo/<file>, unless a real file sits at that path.

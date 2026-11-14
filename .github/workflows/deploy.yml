@@ -55,7 +55,7 @@ jobs:
           rm: false
 
       - name: Harden remote and write guide secret
-        # Accepted risk: drone-ssh sends the exported GUIDE_API_SECRET as part of the remote
+        # Accepted risk: drone-ssh sends the exported GUIDE_API_SECRET (and GUIDE_REVIEW_TOKEN) as part of the remote
         # command, so on this shared host it is briefly visible in the remote process list
         # while the script runs (short-lived, same as any env-passing deploy).
         uses: appleboy/ssh-action@v1.0.3
@@ -64,7 +64,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: 22
-          envs: GUIDE_API_SECRET
+          envs: GUIDE_API_SECRET,GUIDE_REVIEW_TOKEN
           script: |
             set -e
             rm -rf /home/rentals77/delventto.cloud/.git /home/rentals77/delventto.cloud/tests /home/rentals77/delventto.cloud/.superpowers /home/rentals77/delventto.cloud/.github
@@ -78,7 +78,17 @@ jobs:
                   exit 1
                   ;;
               esac
-              printf "<?php return ['secret' => '%s'];\n" "$GUIDE_API_SECRET" > /home/rentals77/delventto-private/config.php
+              if [ -n "$GUIDE_REVIEW_TOKEN" ]; then
+                case "$GUIDE_REVIEW_TOKEN" in
+                  *\'*|*\\*)
+                    echo "Review token contains a quote or backslash; config not written."
+                    exit 1
+                    ;;
+                esac
+                printf "<?php return ['secret' => '%s', 'review_token' => '%s'];\n" "$GUIDE_API_SECRET" "$GUIDE_REVIEW_TOKEN" > /home/rentals77/delventto-private/config.php
+              else
+                printf "<?php return ['secret' => '%s'];\n" "$GUIDE_API_SECRET" > /home/rentals77/delventto-private/config.php
+              fi
               chmod 600 /home/rentals77/delventto-private/config.php
               echo "Guide config written."
             else
@@ -86,3 +96,4 @@ jobs:
             fi
         env:
           GUIDE_API_SECRET: ${{ secrets.GUIDE_API_SECRET }}
+          GUIDE_REVIEW_TOKEN: ${{ secrets.GUIDE_REVIEW_TOKEN }}
