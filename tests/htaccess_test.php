@@ -70,8 +70,8 @@ test('.user.ini carries the PHP settings', function () {
     $v = userini_values();
     eq($v['display_errors'] ?? null, 'Off');
     eq($v['log_errors'] ?? null, 'On');
-    eq($v['post_max_size'] ?? null, '10M');
-    eq($v['upload_max_filesize'] ?? null, '10M');
+    eq($v['post_max_size'] ?? null, '16M');
+    eq($v['upload_max_filesize'] ?? null, '16M');
     // expose_php is PHP_INI_SYSTEM: it has no effect in .user.ini, so the scripts remove the header.
     ok(!array_key_exists('expose_php', $v), 'expose_php in .user.ini does nothing');
 });
@@ -120,7 +120,7 @@ function deploy_steps(): array
 test('deploy: checkout keeps no git credentials and SCP skips tooling folders', function () {
     $t = deploy_text();
     ok(preg_match('/uses: actions\/checkout@v4\s+with:\s+persist-credentials: false/', $t) === 1, 'persist-credentials: false');
-    ok(strpos($t, 'source: "./*,!./.git,!./.github,!./tests,!./.superpowers"') !== false, 'SCP source exclusions');
+    ok(strpos($t, 'source: "./*,!.git,!.github,!tests,!.superpowers"') !== false, 'SCP source exclusions');
     eq(substr_count($t, 'appleboy/scp-action@v0.1.7'), 1, 'one SCP step: ./* already ships .htaccess and .user.ini');
     ok(strpos($t, '~/') === false, 'absolute /home/rentals77 paths only');
 });

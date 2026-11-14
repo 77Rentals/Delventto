@@ -50,7 +50,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: 22
-          source: "./*,!./.git,!./.github,!./tests,!./.superpowers"
+          source: "./*,!.git,!.github,!tests,!.superpowers"
           target: /home/rentals77/delventto.cloud/
           rm: false
 

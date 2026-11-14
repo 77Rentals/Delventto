@@ -426,3 +426,70 @@ test('api: rollback answers with the restored guide also in the draft', function
         eq($s['published'], $g);
     });
 });
+
+// ---- base64 JSON photo upload (hosts that reject binary POST bodies) ----
+
+function at_upload_json(array $ctx, string $slug, array $payload, array $opt = []): array
+{
+    return at_signed($ctx, 'POST', "/api/guides/$slug/photos", json_encode($payload), [
+        'headers' => ['Content-Type' => 'application/json'],
+    ] + $opt);
+}
+
+test('api: JSON base64 photo upload stores the photo', function () {
+    at_with_server(function ($ctx) {
+        $r = at_upload_json($ctx, 'apto-1204', ['name' => 'j1.jpg', 'type' => 'image/jpeg', 'data' => base64_encode(at_jpeg())]);
+        eq($r['status'], 200, $r['raw']);
+        eq($r['json'], ['ok' => true, 'file' => 'j1.jpg']);
+        ok(is_file($ctx['data'] . '/apto-1204/photos/j1.jpg'), 'stored');
+        // the body name wins over ?name=
+        $r = at_signed($ctx, 'POST', '/api/guides/apto-1204/photos?name=query', json_encode(['name' => 'body', 'type' => 'image/jpeg', 'data' => base64_encode(at_jpeg())]), ['headers' => ['Content-Type' => 'application/json; charset=utf-8']]);
+        eq($r['status'], 200, $r['raw']);
+        eq($r['json'], ['ok' => true, 'file' => 'body.jpg']);
+    });
+});
+
+test('api: JSON photo upload rejects bad input', function () {
+    at_with_server(function ($ctx) {
+        $good = ['name' => 'x', 'type' => 'image/jpeg', 'data' => base64_encode(at_jpeg())];
+        $r = at_upload_json($ctx, 'apto-1204', ['data' => '@@@not base64@@@'] + $good);
+        eq($r['status'], 400, 'invalid base64');
+        ok(is_string($r['json']['error'] ?? null));
+        foreach (['name', 'type', 'data'] as $k) {
+            $p = $good;
+            unset($p[$k]);
+            eq(at_upload_json($ctx, 'apto-1204', $p)['status'], 400, "missing $k");
+        }
+        eq(at_upload_json($ctx, 'apto-1204', ['data' => 123] + $good)['status'], 400, 'non string data');
+        $r = at_signed($ctx, 'POST', '/api/guides/apto-1204/photos', '{not json', ['headers' => ['Content-Type' => 'application/json']]);
+        eq($r['status'], 400, 'broken json');
+        eq(at_upload_json($ctx, 'apto-1204', ['type' => 'image/gif'] + $good)['status'], 415, 'wrong type');
+        eq(at_upload_json($ctx, 'apto-1204', ['type' => 'image/png'] + $good)['status'], 400, 'type not matching bytes');
+        ok(!is_dir($ctx['data'] . '/apto-1204/photos') || at_dir_entries($ctx['data'] . '/apto-1204/photos') === [], 'nothing stored');
+    });
+});
+
+test('api: JSON photo upload enforces 8 MB on the decoded bytes', function () {
+    at_with_server(function ($ctx) {
+        $big = str_repeat('A', 8 * 1024 * 1024 + 1);
+        $r = at_upload_json($ctx, 'apto-1204', ['name' => 'big', 'type' => 'image/jpeg', 'data' => base64_encode($big)]);
+        eq($r['status'], 413, substr($r['raw'], 0, 300));
+        // 8 MB of decoded bytes fits in the body cap (it then fails as not a photo, not as too large)
+        $ok = str_repeat('A', 8 * 1024 * 1024);
+        $r = at_upload_json($ctx, 'apto-1204', ['name' => 'big', 'type' => 'image/jpeg', 'data' => base64_encode($ok)]);
+        eq($r['status'], 400, 'exactly 8 MB passes the size gates ' . substr($r['raw'], 0, 300));
+    });
+});
+
+test('api: unsigned JSON photo upload is 401 and writes nothing', function () {
+    at_with_server(function ($ctx) {
+        $body = json_encode(['name' => 'u', 'type' => 'image/jpeg', 'data' => base64_encode(at_jpeg())]);
+        $r = at_http($ctx, 'POST', '/api/guides/apto-1204/photos', $body, ['Content-Type' => 'application/json']);
+        eq($r['status'], 401);
+        ok(!is_dir($ctx['data'] . '/apto-1204'), 'nothing written');
+        // a signature over a different name is rejected too (the name is in the signed body)
+        $r = at_signed($ctx, 'POST', '/api/guides/apto-1204/photos', $body, ['headers' => ['Content-Type' => 'application/json'], 'tamper' => str_replace('"u"', '"v"', $body)]);
+        eq($r['status'], 401);
+        ok(!is_dir($ctx['data'] . '/apto-1204'), 'nothing written after tamper');
+    });
+});

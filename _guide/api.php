@@ -64,7 +64,10 @@ function api_handle(string $method, string $path): array
     $action = $parts[1] ?? '';
 
     // Refuse oversized bodies before reading or verifying anything.
-    $limit = $action === 'photos' ? PHOTO_MAX_BYTES : API_MAX_JSON_BYTES;
+    $limit = API_MAX_JSON_BYTES;
+    if ($action === 'photos') {
+        $limit = api_content_type(api_headers()) === 'application/json' ? api_photo_json_limit() : PHOTO_MAX_BYTES;
+    }
     $declared = (string) ($_SERVER['CONTENT_LENGTH'] ?? '');
     if ($declared !== '' && (!ctype_digit($declared) || (int) $declared > $limit)) {
         return [413, api_error('El contenido es demasiado grande')];
@@ -143,18 +146,42 @@ function api_put_draft(string $slug, string $body): array
     return [200, ['ok' => true, 'problems' => $problems]];
 }
 
+function api_content_type(array $headers): string
+{
+    return strtolower(trim(explode(';', (string) ($headers['content-type'] ?? $_SERVER['CONTENT_TYPE'] ?? ''), 2)[0]));
+}
+
 function api_add_photo(string $slug, string $body, array $headers): array
 {
-    $type = strtolower(trim(explode(';', (string) ($headers['content-type'] ?? $_SERVER['CONTENT_TYPE'] ?? ''), 2)[0]));
+    $type = api_content_type($headers);
+    $name = $_GET['name'] ?? '';
+    $name = is_string($name) ? $name : '';
+    if ($type === 'application/json') {
+        // Base64 mode for hosts that reject binary POST bodies: {"name","type","data"}.
+        $req = api_decode_object($body);
+        if ($req === null || !is_string($req['name'] ?? null) || !is_string($req['type'] ?? null) || !is_string($req['data'] ?? null)) {
+            return [400, api_error('Manda un JSON con name, type y data (la foto en base64)')];
+        }
+        $raw = base64_decode($req['data'], true);
+        if ($raw === false || $raw === '') {
+            return [400, api_error('La foto en base64 no es válida')];
+        }
+        if (strlen($raw) > PHOTO_MAX_BYTES) {
+            return [413, api_error('Esa foto pesa más de 8 MB')];
+        }
+        $name = $req['name'];
+        $type = strtolower(trim($req['type']));
+    } else {
+        $raw = $body;
+    }
     if (!in_array($type, ['image/jpeg', 'image/png', 'image/webp'], true)) {
         return [415, api_error('Manda la foto como JPG, PNG o WebP')];
     }
-    $photo = photo_accept($body, $type);
+    $photo = photo_accept($raw, $type);
     if (!$photo['ok']) {
         return [400, api_error($photo['message'])];
     }
-    $name = $_GET['name'] ?? '';
-    $file = store_add_photo($slug, is_string($name) ? $name : '', $photo['bytes'], $photo['ext']);
+    $file = store_add_photo($slug, $name, $photo['bytes'], $photo['ext']);
     return [200, ['ok' => true, 'file' => $file]];
 }
 
@@ -274,4 +301,10 @@ function api_log(string $method, string $path, int $status): void
     $clean = static fn (string $s, int $max): string => substr((string) preg_replace('/[^\x21-\x7E]/', '?', $s), 0, $max);
     $line = gmdate('Y-m-d\TH:i:s\Z') . ' ' . $clean($method, 10) . ' ' . $clean($path, 200) . ' ' . $status . "\n";
     @file_put_contents($file, $line, FILE_APPEND | LOCK_EX);
+}
+
+/** Body cap for the base64 JSON photo mode: base64 of PHOTO_MAX_BYTES (4/3) plus room for the JSON envelope. */
+function api_photo_json_limit(): int
+{
+    return intdiv(PHOTO_MAX_BYTES + 2, 3) * 4 + 4096;
 }
