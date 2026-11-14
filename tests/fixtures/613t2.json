@@ -1,0 +1,121 @@
+{
+  "slug": "apartasuite-613t2",
+  "building": "delventto",
+  "gateCode": "613",
+  "unit": "613T2",
+  "name": {"es": "Apartasuite 613T2", "en": "Apartasuite 613T2"},
+  "tagline": {
+    "es": "Escápate a Santa Marta y disfruta este súper apartasuite a tan solo 200 metros de la playa, en el sector de Cabo Tortuga - Pozos Colorados.",
+    "en": "Escape to Santa Marta and enjoy this fantastic apartsuite just 200 meters from the beach, in the Cabo Tortuga - Pozos Colorados area."
+  },
+  "highlights": [
+    {"es": "A 200 m de la playa", "en": "200 m from the beach"},
+    {"es": "WiFi rápido + escritorio", "en": "Fast WiFi + desk"},
+    {"es": "Edificio Delventto, Apto 613T2", "en": "Delventto Building, Apt 613T2"}
+  ],
+  "welcome": {
+    "es": "Desde el balcón de tu apartasuite, las montañas de la Sierra Nevada se asoman entre el cielo y el mar, y a solo 200 metros tienes la playa esperándote con su brisa caribeña. Aquí podrás despertar con café en mano, vista a la montaña, y la certeza de que el mar está a un par de minutos.\n\nSanta Marta tiene mucho para ofrecerte: desde tardes de playa y buena comida en Cabo Tortuga, hasta la energía de El Rodadero o una tarde de historia por el Centro Histórico. Estamos felices de ser tus anfitriones y de que Delventto sea tu punto de partida para explorar todo lo que esta ciudad tiene para darte.",
+    "en": "From your apartsuite's balcony, the Sierra Nevada mountains rise between the sky and the sea, and the beach is waiting just 200 meters away with its Caribbean breeze. Here you can wake up with coffee in hand, a mountain view, and the certainty that the sea is just minutes away.\n\nSanta Marta has so much to offer: from beach afternoons and great food in Cabo Tortuga, to the energy of El Rodadero or a history-filled afternoon downtown. We are happy to be your hosts and for Delventto to be your starting point to explore everything this city has to give you."
+  },
+  "checkin": "15:00",
+  "checkout": "11:00",
+  "lock": {
+    "steps": [
+      {"es": "Al llegar al Edificio Delventto, dirígete a la recepción.", "en": "When you arrive at the Delventto Building, head to reception."},
+      {"es": "Presenta los documentos de identidad de todos los huéspedes y tu confirmación de reserva para el Apto 613T2.", "en": "Present ID for all guests along with your booking confirmation for Apt 613T2."},
+      {"es": "Te enviaremos la clave digital de la cerradura por WhatsApp.", "en": "We'll send your digital lock code via WhatsApp."},
+      {"es": "Para abrir: presiona el botón Yale, ingresa tu código y confirma con el chulito.", "en": "To open: press the Yale button, enter your code and confirm with the checkmark."}
+    ]
+  },
+  "ac": {
+    "steps": [
+      {"es": "Mantén la puerta principal completamente cerrada.", "en": "Keep the main door completely closed."},
+      {"es": "Presiona el pulsador ubicado al lado derecho de la entrada.", "en": "Press the button on the right side of the entrance."},
+      {"es": "Con el control remoto, presiona ENCENDIDO.", "en": "With the remote control, press POWER."},
+      {"es": "Presiona MODE hasta seleccionar COOL (modo frío).", "en": "Press MODE until you select COOL."},
+      {"es": "Ajusta la temperatura con TEMP, y para una temperatura fresca puedes iniciar en 16°C.", "en": "Adjust the temperature with TEMP, and for a cool room you can start at 16°C."},
+      {"es": "Si el aire no enciende, revisa el tablero de breakers: el interruptor del aire debe estar como en la imagen de referencia. Si sigue sin funcionar, comunícate con nosotros.", "en": "If the A/C does not turn on, check the breaker panel: the A/C switch must be as in the reference image. If it still does not work, please contact us."}
+    ],
+    "note": {
+      "es": "Importante: si abres la puerta principal, el aire acondicionado se desactivará automáticamente como parte del sistema de ahorro de energía. Para reactivarlo, cierra nuevamente la puerta y presiona el pulsador.",
+      "en": "Important: if you open the main door, the A/C will automatically switch off as part of the energy-saving system. To reactivate it, close the door again and press the button."
+    }
+  },
+  "wifi": {"ssid": "Claro203a", "password": "2GbR9cdH"},
+  "features": [
+    {"icon": "🛏", "text": {"es": "Cama Queen + sofá cama doble", "en": "Queen bed + double sofa bed"}},
+    {"icon": "🌑", "text": {"es": "Blackout", "en": "Blackout curtains"}},
+    {"icon": "❄️", "text": {"es": "Aire acondicionado", "en": "Air conditioning"}},
+    {"icon": "💻", "text": {"es": "Escritorio + WiFi rápido", "en": "Desk + fast WiFi"}},
+    {"icon": "🍳", "text": {"es": "Cocina equipada + zona de café", "en": "Equipped kitchen + coffee station"}},
+    {"icon": "🏔", "text": {"es": "Balcón con vista a la montaña", "en": "Balcony with mountain view"}}
+  ],
+  "tapWater": {
+    "es": "El agua del grifo no es apta para consumo humano. Por favor usa agua embotellada para beber.",
+    "en": "Tap water is not safe for drinking. Please use bottled water for drinking."
+  },
+  "coffee": {
+    "es": "Encontrarás cafetera de filtro y prensa francesa, para que prepares tu café favorito a tu manera y disfrutes una mañana tranquila, con el aroma del café y la brisa del Caribe.",
+    "en": "You'll find a drip coffee maker and a French press, so you can brew your favorite coffee your way and enjoy a calm morning with the smell of coffee and the Caribbean breeze."
+  },
+  "waste": {
+    "es": "Encontrarás dos canecas grandes y señalizadas para reciclaje, ubicadas debajo de la zona de café. Para los residuos de alimentos y la basura de uso diario, hay una caneca junto al lavaplatos. Cuando necesites disponer de estos residuos, utiliza el chut de basura ubicado al salir del apartasuite, a mano izquierda, antes de llegar a los ascensores.",
+    "en": "You'll find two large, labeled recycling bins located under the coffee station. For food waste and everyday trash, there's a bin next to the sink. When you need to dispose of it, use the trash chute located just outside the apartasuite, on the left, before you reach the elevators."
+  },
+  "rules": [
+    {"icon": "🧺", "text": {"es": "No colgar ropa en el balcón (usar la zona habilitada)", "en": "Do not hang clothes on the balcony (use the designated area)"}},
+    {"icon": "🔑", "text": {"es": "Cuidar las llaves o tarjetas de acceso", "en": "Please take care of keys and access cards"}},
+    {"icon": "📵", "text": {"es": "Prohibido realizar fotos o videos con fines comerciales", "en": "Commercial photography or filming is not allowed"}}
+  ],
+  "beforeLeaving": [
+    {"icon": "❄️", "text": {"es": "Apaga el aire acondicionado", "en": "Turn off the air conditioning"}},
+    {"icon": "💡", "text": {"es": "Apaga las luces", "en": "Turn off the lights"}},
+    {"icon": "🔌", "text": {"es": "Desconecta equipos electrónicos personales", "en": "Unplug personal electronic devices"}},
+    {"icon": "🚪", "text": {"es": "Verifica que la puerta quede bien cerrada", "en": "Make sure the door is properly closed"}},
+    {"icon": "🌬", "text": {"es": "Cierra el balcón", "en": "Close the balcony"}},
+    {"icon": "🔥", "text": {"es": "Cierra la llave del gas", "en": "Turn off the gas valve"}}
+  ],
+  "places": {
+    "building": ["playa-del-ritmo", "tayrona"],
+    "own": [
+      {
+        "name": "Playa del Ritmo",
+        "tag": {"es": "Comida y playa", "en": "Food & beach"},
+        "distance": {"es": "4 min caminando, desde $17K COP", "en": "4 min walk, from $17K COP"},
+        "text": {"es": "Nuestro favorito. Gran variedad de comida y platos del día, con playa y servicio de ducha.", "en": "Our favorite. Great variety of food and daily specials, with beach access and shower service."},
+        "mapsQuery": "Playa del Ritmo, Santa Marta"
+      },
+      {
+        "name": "Arepas de Huevo y Jugos Naturales La Samaria",
+        "tag": {"es": "Desayuno local", "en": "Local breakfast"},
+        "distance": {"es": "Al lado de Samaria, todas las mañanas", "en": "Next to Samaria, every morning"},
+        "text": {"es": "Una recomendación de nuestros anfitriones: arepas de huevo y jugos naturales recién hechos, con domicilio hasta Delventto. Se debe encargar con un día de anticipación.", "en": "A recommendation from your hosts: freshly made egg arepas and natural juices, with delivery to Delventto. Orders must be placed one day in advance."},
+        "mapsQuery": "La Samaria arepas de huevo, Santa Marta"
+      }
+    ]
+  },
+  "photos": [
+    {"file": "img_kitchen.jpg", "caption": {"es": "Cocina", "en": "Kitchen"}},
+    {"file": "img_bedroom-balcony.jpg", "caption": {"es": "Habitación y balcón", "en": "Bedroom & Balcony"}},
+    {"file": "img_living-kitchen.jpg", "caption": {"es": "Sala y cocina", "en": "Living Room & Kitchen"}},
+    {"file": "img_balcony-view.jpg", "caption": {"es": "Vista desde el balcón", "en": "View from the Balcony"}},
+    {"file": "img_desk-tv.jpg", "caption": {"es": "Zona de trabajo y TV", "en": "Desk & TV Area"}},
+    {"file": "img_bedroom-1.png", "caption": {"es": "Habitación", "en": "Bedroom"}},
+    {"file": "img_bedroom-2.png", "caption": {"es": "Habitación: camas", "en": "Bedroom: Sleeping Setup"}},
+    {"file": "img_bath.png", "caption": {"es": "Baño", "en": "Bathroom"}},
+    {"file": "img_bath-2.jpg", "caption": {"es": "Baño: ducha", "en": "Bathroom: Shower"}},
+    {"file": "img_balcony-wine.jpg", "caption": {"es": "Vista desde el balcón", "en": "Balcony View"}},
+    {"file": "img_detail-wine.jpg", "caption": {"es": "Detalles de la suite", "en": "Suite Details"}},
+    {"file": "img_detail-cups.jpg", "caption": {"es": "Detalles: vasos Delventto", "en": "Details: Delventto Cups"}}
+  ],
+  "tourVideo": {"url": "/apartasuite-613t2/suite-tour.mp4"},
+  "hosts": {
+    "names": "Ninson y Natalia",
+    "about": {
+      "es": "Este apartasuite fue diseñado para que cada huésped se sienta en casa. Cada espacio fue pensado para ofrecer comodidad, descanso y momentos inolvidables. Nuestro deseo es que disfrutes de Santa Marta, descanses plenamente y te lleves los mejores recuerdos de este lugar que preparamos con mucho cariño. Bienvenido y gracias por elegirnos.",
+      "en": "This apartsuite was designed so every guest feels at home. Every space was thought out to offer comfort, rest and unforgettable moments. We want you to enjoy Santa Marta, rest fully and take home the best memories of this place we prepared with a lot of love. Welcome and thank you for choosing us."
+    },
+    "whatsapp": "+570000000000"
+  },
+  "theme": {"palette": "caribe", "motion": "marino"}
+}
