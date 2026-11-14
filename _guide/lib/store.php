@@ -121,7 +121,8 @@ function store_publish(string $slug, ?array $expected = null): string
 
 /**
  * Republishes a kept version and returns its id. With no $version: the version before
- * the current one, or the latest one when nothing is published.
+ * the current one, or the latest one when nothing is published. The draft is reset to the
+ * restored version too (an unpublished draft is discarded).
  */
 function store_rollback(string $slug, ?string $version): string
 {
@@ -154,6 +155,10 @@ function store_rollback(string $slug, ?string $version): string
         if ($guide === null) {
             throw new RuntimeException('Version file vanished');
         }
+        // The draft follows the restored guide, so the next edit and publish does not bring
+        // back what the rollback removed. Draft first: if published.json then fails, the live
+        // guide is unchanged and a retried rollback still targets the same version.
+        store_write_json($dir . '/draft.json', $guide);
         store_write_json($dir . '/published.json', ['version' => $target, 'guide' => $guide]);
         return $target;
     });

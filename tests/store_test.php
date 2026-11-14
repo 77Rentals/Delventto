@@ -149,7 +149,7 @@ test('store: rollback with no argument restores the previous published', functio
         $s = store_get('apto-1204');
         eq($s['published']['tagline']['es'], 'uno');
         eq($s['current'], $v1);
-        eq($s['draft']['tagline']['es'], 'dos', 'draft untouched');
+        eq($s['draft']['tagline']['es'], 'uno', 'draft reset to the restored version');
         eq(count($s['versions']), 2, 'rollback adds no version');
 
         st_throws(fn () => store_rollback('apto-1204', null), 409, 'nothing before the oldest');
@@ -168,6 +168,29 @@ test('store: rollback to a named version, unknown or malformed version refused',
         eq(store_get('apto-1204')['published']['tagline']['es'], 'dos');
         st_throws(fn () => store_rollback('apto-1204', '20000101T000000Z'), 404, 'unknown');
         st_throws(fn () => store_rollback('apto-1204', '../draft'), 404, 'malformed');
+    });
+});
+
+test('store: rollback resets the draft, so the next edit and publish builds on the restored guide', function () {
+    st_with_store(function ($dir) {
+        store_put_draft('apto-1204', st_guide('uno'));
+        $v1 = store_publish('apto-1204');
+        store_put_draft('apto-1204', st_guide('dos'));
+        store_publish('apto-1204');
+        store_put_draft('apto-1204', st_guide('tres sin publicar'));
+
+        eq(store_rollback('apto-1204', $v1), $v1);
+        $s = store_get('apto-1204');
+        eq($s['draft'], $s['published'], 'draft equals the restored guide');
+        eq($s['draft']['tagline']['es'], 'uno');
+        st_no_temp_files($dir);
+
+        // The owner's next small edit starts from the restored guide, not from "dos".
+        $next = $s['draft'];
+        $next['welcome']['es'] = 'Bienvenido otra vez.';
+        store_put_draft('apto-1204', $next);
+        store_publish('apto-1204');
+        eq(store_get('apto-1204')['published']['tagline']['es'], 'uno', 'removed content stays removed');
     });
 });
 
