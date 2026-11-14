@@ -30,6 +30,8 @@ function guide_secret(): string
         $cfg = require $file;
         $secret = is_array($cfg) && isset($cfg['secret']) ? (string) $cfg['secret'] : '';
     }
+    // A secret pasted with a trailing newline must sign the same as the bot's copy.
+    $secret = trim($secret);
     if (strlen($secret) < 32) {
         throw new RuntimeException('Guide secret is missing or too short');
     }
