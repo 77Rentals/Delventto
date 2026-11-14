@@ -214,6 +214,7 @@ function validate_guide(array $g, array $building, string $slug): array
     }
 
     // content checks over every string
+    $known = guide_known_numbers($g);
     foreach (guide_strings($g, '') as [$path, $str]) {
         if (strpos($str, '<') !== false || strpos($str, '>') !== false) {
             guide_problem($p, $path, GUIDE_MSG_HTML);
@@ -221,7 +222,7 @@ function validate_guide(array $g, array $building, string $slug): array
         if (strpos($str, "\u{2014}") !== false || strpos($str, "\u{2013}") !== false) {
             guide_problem($p, $path, GUIDE_MSG_DASH);
         }
-        if (guide_looks_like_door_code($path, $str)) {
+        if (guide_looks_like_door_code($path, $str, $known)) {
             guide_problem($p, $path, GUIDE_MSG_DOOR);
         }
     }
@@ -338,7 +339,25 @@ function guide_strings($v, string $path): array
     return $out;
 }
 
-function guide_looks_like_door_code(string $path, string $str): bool
+/** Lowercased unit, gateCode and the digit runs inside them: numbers that are not door codes. */
+function guide_known_numbers(array $g): array
+{
+    $out = [];
+    foreach (['unit', 'gateCode'] as $k) {
+        $v = $g[$k] ?? null;
+        if (is_string($v) && $v !== '') {
+            $out[] = mb_strtolower($v);
+            if (preg_match_all('/\d+/', $v, $m)) {
+                foreach ($m[0] as $d) {
+                    $out[] = $d;
+                }
+            }
+        }
+    }
+    return $out;
+}
+
+function guide_looks_like_door_code(string $path, string $str, array $known = []): bool
 {
     $top = explode('.', $path)[0];
     if (!in_array($top, ['lock', 'rules', 'welcome', 'features', 'hosts'], true)) {
@@ -347,11 +366,30 @@ function guide_looks_like_door_code(string $path, string $str): bool
     if (in_array($path, ['lock.photo', 'hosts.photo', 'hosts.whatsapp'], true)) {
         return false;
     }
-    if (preg_match('/(c[oó]digo|clave|code|pin|contrase[ñn]a|password)\D{0,25}\d{3,8}/iu', $str) === 1) {
-        return true;
+    $isCode = function (string $n) use ($known): bool {
+        return strlen($n) >= 3 && strlen($n) <= 8 && !in_array(mb_strtolower($n), $known, true);
+    };
+    $kw = '(?<!\p{L})(?:c[oó]digo(?!\s+postal(?!\p{L}))|clave|code|pin|contrase[ñn]a|password)(?!\p{L})';
+    if (preg_match_all('/' . $kw . '\D{0,25}?(?<!\d)(\d+)(?!\d)/iu', $str, $m)) {
+        foreach ($m[1] as $n) {
+            if ($isCode($n)) {
+                return true;
+            }
+        }
     }
-    if (strpos($path, 'lock.steps') === 0 && preg_match('/(?<!\d)\d{4,8}(?!\d)/', $str) === 1) {
-        return true;
+    if (preg_match_all('/(?<!\d)(\d+)(?!\d)\D{0,25}?' . $kw . '/iu', $str, $m)) {
+        foreach ($m[1] as $n) {
+            if ($isCode($n)) {
+                return true;
+            }
+        }
+    }
+    if (strpos($path, 'lock.steps') === 0 && preg_match_all('/(?<!\d)\d{4,8}(?!\d)/', $str, $m)) {
+        foreach ($m[0] as $n) {
+            if ($isCode($n)) {
+                return true;
+            }
+        }
     }
     return false;
 }

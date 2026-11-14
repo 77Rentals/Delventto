@@ -281,3 +281,38 @@ test('validate: wrong types do not crash', function () {
     $p = vt_run($g);
     ok(count($p) >= 3);
 });
+
+test('validate: unit number in a lock step is not a door code', function () {
+    $g = vt_fixture('613t2');
+    $g['unit'] = '1204';
+    $g['lock']['steps'][0]['es'] = 'Sube al piso 12, apartamento 1204';
+    eq(vt_run($g), []);
+    $g = vt_fixture('613t2');
+    $g['lock']['steps'][0]['es'] = 'Apartamento 613T2, tu código llega por WhatsApp';
+    eq(vt_run($g), []);
+});
+
+test('validate: keywords match whole words only', function () {
+    $g = vt_fixture('613t2');
+    $g['welcome']['es'] = 'Shopping center a 200 metros';
+    eq(vt_run($g), []);
+    $g['welcome']['es'] = 'Opiniones increíbles, 500 reseñas y un decode de 300 cosas';
+    eq(vt_run($g), []);
+    $g['welcome']['es'] = 'Usa el código postal 470001 para tus envíos';
+    eq(vt_run($g), []);
+});
+
+test('validate: digits before the keyword are caught', function () {
+    $g = vt_fixture('613t2');
+    $g['lock']['steps'][0]['es'] = '4821 es tu código';
+    ok(vt_has(vt_run($g), 'lock.steps.0.es'));
+    $g = vt_fixture('613t2');
+    $g['welcome']['en'] = 'Use 4821 as your PIN';
+    ok(vt_has(vt_run($g), 'welcome.en'));
+});
+
+test('validate: keyword plus code still caught after the fix', function () {
+    $g = vt_fixture('613t2');
+    $g['lock']['steps'][0]['es'] = 'Clave de la puerta: 4821';
+    ok(vt_has(vt_run($g), 'lock.steps.0.es'));
+});
