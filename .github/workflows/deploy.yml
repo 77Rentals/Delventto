@@ -5,36 +5,59 @@ on:
     branches: [main]
   workflow_dispatch: {}
 
+# The Actions log of this repo is public: steps print yes/no facts only, never file
+# contents or secrets, and no step turns on shell tracing (it would print the secret).
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Back up server .htaccess and report PHP
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 22
+          script: |
+            set -e
+            umask 077
+            mkdir -p /home/rentals77/delventto-private
+            chmod 700 /home/rentals77/delventto-private
+            if [ -f /home/rentals77/delventto.cloud/.htaccess ]; then
+              backup="/home/rentals77/delventto-private/htaccess.backup-$(date -u +%Y%m%dT%H%M%SZ)"
+              cp /home/rentals77/delventto.cloud/.htaccess "$backup"
+              echo "htaccess backup: yes ($(wc -l < "$backup" | tr -d ' ') lines)"
+            else
+              echo "htaccess backup: none"
+            fi
+            php -v | head -1
+            mods="$(php -m 2>/dev/null || true)"
+            for m in gd mbstring json fileinfo; do
+              if printf '%s\n' "$mods" | grep -qix "$m"; then echo "php $m: yes"; else echo "php $m: no"; fi
+            done
 
       - name: Deploy via SCP
+        # "./*" ships dotfiles too (.htaccess, .user.ini). The "!" entries are drone-scp
+        # exclusions; the post-deploy rm below stays as a backstop either way.
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: 22
-          source: "./*"
-          target: /home/rentals77/delventto.cloud/
-          rm: false
-
-      # "./*" may skip dotfiles; make sure the routing and PHP settings always ship.
-      - name: Deploy dotfiles via SCP
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: 22
-          source: ".htaccess,.user.ini"
+          source: "./*,!./.git,!./.github,!./tests,!./.superpowers"
           target: /home/rentals77/delventto.cloud/
           rm: false
 
       - name: Harden remote and write guide secret
+        # Accepted risk: drone-ssh sends the exported GUIDE_API_SECRET as part of the remote
+        # command, so on this shared host it is briefly visible in the remote process list
+        # while the script runs (short-lived, same as any env-passing deploy).
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.FTP_SERVER }}
@@ -44,11 +67,19 @@ jobs:
           envs: GUIDE_API_SECRET
           script: |
             set -e
-            rm -rf ~/delventto.cloud/.git ~/delventto.cloud/tests ~/delventto.cloud/.superpowers ~/delventto.cloud/.github
+            rm -rf /home/rentals77/delventto.cloud/.git /home/rentals77/delventto.cloud/tests /home/rentals77/delventto.cloud/.superpowers /home/rentals77/delventto.cloud/.github
             umask 077
-            mkdir -p ~/delventto-private ~/delventto-guides
+            mkdir -p /home/rentals77/delventto-private /home/rentals77/delventto-guides
+            chmod 700 /home/rentals77/delventto-private /home/rentals77/delventto-guides
             if [ -n "$GUIDE_API_SECRET" ]; then
-              printf '<?php return ["secret" => "%s"];\n' "$GUIDE_API_SECRET" > ~/delventto-private/config.php
+              case "$GUIDE_API_SECRET" in
+                *\'*|*\\*)
+                  echo "Guide secret contains a quote or backslash; config not written."
+                  exit 1
+                  ;;
+              esac
+              printf "<?php return ['secret' => '%s'];\n" "$GUIDE_API_SECRET" > /home/rentals77/delventto-private/config.php
+              chmod 600 /home/rentals77/delventto-private/config.php
               echo "Guide config written."
             else
               echo "No guide secret provided; existing config left untouched."

@@ -8,6 +8,7 @@ declare(strict_types=1);
 // PHP errors go to the server log, never into the page (they would print paths).
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
+header_remove('X-Powered-By');
 
 require_once __DIR__ . '/lib/config.php';
 require_once __DIR__ . '/lib/slug.php';
