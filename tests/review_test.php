@@ -297,3 +297,14 @@ test('workflow: deploy writes review_token from the secret without echoing it', 
     ok(preg_match('/\$\{\{[^}]*GUIDE_REVIEW_TOKEN[^}]*\}\}/', preg_replace('/^\s*GUIDE_REVIEW_TOKEN: \$\{\{ secrets\.GUIDE_REVIEW_TOKEN \}\}\s*$/m', '', $t)) !== 1, 'secret only in env, never in script text');
     ok(preg_match('/echo[^\n]*\$GUIDE_REVIEW_TOKEN/', $t) !== 1 && strpos($t, 'set -x') === false, 'no echo or tracing of the token');
 });
+
+test('workflow: docs folder is excluded from the deploy and removed on the host', function () {
+    $t = (string) file_get_contents(__DIR__ . '/../.github/workflows/deploy.yml');
+    ok(strpos($t, '!docs') !== false, 'source excludes docs');
+    ok(strpos($t, '/home/rentals77/delventto.cloud/docs') !== false, 'harden step removes docs');
+});
+
+test('temas: the no-animation card button reads "Ver sin animación"', function () {
+    $t = (string) file_get_contents(__DIR__ . '/../temas/index.php');
+    ok(strpos($t, 'Ver sin animación') !== false && strpos($t, 'Ver ninguno') === false);
+});

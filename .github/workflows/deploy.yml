@@ -50,7 +50,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: 22
-          source: "./*,!.git,!.github,!tests,!.superpowers"
+          source: "./*,!.git,!.github,!tests,!docs,!.superpowers"
           target: /home/rentals77/delventto.cloud/
           rm: false
 
@@ -67,7 +67,7 @@ jobs:
           envs: GUIDE_API_SECRET,GUIDE_REVIEW_TOKEN
           script: |
             set -e
-            rm -rf /home/rentals77/delventto.cloud/.git /home/rentals77/delventto.cloud/tests /home/rentals77/delventto.cloud/.superpowers /home/rentals77/delventto.cloud/.github
+            rm -rf /home/rentals77/delventto.cloud/.git /home/rentals77/delventto.cloud/tests /home/rentals77/delventto.cloud/docs /home/rentals77/delventto.cloud/.superpowers /home/rentals77/delventto.cloud/.github
             umask 077
             mkdir -p /home/rentals77/delventto-private /home/rentals77/delventto-guides
             chmod 700 /home/rentals77/delventto-private /home/rentals77/delventto-guides

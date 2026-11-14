@@ -95,7 +95,7 @@ $motions = [
       <div class="tm-name"><?= h($label) ?></div>
       <p class="tm-desc"><?= mb_strtolower($label) === $desc ? 'Con ' . h($desc) . ' flotando' : h($label) . ': ' . h($desc) ?></p>
       <div class="tm-box" aria-hidden="true"></div>
-      <button type="button" class="btn-brand tm-play" data-motion="<?= h($key) ?>">Ver <?= h(mb_strtolower($label)) ?></button>
+      <button type="button" class="btn-brand tm-play" data-motion="<?= h($key) ?>"><?= $key === 'ninguno' ? 'Ver sin animación' : 'Ver ' . h(mb_strtolower($label)) ?></button>
     </div>
 <?php endforeach; ?>
   </div>

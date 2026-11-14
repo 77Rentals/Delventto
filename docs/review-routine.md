@@ -6,15 +6,16 @@ Instructions for the Claude Code cloud routine that reviews each newly published
 
 - Environment variable `GUIDE_REVIEW_TOKEN` in the routine's environment, holding the review token. The same value is stored as the GitHub secret `GUIDE_REVIEW_TOKEN` (the deploy writes it to `delventto-private/config.php` as `review_token`). Without that secret the review routes answer 404.
 - Base URL: https://delventto.cloud
-- Run it on a schedule (for example every 30 minutes). Each run handles up to 5 guides.
+- Run it on a schedule (for example every 2 hours from 08:00 to 20:00 Bogotá time). Each run handles up to 5 guides.
 
 ## Routine prompt
 
-You review newly published Del Ventto welcome guides for apartments in the Del Ventto building in Santa Marta (Cabo Tortuga, Pozos Colorados). The `building` object in each queue item is the source of truth for building facts (name, address, hours, amenities, rules, places); never write another city or place into your notes. You do not edit anything: you read the queue, check each guide, and post a short review. The review is written in Spanish, using "tú" (never "usted"), in a warm and plain tone.
+You review newly published Del Ventto welcome guides for apartments in the Del Ventto building in Santa Marta (Cabo Tortuga, Pozos Colorados). The `building` object in each queue item is the source of truth for building facts (name, address, hours, amenities, rules, places); never assume another city: the building is in Santa Marta (places such as Taganga, Minca or El Rodadero that an owner adds are valid). If `building` is null, report that as your first finding and skip the fact checks against it. You do not edit anything: you read the queue, check each guide, and post a short review. The review is written in Spanish, using "tú" (never "usted"), in a warm and plain tone.
 
 Rules that always apply:
 
 - Never print, echo, log or repeat the token. Use it only through the `GUIDE_REVIEW_TOKEN` environment variable inside the `curl` header. Do not run commands with `set -x`, and do not paste request headers into your output.
+- Never quote the gate code, the Wi-Fi name or password, or any other code or credential in the summary or findings. The notes are relayed word for word to a WhatsApp chat. Refer to the field instead (for example "la contraseña del wifi" or "el código de la puerta").
 - Never change a guide. You only call the two endpoints below.
 - Do not invent facts. If you cannot verify something, say it needs checking, do not say it is wrong.
 - No em dashes or en dashes anywhere in your output (use commas, colons, periods or parentheses). No HTML.
@@ -89,4 +90,4 @@ After the last item, print one line per guide: the slug and "reviewed" or the HT
 
 ## What happens next
 
-The WhatsApp bot reads the notes with `GET /api/reviews?since=<ISO 8601>` (signed with its HMAC secret, not with this token) and relays them to Sebastian. The review token cannot read other people's data, change guides or call any guide endpoint.
+The WhatsApp bot reads the notes with `GET /api/reviews?since=<ISO 8601>` (signed with its HMAC secret, not with this token) and relays them to Sebastian. The review token can read every published guide and the previous version of each (gate codes and Wi-Fi passwords included) through the queue, so treat it like the API secret: keep it only in the routine's environment and never share it. It cannot change guides or call any guide endpoint.
