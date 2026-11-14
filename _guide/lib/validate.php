@@ -318,15 +318,20 @@ function guide_check_list(array &$p, $v, string $field, string $label, int $min,
     }
 }
 
+/**
+ * At least as strict as safe_url() in view.php, so a link the validator accepts is never dropped
+ * at render: https:// with a plain host, or a same-site path ("/x", never "//x"), and no
+ * whitespace, control characters, backslashes, quotes or angle brackets.
+ */
 function guide_url_ok(string $u): bool
 {
-    if (preg_match('/\s/', $u) === 1) {
+    if ($u === '' || preg_match('/[\s\x00-\x1F\x7F\\\\"<>]/', $u) === 1) {
         return false;
     }
-    if (strpos($u, 'https://') === 0 && strlen($u) > 8) {
+    if (preg_match('#^https://[a-z0-9.-]+(:[0-9]+)?([/?\#].*)?$#iD', $u) === 1) {
         return true;
     }
-    return $u[0] === '/' && strpos($u, '//') !== 0;
+    return $u[0] === '/' && (strlen($u) === 1 || $u[1] !== '/');
 }
 
 /** Flatten every string leaf into [dotted.path, value]. */
@@ -363,19 +368,27 @@ function guide_known_numbers(array $g): array
     return $out;
 }
 
+/**
+ * Paths the door-code scan skips: WiFi credentials, the WhatsApp number, photo file
+ * names and links. Every other string in the guide is scanned for keyword plus number.
+ */
+function guide_door_code_exempt(string $path): bool
+{
+    if (in_array($path, ['wifi.password', 'wifi.ssid', 'hosts.whatsapp', 'lock.photo', 'hosts.photo', 'tourVideo.url', 'pdf.url'], true)) {
+        return true;
+    }
+    return preg_match('/^(photos\.\d+\.file|ac\.photos\.\d+)$/D', $path) === 1;
+}
+
 function guide_looks_like_door_code(string $path, string $str, array $known = []): bool
 {
-    $top = explode('.', $path)[0];
-    if (!in_array($top, ['lock', 'rules', 'welcome', 'features', 'hosts'], true)) {
-        return false;
-    }
-    if (in_array($path, ['lock.photo', 'hosts.photo', 'hosts.whatsapp'], true)) {
+    if (guide_door_code_exempt($path)) {
         return false;
     }
     $isCode = function (string $n) use ($known): bool {
         return strlen($n) >= 3 && strlen($n) <= 8 && !in_array(mb_strtolower($n), $known, true);
     };
-    $kw = '(?<!\p{L})(?:c[oó]digo(?!\s+postal(?!\p{L}))|clave|code|pin|contrase[ñn]a|password)(?!\p{L})';
+    $kw = '(?<!\p{L})(?:c[oó]digo(?!\s+postal(?!\p{L}))|clave|code|pin|contrase[ñn]a|password|combinaci[oó]n|combination)(?!\p{L})';
     if (preg_match_all('/' . $kw . '\D{0,25}?(?<!\d)(\d+)(?!\d)/iu', $str, $m)) {
         foreach ($m[1] as $n) {
             if ($isCode($n)) {

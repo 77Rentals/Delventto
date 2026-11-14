@@ -348,3 +348,71 @@ test('validate: door code in a plain T lock step is still caught', function () {
     $g['lock']['steps'][0]['es'] = 'Clave de la puerta: 4821';
     ok(vt_has(vt_run($g), 'lock.steps.0.es'));
 });
+
+test('validate: door code keywords are caught in every field, not only lock, rules, welcome, features, hosts', function () {
+    $g = vt_fixture('613t2');
+    $g['beforeLeaving'] = [['icon' => '🔑', 'text' => ['es' => 'Deja la llave en el lockbox, clave 4821', 'en' => 'Leave the key in the lockbox']]];
+    ok(vt_has(vt_run($g), 'beforeLeaving.0.text.es'), 'beforeLeaving');
+    $g = vt_fixture('613t2');
+    $g['photos'][0]['caption']['es'] = 'Clave del candado: 4821';
+    ok(vt_has(vt_run($g), 'photos.0.caption.es'), 'photo caption');
+    $g = vt_fixture('613t2');
+    $g['tagline']['en'] = 'Quiet flat, door PIN 7319';
+    ok(vt_has(vt_run($g), 'tagline.en'), 'tagline');
+    $g = vt_fixture('613t2');
+    $g['ac']['note'] = ['es' => 'El control está en la caja, código 2468', 'en' => 'The remote is in the box'];
+    ok(vt_has(vt_run($g), 'ac.note.es'), 'ac note');
+    $g = vt_fixture('613t2');
+    $g['places']['own'][] = ['name' => 'Garaje', 'tag' => ['es' => 'Parqueo', 'en' => 'Parking'], 'distance' => ['es' => '1 min', 'en' => '1 min'],
+        'text' => ['es' => 'Entra con el pin 5150', 'en' => 'Enter with the pin'], 'mapsQuery' => 'Garaje Santa Marta'];
+    $n = count($g['places']['own']) - 1;
+    ok(vt_has(vt_run($g), "places.own.$n.text.es"), 'own place');
+});
+
+test('validate: combination is a door code keyword in Spanish and English', function () {
+    foreach (['La combinación es 4821', 'La combinacion del candado 4821', 'The combination is 4821', '4821 is the lock combination'] as $s) {
+        $g = vt_fixture('613t2');
+        $g['welcome']['es'] = $s;
+        ok(vt_has(vt_run($g), 'welcome.es'), $s);
+    }
+    $g = vt_fixture('613t2');
+    $g['welcome']['es'] = 'Combinaciones de 300 colores';
+    eq(vt_run($g), [], 'whole word only');
+});
+
+test('validate: the keyword scan skips wifi, whatsapp, photo files and URLs', function () {
+    $g = vt_fixture('613t2');
+    $g['wifi']['ssid'] = 'Clave 4821';
+    $g['wifi']['password'] = 'pin 12345678';
+    eq(vt_run($g), [], 'wifi exempt');
+    $g = vt_fixture('613t2');
+    $g['photos'][0]['file'] = 'codigo-4821.jpg';
+    $g['lock']['photo'] = 'clave-4821.jpg';
+    $g['hosts']['photo'] = 'pin-4821.jpg';
+    $g['ac']['photos'] = ['code-4821.jpg'];
+    eq(vt_run($g), [], 'photo file names exempt');
+    $g = vt_fixture('613t2');
+    $g['tourVideo']['url'] = 'https://youtu.be/code-4821';
+    $g['pdf'] = ['url' => '/guia/clave-4821.pdf'];
+    eq(vt_run($g), [], 'URLs exempt');
+});
+
+test('validate: a standalone number outside lock steps is not a door code', function () {
+    $g = vt_fixture('613t2');
+    $g['beforeLeaving'] = [['icon' => '🗑', 'text' => ['es' => 'Saca la basura antes de las 1100', 'en' => 'Take the trash out']]];
+    $g['photos'][0]['caption']['es'] = 'Vista 2024';
+    eq(vt_run($g), []);
+});
+
+test('validate: links with backslashes or control characters are refused, not dropped silently at render', function () {
+    require_once __DIR__ . '/../_guide/lib/view.php';
+    foreach (["https://youtu.be/a\b", "/guia\x.pdf", "https://youtu.be/a\x00b", "/guia\x01.pdf", "https://x.example/\x7F", "https://x.example/a\"b"] as $u) {
+        $g = vt_fixture('613t2');
+        $g['tourVideo']['url'] = $u;
+        ok(vt_has(vt_run($g), 'tourVideo.url'), 'refused: ' . json_encode($u));
+    }
+    // Whatever the validator accepts, the renderer keeps.
+    foreach (['https://youtu.be/abc', '/apartasuite-613t2/guia.pdf', '/', 'https://x.example:8443/a?b=1#c', 'https://user@x.example/', 'https://x_y.example/', '/\x', '//x', 'http://x', 'https:// x', "https://x.example/\t"] as $u) {
+        eq(guide_url_ok($u), safe_url($u) !== null, 'validator and renderer agree on ' . json_encode($u));
+    }
+});
