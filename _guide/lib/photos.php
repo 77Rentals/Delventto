@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 const PHOTO_MAX_BYTES = 8 * 1024 * 1024;
 const PHOTO_MAX_SIDE = 1600;
+/** Above this many decoded pixels GD is not used (a 40 MP RGBA bitmap is about 160 MB). */
+const PHOTO_MAX_PIXELS = 40000000;
 
 function photo_fail(string $message): array
 {
@@ -41,8 +43,11 @@ function photo_accept(string $bytes, string $declaredType): array
         return photo_fail('Esa foto parece dañada, prueba enviarla otra vez');
     }
 
-    // GD availability is checked at runtime, not assumed.
-    $resized = extension_loaded('gd') ? photo_gd_downscale($stripped, $ext, $orientation) : null;
+    // GD availability is checked at runtime, not assumed. Huge or unreadable dimensions
+    // skip GD (decoding them could exhaust memory) and take the no-GD path below.
+    $resized = extension_loaded('gd') && photo_gd_size_ok(@getimagesizefromstring($stripped))
+        ? photo_gd_downscale($stripped, $ext, $orientation)
+        : null;
     if ($resized !== null) {
         $stripped = $resized;
     } elseif ($ext === 'jpg' && $orientation >= 2 && $orientation <= 8) {
@@ -51,6 +56,20 @@ function photo_accept(string $bytes, string $declaredType): array
     }
 
     return ['ok' => true, 'bytes' => $stripped, 'ext' => $ext];
+}
+
+/**
+ * Whether GD may decode an image, from getimagesizefromstring()'s result (array or false):
+ * only when both sides are known and width * height is at most PHOTO_MAX_PIXELS.
+ */
+function photo_gd_size_ok(array|false $info): bool
+{
+    if ($info === false) {
+        return false;
+    }
+    $w = (int) ($info[0] ?? 0);
+    $h = (int) ($info[1] ?? 0);
+    return $w > 0 && $h > 0 && $w * $h <= PHOTO_MAX_PIXELS;
 }
 
 function photo_sniff(string $b): ?string
@@ -95,9 +114,11 @@ function photo_strip_jpeg(string $b): ?string
         if ($marker === 0xD9) {        // EOI before any scan: no image
             return null;
         }
-        if ($marker === 0xDA) {        // SOS: scan data verbatim, cut after the last EOI
+        if ($marker === 0xDA) {        // SOS: scan data verbatim, cut after the first EOI
+            // FF D9 cannot occur inside entropy-coded data (FF is stuffed as FF 00), so the
+            // first one is the real end; anything after it is a trailer and is dropped.
             $rest = substr($b, $pos);
-            $end = strrpos($rest, "\xFF\xD9");
+            $end = strpos($rest, "\xFF\xD9");
             return $end === false ? null : $out . substr($rest, 0, $end + 2);
         }
         if ($marker === 0x01 || ($marker >= 0xD0 && $marker <= 0xD8) || $marker === 0x00) {

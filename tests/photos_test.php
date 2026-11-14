@@ -244,3 +244,35 @@ test('photo_accept refuses JPEG scan with no EOI', function () {
     $r = photo_accept($in, 'image/jpeg');
     ok(!$r['ok']);
 });
+
+test('photo_accept cuts at the first EOI even when the trailer holds another FF D9', function () {
+    $trailer = "junk\xFF\xD9" . fx_exif_segment() . "\xFF\xD9";
+    $r = photo_accept(fx_jpeg() . $trailer, 'image/jpeg');
+    ok($r['ok']);
+    ok(!str_contains($r['bytes'], 'GPS'), 'GPS after a second EOI must be gone');
+    eq($r['bytes'], fx_jpeg());
+});
+
+// ---- decoded size cap before GD ----
+
+test('photo_gd_size_ok caps width times height at 40 million pixels', function () {
+    eq(PHOTO_MAX_PIXELS, 40000000);
+    ok(photo_gd_size_ok([4000, 3000]), '12 MP is fine');
+    ok(photo_gd_size_ok([8000, 5000]), 'exactly 40 MP is fine');
+    ok(!photo_gd_size_ok([8001, 5000]), 'over 40 MP skips GD');
+    ok(!photo_gd_size_ok([65535, 65535]), 'pixel bomb skips GD');
+    ok(!photo_gd_size_ok(false), 'unreadable dimensions skip GD');
+    ok(!photo_gd_size_ok([0, 100]), 'zero width skips GD');
+});
+
+test('photo_gd_size_ok reads a huge PNG header as too big without decoding it', function () {
+    $ihdr = pack('NNCCCCC', 20000, 20000, 8, 6, 0, 0, 0);
+    $png = "\x89PNG\r\n\x1A\n" . fx_png_chunk('IHDR', $ihdr)
+        . fx_png_chunk('IDAT', "\x78\x9C\x63\x60\x00\x00\x00\x02\x00\x01") . fx_png_chunk('IEND', '');
+    $info = getimagesizefromstring($png);
+    ok(is_array($info), 'header readable');
+    ok(!photo_gd_size_ok($info), '400 MP refused for GD');
+    ok(photo_gd_size_ok(getimagesizefromstring(fx_png())), '1x1 fine');
+    $r = photo_accept($png, 'image/png');
+    ok($r['ok'], 'still accepted through the no GD path');
+});
