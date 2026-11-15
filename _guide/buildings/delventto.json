@@ -57,7 +57,6 @@
     }
   ],
   "amenitiesVideo": "/apartasuite-613t2/amenities-tour.mp4",
-  "buildingVideo": "/serenasuite/video_vento.mp4",
   "amenityPhotos": [
     {"src": "/apartasuite-613t2/amen_lobby.jpg", "caption": {"es": "Recepción", "en": "Lobby & Reception"}},
     {"src": "/apartasuite-613t2/amen_gym.jpg", "caption": {"es": "Gimnasio", "en": "Gym"}},
@@ -81,8 +80,7 @@
     {"src": "/apartasuite-613t2/amen_rooftop-pool.jpg", "caption": {"es": "Piscina infinita piso 16", "en": "Infinity Pool, Floor 16"}},
     {"src": "/apartasuite-613t2/amen_common-floor1.jpg", "caption": {"es": "Zona común primer piso", "en": "Common Area, Ground Floor"}},
     {"src": "/apartasuite-613t2/amen_interior-view.jpg", "caption": {"es": "Vista interior", "en": "Interior View"}},
-    {"src": "/apartasuite-613t2/amen_beach3.jpg", "caption": {"es": "Atardecer: bote", "en": "Sunset: Boat"}},
-    {"src": "/apartasuite-613t2/amen_beach4.jpg", "caption": {"es": "Atardecer en la playa", "en": "Beach at Sunset"}}
+    {"src": "/apartasuite-613t2/amen_beach3.jpg", "caption": {"es": "Atardecer: bote", "en": "Sunset: Boat"}}
   ],
   "map": {
     "embed": "https://www.google.com/maps?q=Edificio+Delventto,+Santa+Marta&z=15&output=embed",
@@ -287,12 +285,7 @@
     "text": {"es": "Toca para ver el aviso completo sobre la prevención de la explotación sexual comercial de niños, niñas y adolescentes.", "en": "Tap to view the full notice on preventing the commercial sexual exploitation of children and adolescents."}
   },
   "energy": {
-    "title": {"es": "Aire acondicionado y ahorro de energía", "en": "A/C & Energy Savings"},
-    "images": [
-      {"src": "/apartasuite-613t2/breakers-v3.jpg", "label": {"es": "Tablero de breakers", "en": "Breaker panel"}},
-      {"src": "/apartasuite-613t2/energy-guide-v3.jpg", "label": {"es": "Uso del Aire Acondicionado y Sistema Ahorrador de Energía", "en": "Using the A/C & Energy-Saving System"}}
-    ],
-    "quickGuide": {"src": "/apartasuite-613t2/energy-guide-old-2-bilingual.jpg", "label": {"es": "📋 Guía rápida", "en": "📋 Quick guide"}}
+    "title": {"es": "Aire acondicionado y ahorro de energía", "en": "A/C & Energy Savings"}
   },
   "sos": [
     {"icon": "🚔", "color": "danger", "title": {"es": "Policía Nacional", "en": "National Police"}, "number": "123", "href": "tel:123", "note": {"es": "Emergencias de seguridad", "en": "Security emergencies"}},
