@@ -637,10 +637,23 @@ test('render: pool rules and the energy saver guide only when the guide includes
     unset($g['include']);
     $html = rt_render($g);
     ok(strpos($html, 'class="pool-rule') === false, 'no pool rules by default');
-    ok(strpos($html, 'energy-guide-v3.jpg') === false, 'no energy guide by default');
+    ok(strpos($html, 'Aire acondicionado y ahorro de energía') === false, 'no energy saver title by default');
     ok(strpos($html, 'ac-steps') !== false, 'the A/C steps still show');
     $g['include'] = ['poolRules' => true, 'energy' => true];
     $html = rt_render($g);
     ok(strpos($html, 'class="pool-rule') !== false, 'pool rules when included');
-    ok(strpos($html, 'energy-guide-v3.jpg') !== false, 'energy guide when included');
+    ok(strpos($html, 'Aire acondicionado y ahorro de energía') !== false, 'energy saver title when included');
+});
+
+// Owner review of the first published guide (2026-11-15).
+test('render: no photos of another apartment, one building video, no sunset portrait', function () {
+    $g = rt_fixture('613t2');
+    $g['include'] = ['poolRules' => true, 'energy' => true];
+    $html = rt_render($g);
+    foreach (['breakers-v3.jpg', 'energy-guide-v3.jpg', 'energy-guide-old-2-bilingual.jpg'] as $file) {
+        ok(strpos($html, $file) === false, "613T2's own A/C image $file is not in other guides");
+    }
+    ok(strpos($html, 'video_vento.mp4') === false, 'the duplicate building video is gone');
+    ok(strpos($html, 'amenities-tour.mp4') !== false, 'the amenities tour stays');
+    ok(strpos($html, 'amen_beach4.jpg') === false, 'the sunset photo with a person is gone');
 });
